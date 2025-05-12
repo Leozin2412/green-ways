@@ -1,0 +1,550 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+/*-------------------------------------------Tags Gerais---------------------------------------*/
+.user-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#username-display {
+  font-weight: bold;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#username-display {
+    font-weight: bold;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  #username-display:hover {
+    color: #4caf50;
+  }
+  
+.login-icon {
+  color: white;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.login-icon:hover {
+  color: #4caf50;
+  transform: scale(1.1);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  outline: none;
+  font-family: "Inter", sans-serif;
+}
+body {
+  background-color: #b1c2b4;
+  margin: 0;
+  padding: 0;
+}
+h3 {
+  font-size: 50px;
+}
+p {
+  color: #000;
+}
+
+.logged {
+  pointer-events: none;
+  cursor: default;
+  font-size: 15px;
+  margin-left: auto;
+  color: rgb(255, 255, 255);
+  font-weight: 400;
+  padding-right: 10px;
+}
+
+/*-------------------------------------------Início Header---------------------------------------*/
+
+.menu {
+  max-width: 1400px;
+  max-height: 1200px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+.fundo {
+  background-color: rgba(0, 0, 0, 0.363);
+  z-index: 3;
+  min-height: 120px;
+  width: 100%;
+}
+header {
+  background-image: url(".././img/menu.jpg");
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  text-align: center;
+}
+nav ul {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  text-shadow: 5px;
+  list-style: none;
+}
+nav ul a {
+  color: rgb(255, 255, 255);
+  margin: 40px;
+  font-size: 15px;
+  text-transform: uppercase;
+  display: block;
+  font-weight: 400;
+}
+nav ul a::after {
+  content: "";
+  background-color: #ffffff;
+  height: 3px;
+  width: 0%;
+  display: block;
+  margin: 0 auto;
+  transition: 0.3s;
+}
+nav ul a:hover::after {
+  width: 100%;
+}
+.nav-links {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  justify-content: center;
+}
+.login-icon {
+  font-size: 15px;
+  margin-left: auto;
+  color: rgb(255, 255, 255);
+  font-weight: 400;
+  padding-right: 10px;
+}
+
+.banner {
+  display: flex;
+  justify-content: center;
+}
+.banner .textobanner {
+  margin: 190px;
+  padding: 0 29px;
+}
+.banner .textobanner .l1 {
+  font-size: 59px;
+  color: white;
+  position: absolute;
+  left: 150px;
+  top: 230px;
+}
+.banner .textobanner .l2 {
+  font-size: 59px;
+  color: white;
+  position: absolute;
+  left: 290px;
+  top: 290px;
+}
+.banner .textobanner p {
+  font-size: 17px;
+  color: white;
+  position: absolute;
+  right: 0;
+  top: 130px;
+  padding: 5px;
+  width: 370px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+#name {
+  color: white;
+  padding-inline: 10px;
+}
+
+#logoutBtn {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  color: white;
+  background-color: transparent;
+  border-radius: 50px;
+  border-color: white;
+
+  padding: 3px 13px;
+  cursor: pointer;
+}
+#logoutBtn:hover {
+  border-color: #193b127d;
+  color: white;
+  transition: ease-in-out 0.4s;
+}
+
+.container {
+  padding: 40px 20px;
+  margin: 0 auto;
+  text-align: justify;
+}
+.content {
+  background-color: #f6f2e8;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  padding: 30px;
+  line-height: 1.6;
+}
+.content h2 {
+  font-size: 2em;
+  margin-top: 0;
+  color: #334a00;
+}
+.content p {
+  margin-bottom: 20px;
+  color: #3b3b39;
+}
+
+/*-------------------------------------------Início Leaf---------------------------------------*/
+
+.leaf {
+  background-color: #cad3c8;
+  border: 1px solid #9ebda4d2;
+  border-radius: 5px;
+  padding: 20px;
+  flex: 1 1 calc(50% - 20px);
+  margin: 12px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 0px;
+}
+.leaf p {
+  font-size: 1.2em;
+  margin-top: 0;
+  color: #3b3b39;
+}
+
+/*-------------------------------------------Início Carrossel---------------------------------------*/
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+}
+.carousel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  transition: transform 1s ease;
+  justify-content: center;
+}
+.carousel-item {
+  flex: 0 0 calc(25% - 20px);
+  box-sizing: border-box;
+  padding: 20px;
+  background: #f6f2e8;
+  border-radius: 20px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.carousel-item h4 {
+  margin-top: 10px;
+}
+.carousel-item:hover {
+  transform: translateY(-10px);
+  transition: transform 0.5s ease;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+.carousel-item img {
+  width: 100%;
+  height: 190px;
+  border-radius: 15px;
+  object-fit: cover;
+}
+.tip {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #334a00;
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+.tip:hover {
+  background-color: #1f2d02;
+}
+
+/*-------------------------------------------Início Rodapé---------------------------------------*/
+
+footer {
+  background-color: #334a00;
+  text-align: center;
+  padding-top: 50px;
+  margin-top: 40px;
+}
+footer ul {
+  color: white;
+  padding: 10px;
+}
+footer ul a {
+  padding: 5px;
+}
+.copy {
+  padding: 20px;
+  color: white;
+}
+.fot a :hover {
+  transform: translateY(-5px);
+  transition: transform 0.5s ease;
+}
+
+/*-------------------------------------------Início Responsividade---------------------------------------*/
+
+/* Media Query para telas com no máximo 767px */
+@media (max-width: 767px) {
+  /* ----- Responsividade Cabeçalho  ----- */
+  .menu {
+    padding: 0 2%;
+  }
+  .fundo {
+    min-height: 80px;
+  }
+
+  header {
+    background-size: cover;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column; /* Coloca o conteúdo verticalmente */
+    align-items: center; /* Centraliza todos os itens dentro do nav */
+  }
+
+  .login-icon {
+    font-size: 20px; /* Aumenta o tamanho do ícone */
+    margin-bottom: 10px; /* Espaço entre o ícone e os links */
+    display: block;
+    text-align: center; /* Centraliza o ícone */
+    margin-top: 20px; /* Espaço acima do ícone */
+    width: 100%;
+  }
+  nav ul {
+    flex-direction: column; /* Coloca os links em coluna */
+    margin-left: 0;
+    margin-right: 0;
+    text-align: center;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav ul li {
+    margin: 10px 0; /* Espaço entre os itens da lista */
+  }
+
+  nav ul a {
+    margin: 0;
+    font-size: 15px;
+    display: block;
+    padding: 10px 0;
+  }
+
+  .banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-top: 20px; /* Espaço entre a navegação e o banner */
+  }
+
+  .banner .textobanner {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .banner .textobanner .l1,
+  .banner .textobanner .l2 {
+    font-size: 36px;
+    position: static;
+  }
+
+  .banner .textobanner p {
+    font-size: 14px;
+    position: static;
+    padding: 5px;
+    width: auto;
+    word-wrap: break-word;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .container {
+    padding: 20px 10px;
+  }
+
+  .content {
+    padding: 15px;
+    box-shadow: none;
+  }
+
+  .content h2 {
+    font-size: 1.5em;
+    margin: 0;
+    padding: 0;
+    letter-spacing: normal;
+    align-items: center;
+  }
+
+  .content p {
+    margin-bottom: 15px;
+    font-size: 14px;
+    letter-spacing: normal;
+  }
+
+  /* ----- Responsividade Carrosel  ----- */
+
+  .carousel {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .carousel-item {
+    flex: 0 0 100%;
+    width: 90%;
+    margin: 10px 0;
+    height: auto; /* Permitir que a altura seja ajustada conforme o conteúdo */
+  }
+
+  .carousel-item img {
+    height: auto; /* Permitir que a imagem se ajuste automaticamente */
+  }
+
+  .prev-button,
+  .next-button {
+    display: none; /* Remover botões de seta */
+  }
+}
+
+/* Media Query para telas com largura entre 768px e 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* ----- Responsividade Cabeçalho  ----- */
+  .menu {
+    padding: 0 3%;
+  }
+
+  .fundo {
+    min-height: 100px;
+  }
+
+  header {
+    background-size: cover;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .login-icon {
+    font-size: 35px;
+    margin-bottom: 25px;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 25px;
+  }
+
+  nav ul {
+    flex-direction: row;
+    justify-content: center;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav ul li {
+    margin: 0 20px;
+  }
+
+  nav ul a {
+    margin: 0;
+    font-size: 18px;
+    display: block;
+    padding: 10px 0;
+  }
+
+  .banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-top: 30px;
+  }
+
+  .banner .textobanner {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .banner .textobanner .l1,
+  .banner .textobanner .l2 {
+    font-size: 48px;
+    position: static;
+  }
+
+  .banner .textobanner p {
+    font-size: 16px;
+    position: static;
+    padding: 5px;
+    width: auto;
+    word-wrap: break-word;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  /* ----- Responsividade Carrosel  ----- */
+
+  .carousel {
+    flex-direction: row;
+    flex-wrap: wrap; /* Permitir múltiplas linhas de itens */
+    justify-content: center;
+  }
+
+  .carousel-item {
+    flex: 0 0 calc(50% - 20px);
+    width: auto;
+    height: auto;
+  }
+
+  .carousel-item img {
+    height: 150px;
+  }
+
+  .prev-button,
+  .next-button {
+    display: block;
+  }
+}

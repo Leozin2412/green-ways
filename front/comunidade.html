@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidade de Viajantes Sustentáveis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/comunidade.css">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <a href="index.html" style="position: absolute; top: 40px; left: 50px; font-size: 30px; color: white;">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+    <!-- Cabeçalho Início -->
+    <header>
+        <div class="fundo">
+            <div class="menu">
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="#">Notícias</a></li>
+                        <li><a href="viagem.html">Turismo Sustentável</a></li>
+                        <li><a href="comunidade.html">Comunidade Online</a></li>
+                        <li><a href="#">Quem Somos</a></li>
+                    </ul>
+                    <div class="user-profile-header">
+                        <span id="username-display"></span>
+                        <a href="perfil.html" class="login-icon">
+                            <i class="fa-solid fa-user"></i>
+                        </a>
+                    </div>
+                    <button id="logoutBtn" style="display: none;">Sair</button>
+                </nav>
+                <section class="banner">
+                    <div class="textobanner">
+                        <h1 class="l1">Nossa</h1>
+                        <h1 class="l2">Comunidade</h1>
+                        <p>"Viajar de forma sustentável mantém os destinos vivos para o futuro."</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </header>
+
+    <!--Corpo Principal-->
+    <main>
+        <div class="conteinermain">
+            <div class="contentmain">
+
+                <!--Contéudos-->
+                <section id="home" class="hero">
+                    <div>
+                        <h2 id="bv">Bem-vindo à nossa comunidade de viajantes conscientes!</h2>
+                        <p>Aqui, exploradores de todo o mundo compartilham suas histórias, dicas e experiências de
+                            viagens sustentáveis. Nosso objetivo é criar uma rede onde aventureiros possam se conectar e
+                            inspirar uns aos outros a viajar de forma mais responsável, preservando o meio ambiente e
+                            respeitando as culturas locais.</p>
+
+                        <p>Desde opções de transporte ecológico até estadias em acomodações sustentáveis, nossos membros
+                            discutem práticas que reduzem o impacto negativo das viagens. Queremos transformar a maneira
+                            como as pessoas exploram o mundo, promovendo o turismo que valoriza a natureza e as
+                            comunidades locais, garantindo que as futuras gerações possam continuar desfrutando de
+                            destinos incríveis</p>
+
+                        <p>Junte-se a nós nessa jornada e descubra como pequenas ações podem fazer uma grande diferença!
+                        </p>
+                    </div>
+                </section>
+
+                <!--Form-->
+                <section class="carousel"></section>
+                <div class="post-form">  
+                    <div class="user-profile">
+                        <img id="user-profile-pic" src="" alt="Foto de perfil" class="profile-pic">
+                        <span class="namePost"></span>
+                    </div>
+                    <h3 class="compartilhe">Compartilhe sua experiência</h3>
+                
+                    <form id="post-form">
+                        <div for="author">Destino:
+                            <div class="estcid">
+                                <select name="estados" id="estados">
+                                    <option value="">Selecione um estado</option>
+                                </select>
+                                <select name="cidades" id="cidades" disabled>
+                                    <option value="">Selecione um estado primeiro</option>
+                                </select>
+                            </div>
+                            <p id="estado-selecionado" class="selection-info"></p>
+                            <p id="cidade-selecionada" class="selection-info"></p>
+                        </div>
+                        <label for="content">Experiência:</label>
+                        <textarea id="content" rows="4" required></textarea>
+                        <button type="submit">Publicar</button>
+                    </form>
+                </div>
+                </section>
+                <section id="posts" class="container"></section>
+                <h2 class="exp">Experiências Recentes</h2>
+                <div id="post-list"></div>
+            </div>
+        </div>
+    </main>
+
+    <!--Rodapé-->
+    <footer>
+        <div class="fot">
+            <p class="copy">Contato: (24) 99999-9999 | Email: viagensustentaveis@gmail.com</p>
+            <ul>
+                <a href="https://www.instagram.com/" target="_blank" rel="external"><img src="img/instaa.webp" alt=""
+                        width="25px" height="25px"></a>
+                <a href="https://www.facebook.com/?locale=pt_BR" target="_blank" rel="external"><img src="img/face.webp"
+                        alt="" width="25px" height="25px"></a>
+                <a href="https://x.com/?lang=pt-br" target=" _blank" rel="external"><img src="img/twitter.png" alt=""
+                        width="25px" height="25px"></a>
+                <p class="copy">Copyright © 2024. Dicas para viagens sustentáveis </p>
+            </ul>
+        </div>
+    </footer>
+    <script src="js/index.js"></script>
+    <script src="js/comunidade.js"></script>
+</body>
+
+</html>

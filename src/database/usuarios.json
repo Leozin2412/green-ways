@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "nome": "Lais Alonso",
+    "email": "lais@gmail.com",
+    "senha": "$2b$10$7r6xvaTPNeSVdaZFLeDu1.Ivdl8FXCfUFxmzFIk.p9NpFToSvuP7O",
+    "acesso": "admin",
+    "foto": "/uploads/profile_1.jpg"
+  },
+  {
+    "id": 2,
+    "nome": "Miguel",
+    "email": "miguel@gmail.com",
+    "senha": "$2b$10$dhnj6YxdNTVAn8bdUYObNOuewCXKb3LfgwbnEgN/SlOUBeyj8zgwW",
+    "acesso": "user",
+    "foto": null
+  },
+  {
+    "id": 3,
+    "nome": "Leonardo Monteiro",
+    "email": "leonardo@gmail.com",
+    "senha": "$2b$10$8.Jxay08IaJH/NFL0.Ohmeq.DJic9NLErbkQ8OdQStgYea6BYvcLq",
+    "acesso": "admin",
+    "foto": null
+  },
+  {
+    "id": 4,
+    "nome": "Caio Macena",
+    "email": "caiomacena@gmail.com",
+    "senha": "$2b$10$kzKz4EJaM6mLHGBINy855OUTM9rr3G.xoboUyjuWz2.v0hKDsIgK.",
+    "acesso": "admin",
+    "foto": "/uploads/profile_4.jpg"
+  },
+  {
+    "id": 5,
+    "nome": "Camila Alvarenga",
+    "email": "camila@gmail.com",
+    "senha": "$2b$10$fO16xl9oX/G/9IFXrVMyZOIpXzw91SSO1VtjXV7hWLxHLm0YkVnv2",
+    "acesso": "admin",
+    "foto": "/uploads/profile_5.jpg"
+  },
+  {
+    "id": 6,
+    "nome": "Mateus Arturo",
+    "email": "marturosantana@gmail.com",
+    "senha": "$2b$10$tl1MpDEgZO.9RD8J6VwcKeM23cvy7P3uEIaMIqrPCT8guqv9QhheW",
+    "acesso": "admin",
+    "foto": "/uploads/profile_6.jpg"
+  }
+]

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Perfil</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/perfil.css" />
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <a href="index.html" class="back-button">
+      <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <div class="card">
+      <h2>Editar Perfil</h2>
+      <form id="profile-form">
+        <div class="profile-pic-wrapper">
+          <img
+            id="foto-preview"
+            class="profile-pic"
+            src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><circle cx='50' cy='50' r='50' fill='%23e5e7eb'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='40' fill='%239ca3af'>+</text></svg>"
+            alt="Foto de perfil"
+            title="Clique para trocar a foto"
+          />
+          <div id="menu-foto" class="menu-foto">
+            <button type="button" onclick="abrirSeletor()">
+              Alterar imagem
+            </button>
+            <button type="button" onclick="removerFoto()">
+              Remover imagem
+            </button>
+          </div>
+          <input type="file" id="foto" accept="image/*" class="hidden" />
+        </div>
+
+        <div class="form-group">
+          <label for="username">Nome de usuário</label>
+          <input
+            class="caixa"
+            type="text"
+            id="username"
+            placeholder="Digite seu nome de usuário"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="current-password">Senha atual</label>
+          <input
+            class="caixa"
+            type="password"
+            id="current-password"
+            placeholder="Digite sua senha atual"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="new-password">Nova senha</label>
+          <input
+            class="caixa"
+            type="password"
+            id="new-password"
+            placeholder="Digite sua nova senha"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirmar nova senha</label>
+          <input
+            class="caixa"
+            type="password"
+            id="confirm-password"
+            placeholder="Confirme sua nova senha"
+          />
+        </div>
+
+        <button type="submit" class="submit-btn">Salvar</button>
+        <button type="button" class="delete-btn" onclick="confirmarExclusao()">
+          Deletar Conta
+        </button>
+      </form>
+    </div>
+
+    <div id="modal-confirm" style="display: none">
+      <div id="modal-overlay" onclick="fecharModal()"></div>
+      <div id="modal-box">
+        <h3>Tem certeza que deseja excluir sua conta?</h3>
+        <p>Todas suas informações serão permanentemente removidas.</p>
+        <div class="modal-actions">
+          <button onclick="fecharModal()">Cancelar</button>
+          <button class="confirm" onclick="excluirConta()">
+            <span id="delete-spinner" style="display: none">
+              <i class="fas fa-spinner fa-spin"></i>
+            </span>
+            Confirmar Exclusão
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/perfil.js"></script>
+  </body>
+</html>
