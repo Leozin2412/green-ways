@@ -1,5 +1,6 @@
 import { usuarios, saveUser, loadUser } from "../database/usuario.js";
 import bcrypt from "bcryptjs";
+import conexao from "../database/conexao.js"
 
 const UserRepository = {
   async getAll() {
@@ -11,12 +12,16 @@ const UserRepository = {
     return users.find((user) => user.id == id);
   },
 
-  async getByEmail(email) {
-    const users = loadUser();
-    return users.find(
-      (user) => user.email.toLowerCase() === email.toLowerCase()
-    );
-  },
+ async getByEmail(email) {
+    try {
+        const sql = `SELECT * FROM users WHERE email = ?`;
+        const [rows] = await conexao.promise().execute(sql, [email]);
+        return rows[0] || null; 
+          } catch (erro) {
+        console.error('Erro ao buscar usuário por email:', erro);
+        throw erro; 
+    }
+},
 
   async getUser(email, senha) {
     const users = loadUser();
@@ -29,20 +34,16 @@ const UserRepository = {
     return senhaValida ? user : null;
   },
 
-  async create(user) {
-    const users = loadUser();
-    const novoUsuario = {
-      id: users.length > 0 ? Math.max(...users.map((u) => u.id)) + 1 : 1,
-      nome: user.nome,
-      email: user.email,
-      senha: user.senha,
-      acesso: user.acesso || "user",
-      foto: user.foto || null,
-    };
-    users.push(novoUsuario);
-    saveUser(users);
-    return novoUsuario;
-  },
+async create(user){
+ const sql='insert into users (nome,email,senha) values (?,?,?);'
+ const list= await conexao.promise().execute(sql,
+    [
+        user.nome,user.email,user.senha
+    ]).catch(erro=>{
+        return[erro]
+    })   
+    return list[0]
+},
 
   async update(email, user) {
     const users = loadUser();

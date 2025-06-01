@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import UserRepository from "../repositories/UserRepository.js";
 import { loadUser, saveUser } from "../database/usuario.js";
 import fs from "fs";
+import { isCompleteName, isEmail, isPassword } from "../shared/util.js";
 
 const SECRET = process.env.SECRET;
 const TOKEN_EXPIRE = eval(process.env.TOKEN_EXPIRE);
@@ -46,35 +47,56 @@ const AuthController = {
   },
 
   createUser: async (req, res, next) => {
-    try {
-      const { nome, email, senha, confirma, foto } = req.body;
-      if (senha !== confirma) {
-        return res
-          .status(400)
-          .json({ ok: false, message: "Senhas não conferem" });
-      }
+const { nome, email, senha, confirma } = req.body;
+    const msgErrors = [];
 
-      const usuarioExistente = await UserRepository.getByEmail(email);
-      if (usuarioExistente) {
+    console.log(nome, email, senha, confirma);
+    const usuarioExistente = await UserRepository.getByEmail(email)
+    //validar informações (nome, email e senha, confirma)
+    if (!nome) {
+      msgErrors.push("O Nome é obrigatório");
+    } else {
+      if (!isCompleteName(nome)) {
+        msgErrors.push("Informe seu nome completo");
+      }
+    }
+    if (!email) {
+      msgErrors.push("O E-mail é obrigatório");
+    } else {
+      if (!isEmail(email)) {
+        msgErrors.push("E-mail inválido");
+      }
+    }
+        if (usuarioExistente) {
         return res
           .status(400)
           .json({ ok: false, message: "E-mail já cadastrado" });
       }
-
-      const senhaHash = await bcrypt.hash(senha, SALT_ROUNDS);
-      const novoUsuario = await UserRepository.create({
-        nome,
-        email,
-        senha: senhaHash,
-        acesso: "user",
-        foto: foto || null,
-      });
-
-      req.user = { email: novoUsuario.email, senha };
-      next();
-    } catch (error) {
-      res.status(500).json({ ok: false, message: error.message });
+    if (!senha) {
+      msgErrors.push("A Senha é obrigatória");
+    } else {
+      if (!isPassword(senha)) {
+        msgErrors.push("A senha deve ter no mínimo 8 caracteres");
+      } else {
+        if (senha !== confirma) {
+          msgErrors.push("A Senha e a Confirmação não conferem");
+        }
+      }
     }
+    //criando novo usuario de acesso comum "user"
+    if (msgErrors.length > 0) {
+      //retornando mensagem de erro (necessário usar o return para parar a execução)
+      return res.status(400).json({
+        status: 400,
+        ok: false,
+        message: msgErrors,
+      });
+    } ;
+
+const senhaHash= await bcrypt.hash(senha,SALT_ROUNDS)
+const user={nome:nome,email:email,senha:senhaHash,acesso:"user"};
+const resp=await UserRepository.create(user);
+console.log(resp);
   },
 
   editUser: async (req, res, next) => {
