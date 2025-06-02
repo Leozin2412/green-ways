@@ -23,16 +23,17 @@ const UserRepository = {
     }
 },
 
-  async getUser(email, senha) {
-    const users = loadUser();
-    const user = users.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase()
-    );
-    if (!user) return null;
-
-    const senhaValida = await bcrypt.compare(senha, user.senha);
-    return senhaValida ? user : null;
-  },
+async login(email) {
+  try {
+    const sql = 'SELECT * FROM users WHERE email = ?;';
+    const [rows] = await conexao.promise().query(sql, [email]);
+    return rows.length > 0 ? rows[0] : null; 
+  } catch (erro) {
+    console.error('Erro no login:', erro);
+    return null;  
+  }
+}
+,
 
 async create(user){
  const sql='insert into users (nome,email,senha) values (?,?,?);'

@@ -21,31 +21,59 @@ const AuthController = {
     return true;
   },
 
-  login: async (req, res) => {
-    try {
-      const { email, senha } = req.body;
-      const usuario = await UserRepository.getUser(email, senha);
-      if (!usuario) {
-        return res
-          .status(401)
-          .json({ ok: false, message: "Credenciais inválidas" });
-      }
+      login:async(req,res)=>{
+      try{
+        const{email,senha}=req.body;
+        ;
+        const usuario=await UserRepository.login(email);
 
-      const user = {
-        id: usuario.id,
-        nome: usuario.nome,
-        email: usuario.email,
-        acesso: usuario.acesso,
-        foto: usuario.foto,
-      };
+        if(!usuario){
+          return res.status(401).json({
+            status:401,
+            ok:false,
+            message:'Usuário não encontrado'
+          })
+        }
+console.log(usuario.senha)
+console.log(senha)
+        const validaSenha=await bcrypt.compare(senha,usuario.senha);
+console.log(validaSenha)
+        if(!validaSenha){
+          return res.status(401).json({
+            status:401,
+            ok:false,
+            message:'Senha inválida'
+          })
+        }
+        const user={
+          id:usuario.id,
+          nome:usuario.nome,
+          acesso:usuario.acesso,
+          ativo:usuario.ativo
+        };
+           console.log('login: ', user);
 
+    
       const token = jwt.sign(user, SECRET, { expiresIn: TOKEN_EXPIRE });
-      return res.status(200).json({ ok: true, token, user });
-    } catch (error) {
-      res.status(500).json({ ok: false, message: error.message });
+
+      return res.status(200).json({
+        status: 200,
+        ok: true,
+        message: 'Acesso autorizado',
+        token: token,
+        user: user,
+      });
+
+      }catch(error){  
+           console.error(error);
+      return res.status(500).json({
+        status: 500,
+        ok: false,
+        message: 'Erro interno no servidor',
+      });
     }
   },
-
+  
   createUser: async (req, res, next) => {
 const { nome, email, senha, confirma } = req.body;
     const msgErrors = [];
