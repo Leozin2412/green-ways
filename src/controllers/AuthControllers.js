@@ -149,7 +149,7 @@ console.log(resp);
         email,
         senha: senhaHash,
         foto,
-      });
+      }); 
       next();
     } catch (error) {
       res.status(500).json({ ok: false, message: error.message });
