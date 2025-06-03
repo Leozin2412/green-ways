@@ -1,5 +1,5 @@
 import { usuarios, saveUser, loadUser } from "../database/usuario.js";
-import bcrypt from "bcryptjs";
+import bcrypt, { compare } from "bcryptjs";
 import conexao from "../database/conexao.js"
 
 const UserRepository = {
@@ -8,8 +8,13 @@ const UserRepository = {
   },
 
   async getById(id) {
-    const users = loadUser();
-    return users.find((user) => user.id == id);
+    const sql = `select * from users where id=? limit`;
+    try{
+      const[rows]=await conexao.promise().query(sql,[id]);
+      return rows.length>0? rows[0]:null;
+    }catch(erro){
+      console.error("Erron no repisitório ao consultar ID")
+    }
   },
 
  async getByEmail(email) {
