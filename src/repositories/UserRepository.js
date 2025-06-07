@@ -8,12 +8,12 @@ const UserRepository = {
   },
 
   async getById(id) {
-    const sql = `select * from users where id=? limit 1`;
+    const sql = `select * from users where idUsers=? limit 1`;
     try{
       const[rows]=await conexao.promise().query(sql,[id]);
       return rows.length>0? rows[0]:null;
     }catch(erro){
-      console.error("Erron no repisitório ao consultar ID",erro)
+      console.error("Erro no repositório ao consultar ID",erro)
       throw erro
     }
   },
