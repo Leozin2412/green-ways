@@ -1,49 +1,67 @@
 import fs from "fs";
 import path from "path";
-
+import conexao from "../database/conexao.js";
 const filePath = path.resolve("./src/database/posts.json");
+import { v4 as uuidv4 } from "uuid";
 
-function loadPosts() {
+// Carregar os posts vindo do banco de dados 
+async function loadPosts() {
   try {
-    if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, JSON.stringify([], null, 2));
-      return [];
-    }
-    const data = fs.readFileSync(filePath, "utf-8");
-    return JSON.parse(data);
+    const [rows] = await conexao.promise().query("SELECT * FROM post ORDER BY createdAt DESC");
+    return rows;
   } catch (error) {
     console.error("Erro ao carregar posts:", error);
     return [];
   }
 }
 
-function savePosts(posts) {
+// function savePosts(posts) {
+//   try {
+//     fs.writeFileSync(filePath, JSON.stringify(posts, null, 2));
+//   } catch (error) {
+//     console.error("Erro ao salvar posts:", error);
+//   }
+// }
+
+async function addPost({ userId, region, content }) {
+  const sql = `INSERT INTO post (idPost, region, content, User_idUsers, createdAt, responses) VALUES (?, ?, ?, ?, ?, ?)`;
+  const idPost = uuidv4();
+  const createdAt = new Date();
+  const responses = 0;
   try {
-    fs.writeFileSync(filePath, JSON.stringify(posts, null, 2));
+    const [result] = await conexao.promise().execute(sql, [
+      idPost,
+      region,
+      content,
+      userId,
+      createdAt,
+      responses
+    ]);
+    return result;
   } catch (error) {
-    console.error("Erro ao salvar posts:", error);
+    console.error("Erro ao adicionar post:", error);
+    return null;
   }
 }
 
-function addPost(newPost) {
-  const posts = loadPosts();
-  newPost.id = posts.length > 0 ? Math.max(...posts.map((p) => p.id)) + 1 : 1;
-  newPost.createdAt = new Date().toISOString();
-  posts.push(newPost);
-  savePosts(posts);
-  return newPost;
+async function deletePost(idPost) {
+  const sql = `DELETE FROM post WHERE idPost = ?`;
+  try {
+    const [result] = await conexao.promise().execute(sql, [idPost]);
+    return result;
+  } catch (error) {
+    console.error("Erro ao deletar post:", error);
+    throw error;
+  }
 }
-
-function deletePost(postId) {
-  const posts = loadPosts();
-  const index = posts.findIndex((p) => p.id == postId);
+  const index = posts.findIndex((p) => p.id == idPost);
   if (index !== -1) {
     posts.splice(index, 1);
     savePosts(posts);
     return true;
   }
   return false;
-}
+
 
 function addResponse(postId, response) {
   const posts = loadPosts();
