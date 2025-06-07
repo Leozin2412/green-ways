@@ -156,27 +156,39 @@ console.log(resp);
     }
   },
 
-  deleteUser: async (req, res) => {
-    try {
-      const { email, id } = req.body;
-      const usuarios = loadUser();
-      const index = usuarios.findIndex(
-        (u) => (email && u.email === email) || (id && u.id == id)
-      );
+deleteUser: async (req, res) => {
+  try {
+    const { id, email } = req.body;
 
-      if (index === -1) {
-        return res
-          .status(404)
-          .json({ ok: false, message: "Usuário não encontrado" });
-      }
-
-      usuarios.splice(index, 1);
-      saveUser(usuarios);
-      res.json({ ok: true, message: "Usuário deletado" });
-    } catch (error) {
-      res.status(500).json({ ok: false, message: error.message });
+    
+    if (!id && !email) {
+      return res.status(400).json({ 
+        ok: false, 
+        message: "Para desativar o usuário, é necessário enviar 'id' ou 'email'." 
+      });
     }
-  },
+
+    const identifier = id ? id : email;
+
+
+    const foiDesativado = await UserRepository.desatiarAtivar(identifier);
+
+   
+    if (!foiDesativado) {
+      return res
+        .status(404)
+        .json({ ok: false, message: "Usuário não encontrado" });
+    }
+
+ 
+    res.json({ ok: true, message: "Usuário desativado com sucesso" });
+
+  } catch (error) {
+    
+    console.error("Erro no controller ao desativar usuário:", error);
+    res.status(500).json({ ok: false, message: "Ocorreu um erro no servidor." });
+  }
+},
 
   getUserById: async (req, res) => {
     try {

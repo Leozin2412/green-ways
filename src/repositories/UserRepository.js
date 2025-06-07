@@ -8,7 +8,7 @@ const UserRepository = {
   },
 
   async getById(id) {
-    const sql = `select * from users where id=? limit 1`;
+    const sql = `select * from users where idUsers=? limit 1`;
     try{
       const[rows]=await conexao.promise().query(sql,[id]);
       return rows.length>0? rows[0]:null;
@@ -52,20 +52,36 @@ async create(user){
     return list[0]
 },
 
-  async update(email, user) {
-    const users = loadUser();
-    const usuario = users.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase()
-    );
-    if (usuario) {
-      usuario.nome = user.nome;
-      usuario.email = user.email;
-      usuario.senha = user.senha;
-      usuario.foto = user.foto || usuario.foto;
-      saveUser(users);
-    }
-  },
+ async update(currentEmail,userData){
+try{const sql=`update users set nome=?, email=?, senha=?, foto=? where email=?`
+const values=[
+  userData.nome,
+  userData.email,
+  userData.senha,
+  userData.foto,
+  currentEmail
+];
+await conexao.query(sql,values);
+console.log("Usuarios atualizados")
+}catch(error){
+  console.error("Erro ao atualizar usuário:", error);
+  throw new Error("Falha ao atualizar dados no banco de dados")
+}
+ },
+async desatiarAtivar(identifier) {
+  try {
+    //me da a opção de usar ou email ou id como identificador para desativar email
+    const column = typeof identifier === 'number' ? 'id' : 'email';
+    const sql = `UPDATE usuarios SET ativo = 0 WHERE ${column} = ?`;
+    const [result] = await conexao.query(sql, [identifier]);
 
+    return result.affectedRows > 0;
+
+  } catch (error) {
+    console.error("Erro ao desativar usuário:", error);
+    throw error;
+  }
+},
   async deleteByEmail(email) {
     const users = loadUser();
     const index = users.findIndex(
