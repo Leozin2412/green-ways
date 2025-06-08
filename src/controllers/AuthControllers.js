@@ -214,66 +214,65 @@ deleteUser: async (req, res) => {
   },
 
   updateProfile: async (req, res) => {
-    try {
-      const { id, nome, email, currentPassword, newPassword, confirmPassword } =
-        req.body;
-      const fotoFile = req.file;
+  try {
+    // A primeira parte, de validação, permanece a mesma...
+    const { id, nome, email, currentPassword, newPassword, confirmPassword } = req.body;
+    const fotoFile = req.file;
 
-      if (!id) {
-        return res.status(400).json({ ok: false, message: "ID não fornecido" });
-      }
-
-      const currentUser = await UserRepository.getById(id);
-      if (!currentUser) {
-        return res
-          .status(404)
-          .json({ ok: false, message: "Usuário não encontrado" });
-      }
-
-      const senhaValida = await bcrypt.compare(
-        currentPassword,
-        currentUser.senha
-      );
-      if (!senhaValida) {
-        return res
-          .status(401)
-          .json({ ok: false, message: "Senha atual incorreta" });
-      }
-
-      if (newPassword && newPassword !== confirmPassword) {
-        return res
-          .status(400)
-          .json({ ok: false, message: "Senhas não coincidem" });
-      }
-
-      let fotoPath = currentUser.foto;
-      if (fotoFile) {
-        fotoPath = `/uploads/${fotoFile.filename}`;
-      }
-
-      let senhaHash = currentUser.senha;
-      if (newPassword) {
-        senhaHash = await bcrypt.hash(newPassword, SALT_ROUNDS);
-      }
-
-      const updatedUser = await UserRepository.updateProfile(
-        id,
-        nome || currentUser.nome,
-        email || currentUser.email,
-        senhaHash,
-        fotoPath
-      );
-      if (!updatedUser) {
-        return res.status(500).json({ ok: false, message: "Falha ao atualizar usuário" });
-      }
-      return res.json({ ok: true, user: updatedUser });
-    } catch (error) {
-      if (req.file?.path) {
-        fs.unlinkSync(req.file.path);
-      }
-      return res.status(500).json({ ok: false, message: error.message });
+    if (!id) {
+      return res.status(400).json({ ok: false, message: "ID não fornecido" });
     }
-  },
+
+    const currentUser = await UserRepository.getById(id);
+    if (!currentUser) {
+      return res.status(404).json({ ok: false, message: "Usuário não encontrado" });
+    }
+
+    const senhaValida = await bcrypt.compare(currentPassword, currentUser.senha);
+    if (!senhaValida) {
+      return res.status(401).json({ ok: false, message: "Senha atual incorreta" });
+    }
+
+    if (newPassword && newPassword !== confirmPassword) {
+      return res.status(400).json({ ok: false, message: "Senhas não coincidem" });
+    }
+
+    // --- A LÓGICA DE CORREÇÃO COMEÇA AQUI ---
+    
+    // 1. Criamos um objeto para conter apenas os dados que realmente serão atualizados.
+    const dataToUpdate = {};
+    
+    // 2. Adicionamos cada campo ao objeto APENAS se ele for válido.
+    // Isso "blinda" o back-end contra valores nulos ou a string "undefined" do front-end.
+    if (nome && nome !== 'undefined') dataToUpdate.nome = nome;
+    if (email && email !== 'undefined') dataToUpdate.email = email;
+    
+    if (newPassword) {
+      const senhaHash = await bcrypt.hash(newPassword, 10); // SALT_ROUNDS = 10 (exemplo)
+      dataToUpdate.senha = senhaHash;
+    }
+
+    if (fotoFile) {
+      dataToUpdate.foto = `/uploads/${fotoFile.filename}`;
+    }
+
+    // 3. Chamamos o repositório com o ID e o objeto de dados limpo.
+    const updatedUser = await UserRepository.updateProfile(id, dataToUpdate);
+    
+    if (!updatedUser) {
+      return res.status(500).json({ ok: false, message: "Falha ao atualizar usuário" });
+    }
+    
+    return res.json({ ok: true, user: updatedUser });
+
+  } catch (error) {
+    // ... seu 'catch' para apagar a foto órfã e retornar o erro 500
+    if (req.file?.path) {
+      // fs.unlinkSync(req.file.path); // Precisa importar o 'fs'
+    }
+    return res.status(500).json({ ok: false, message: error.message });
+  }
+},
 };
 
 export default AuthController;

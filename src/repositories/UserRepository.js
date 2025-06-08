@@ -8,9 +8,9 @@ const UserRepository = {
   },
 
   async getById(id) {
-    const sql = `select * from users where idUsers=? limit 1`;
+    const sql = `select * from users where id=? limit 1`;
     try{
-      const[rows]=await conexao.promise().query(sql,[id]);
+      const[rows]=await conexao.query(sql,[id]);
       return rows.length>0? rows[0]:null;
     }catch(erro){
       console.error("Erron no repisitório ao consultar ID",erro)
@@ -21,7 +21,7 @@ const UserRepository = {
  async getByEmail(email) {
     try {
         const sql = `SELECT * FROM users WHERE email = ?`;
-        const [rows] = await conexao.promise().execute(sql, [email]);
+        const [rows] = await conexao.execute(sql, [email]);
         return rows[0] || null; 
           } catch (erro) {
         console.error('Erro ao buscar usuário por email:', erro);
@@ -32,7 +32,7 @@ const UserRepository = {
 async login(email) {
   try {
     const sql = 'SELECT * FROM users WHERE email = ?;';
-    const [rows] = await conexao.promise().query(sql, [email]);
+    const [rows] = await conexao.query(sql, [email]);
     return rows.length > 0 ? rows[0] : null; 
   } catch (erro) {
     console.error('Erro no login:', erro);
@@ -43,7 +43,7 @@ async login(email) {
 
 async create(user){
  const sql='insert into users (nome,email,senha) values (?,?,?);'
- const list= await conexao.promise().execute(sql,
+ const list= await conexao.execute(sql,
     [
         user.nome,user.email,user.senha
     ]).catch(erro=>{
@@ -93,30 +93,60 @@ async desatiarAtivar(identifier) {
     }
   },
 
-  async updateProfile(id, nome, email, senha, foto) {
-    const users = loadUser();
-    const usuarioIndex = users.findIndex((u) => u.id == id);
-    if (usuarioIndex === -1) throw new Error("Usuário não encontrado");
 
-    const user = users[usuarioIndex];
-    if (nome) user.nome = nome;
-    if (email) user.email = email;
-    if (senha) user.senha = senha;
-    if (foto) user.foto = foto;
 
-    saveUser(users);
-    return JSON.parse(JSON.stringify(user));
-  },
+// O método agora recebe o ID e um único objeto com os dados
+async updateProfile(id, dataToUpdate) {
+  try {
+    const keys = Object.keys(dataToUpdate);
 
-  async removeProfilePhoto(userId) {
-    const users = loadUser();
-    const userIndex = users.findIndex((u) => u.id == userId);
-    if (userIndex === -1) throw new Error("Usuário não encontrado");
+    // Se o objeto de dados estiver vazio, não faz nada no banco
+    if (keys.length === 0) {
+      return this.getById(id);
+    }
+    
+    const setClause = keys.map(key => `\`${key}\` = ?`).join(', ');
+    const sql = `UPDATE users SET ${setClause} WHERE id = ?`;
 
-    users[userIndex].foto = null;
-    saveUser(users);
-    return users[userIndex];
-  },
+    const values = [...Object.values(dataToUpdate), id];
+
+    const [result] = await conexao.query(sql, values);
+
+    if (result.affectedRows === 0) {
+      return null; 
+    }
+
+    // Retorna o usuário com os dados frescos do banco
+    return this.getById(id);
+
+  } catch (error) {
+    console.error("Erro no repositório ao atualizar perfil:", error);
+    throw error;
+  }
+},
+
+ async removeProfilePhoto(userId) {
+ 
+  const sql = "UPDATE users SET foto = NULL WHERE id = ?";
+
+  try {
+    
+    const [result] = await conexao.query(sql, [userId]);
+
+   
+    if (result.affectedRows === 0) {
+      return null;
+    }
+
+    
+    return this.getById(userId);
+
+  } catch (error) {
+    
+    console.error("Erro no repositório ao remover foto de perfil:", error);
+    throw error;
+  }
+},
 };
 
 export default UserRepository;
