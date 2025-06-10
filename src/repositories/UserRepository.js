@@ -72,7 +72,7 @@ async desatiarAtivar(identifier) {
   try {
     //me da a opção de usar ou email ou id como identificador para desativar email
     const column = typeof identifier === 'number' ? 'id' : 'email';
-    const sql = `UPDATE usuarios SET ativo = 0 WHERE ${column} = ?`;
+    const sql = `UPDATE users SET ativo = 0 WHERE ${column} = ?`;
     const [result] = await conexao.query(sql, [identifier]);
 
     return result.affectedRows > 0;
