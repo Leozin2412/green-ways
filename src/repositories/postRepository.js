@@ -15,13 +15,13 @@ async function loadPosts() {
   }
 }
 
-// function savePosts(posts) {
-//   try {
-//     fs.writeFileSync(filePath, JSON.stringify(posts, null, 2));
-//   } catch (error) {
-//     console.error("Erro ao salvar posts:", error);
-//   }
-// }
+function savePosts(posts) {
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(posts, null, 2));
+  } catch (error) {
+    console.error("Erro ao salvar posts:", error);
+  }
+}
 
 async function addPost({ userId, region, content }) {
   const sql = `INSERT INTO post (idPost, region, content, User_idUsers, createdAt, responses) VALUES (?, ?, ?, ?, ?, ?)`;
@@ -48,19 +48,21 @@ async function deletePost(idPost) {
   const sql = `DELETE FROM post WHERE idPost = ?`;
   try {
     const [result] = await conexao.promise().execute(sql, [idPost]);
+
+    // Depois de deletar do banco, deleta do array local (se necessário)
+    const index = conexao.findIndex((p) => p.id == idPost);
+    if (index !== -1) {
+      conexao.splice(index, 1);
+      savePosts(conexao);
+    }
+
     return result;
   } catch (error) {
     console.error("Erro ao deletar post:", error);
     throw error;
   }
 }
-  const index = posts.findIndex((p) => p.id == idPost);
-  if (index !== -1) {
-    posts.splice(index, 1);
-    savePosts(posts);
-    return true;
-  }
-  return false;
+
 
 
 function addResponse(postId, response) {
