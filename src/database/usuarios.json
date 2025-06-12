@@ -46,5 +46,37 @@
     "senha": "$2b$10$tl1MpDEgZO.9RD8J6VwcKeM23cvy7P3uEIaMIqrPCT8guqv9QhheW",
     "acesso": "admin",
     "foto": "/uploads/profile_6.jpg"
+  },
+  {
+    "id": 7,
+    "nome": "Leonardo Moreira Monteiro",
+    "email": "leonardommonteiro2004@gmail.com",
+    "senha": "$2b$10$DlJ60ffkFn7c8UP1LITJ6u9OXYeJMXfDOo6p5aqouUC9HGgiKjbvu",
+    "acesso": "user",
+    "foto": null
+  },
+  {
+    "id": 8,
+    "nome": "Leonardo Moreira Monteiro",
+    "email": "leonardommonteiro2004@gmail.com",
+    "senha": "$2b$10$S3jX3Yz10SwtyIgmHxWGyOcLEItm2wSM7gYlLCFbkgKAQv1WCJAiG",
+    "acesso": "user",
+    "foto": null
+  },
+  {
+    "id": 9,
+    "nome": "zezin pequeno",
+    "email": "zezin@gmail.com",
+    "senha": "$2b$10$27.3Aws.mllP4yel3U6QSuReXRziujwnTih.tpoz35QRqN50SfS7S",
+    "acesso": "user",
+    "foto": null
+  },
+  {
+    "id": 10,
+    "nome": "Leonardo Moreira Monteiro",
+    "email": "leonardommonteiro2004@gmail.com",
+    "senha": "$2b$10$XKnCMKx4yYcloWuYw7R6zOuGRqGCzRRqYovEbXqmTy.wA4KJ2ZsRO",
+    "acesso": "user",
+    "foto": null
   }
 ]

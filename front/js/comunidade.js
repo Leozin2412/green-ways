@@ -1,8 +1,3 @@
-const lastAccess = localStorage.getItem("lastAccess");
-function estados() {
-  carregarLocalidades("estados");
-}
-
 function parseJwt(token) {
   try {
     const base64Url = token.split('.')[1];
@@ -91,11 +86,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const estado = this.value;
     const cidadeSelect = document.querySelector("#cidades");
     
+    if (this.options[0].value === "" && this.options[0].disabled) {
+      this.remove(0);
+    }
+
     if (estado) {
-      if (this.options[0].value === "" && this.options[0].disabled) {
-        this.remove(0);
-      }
-      
       cidadeSelect.disabled = false;
       cidadeSelect.innerHTML = '<option value="" selected disabled> Carregando cidades... </option>';
       carregarLocalidades("cidades", estado);
@@ -108,14 +103,26 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       cidadeSelect.disabled = true;
       cidadeSelect.innerHTML = '<option value="" selected disabled> Selecione um estado primeiro </option>';
+      document.querySelector("#estado-selecionado").textContent = "";
+      document.querySelector("#cidade-selecionada").textContent = "";
+    }
+  });
+
+  document.querySelector("#cidades").addEventListener("change", function() {
+    const cidadeSelecionada = this.options[this.selectedIndex].text;
+    const cidadeElement = document.querySelector("#cidade-selecionada");
+    if (cidadeElement) {
+      cidadeElement.textContent = `Cidade selecionada: ${cidadeSelecionada}`;
     }
   });
 });
 
+const postCommentsState = {};
+
 document.addEventListener("DOMContentLoaded", async () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const token = localStorage.getItem("token");
-  const userIsAdmin = isAdmin();
+  const userIsAdmin = isAdmin(); 
 
   if (!currentUser || !token) {
     window.location.href = "login.html";
@@ -136,12 +143,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!profileContainer || !profilePic || !nameElement) return;
 
       const userData = await fetchUserProfile(currentUser.id);
-
+      
       if (userData) {
         nameElement.textContent = userData.nome;
         if (userData.foto) {
-          const timestamp = new Date().getTime();
-          profilePic.src = `/public/uploads/profile_${userData.id}.jpg?${timestamp}`;
+          let photoFileName = userData.foto;
+          if (photoFileName.startsWith('/uploads/')) {
+            photoFileName = photoFileName.substring('/uploads/'.length);
+          } else if (photoFileName.startsWith('uploads/')) {
+            photoFileName = photoFileName.substring('uploads/'.length);
+          }
+          
+          const timestamp = new Date().getTime(); 
+          profilePic.src = `http://localhost:3000/uploads/${photoFileName}?${timestamp}`;
           profilePic.alt = `Foto de ${userData.nome}`;
           profilePic.onerror = () => {
             profilePic.src = "img/default-profile.png";
@@ -166,6 +180,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const postList = document.getElementById("post-list");
 
   async function loadPosts() {
+    document.querySelectorAll('.responses').forEach(responsesElement => {
+        const postId = responsesElement.id.replace('responses-', '');
+        postCommentsState[postId] = responsesElement.style.display === 'block';
+    });
+
     try {
       const token = localStorage.getItem("token");
       const response = await fetch("http://localhost:3000/posts", {
@@ -188,13 +207,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             post.userName,
             post.region,
             post.content,
-            post.id,
-            post.userId
+            post.idPost,
+            post.userId,
+            post.userFoto,
+            post.responses || []
           );
           postList.appendChild(postElement);
-          if (post.responses && post.responses.length > 0) {
-            displayResponses(post.id, post.responses);
-          }
+          
+          displayResponses(post.idPost, post.responses || [], postCommentsState[post.idPost] || false); 
         });
       }
     } catch (error) {
@@ -202,13 +222,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  function createPostElement(userName, region, content, postId, userId) {
+  function createPostElement(userName, region, content, postId, userId, userFoto, responses = []) {
     const post = document.createElement("article");
     post.className = "post";
+
+    let photoFileName = "default-profile.png"; 
+    if (userFoto) {
+      if (userFoto.startsWith('/uploads/')) {
+        photoFileName = userFoto.substring('/uploads/'.length);
+      } else if (userFoto.startsWith('uploads/')) {
+        photoFileName = userFoto.substring('uploads/'.length);
+      } else {
+        photoFileName = userFoto; 
+      }
+    }
+    const photoSrc = `http://localhost:3000/uploads/${photoFileName}`;
+
+
     post.innerHTML = `
     <div class="caixa-resposta">
         <div class="user-profile">
-            <img src="/public/uploads/profile_${userId}.jpg" 
+            <img src="${photoSrc}" 
                  onerror="this.src='img/default-profile.png'" 
                  alt="Foto de ${userName}" 
                  class="profile-pic">
@@ -224,7 +258,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
         <div class="button-container">
             <button class="reply-btn" data-post-id="${postId}">Responder</button>
-            <button class="delete-btn" data-post-id="${postId}">Excluir</button>
+            <button class="delete-post-btn" data-post-id="${postId}">Excluir</button>
         </div>
         <div class="response-form-container" id="response-form-container-${postId}" style="display: none;">
             <form class="response-form" data-post-id="${postId}">
@@ -237,13 +271,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     </div>`;
 
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    const deleteBtn = post.querySelector(".delete-btn");
+    const deletePostBtn = post.querySelector(".delete-post-btn");
 
     if (currentUser.id !== userId && !userIsAdmin) {
-      deleteBtn.style.display = "none";
+      deletePostBtn.style.display = "none";
     }
 
-    deleteBtn.addEventListener("click", async () => {
+    deletePostBtn.addEventListener("click", async () => {
       try {
         const token = localStorage.getItem("token");
 
@@ -262,25 +296,47 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const data = await response.json();
         if (data.ok) loadPosts();
+        else alert(data.message || "Erro ao deletar post.");
       } catch (error) {
         console.error("Erro ao deletar post:", error);
+        alert("Erro ao conectar com o servidor para deletar post.");
       }
     });
 
     const replyBtn = post.querySelector(".reply-btn");
     const responseFormContainer = post.querySelector(".response-form-container");
     const toggleResponsesBtn = post.querySelector(".toggle-responses-btn");
-    const responsesContainer = post.querySelector(".responses");
-    const noCommentsMessage = responsesContainer.querySelector(".no-comments-message");
+    
+    toggleResponsesBtn.style.display = "inline-block"; 
+    toggleResponsesBtn.textContent = "Mostrar Comentários"; 
 
     replyBtn.addEventListener("click", () => {
       responseFormContainer.style.display = responseFormContainer.style.display === "block" ? "none" : "block";
     });
 
     toggleResponsesBtn.addEventListener("click", () => {
-      responsesContainer.style.display = responsesContainer.style.display === "block" ? "none" : "block";
-      toggleResponsesBtn.textContent = responsesContainer.style.display === "block" ? "Ocultar Comentários" : "Mostrar Comentários";
-      noCommentsMessage.style.display = responsesContainer.style.display === "block" && !responsesContainer.querySelector(".response") ? "block" : "none";
+      const responsesElement = document.getElementById(`responses-${postId}`); 
+      if (!responsesElement) {
+        console.error(`Container de respostas para postId ${postId} não encontrado ao tentar alternar.`);
+        return;
+      }
+      
+      const noCommentsMessage = responsesElement.querySelector(".no-comments-message");
+
+      const isCurrentlyVisible = responsesElement.style.display === "block";
+      responsesElement.style.display = isCurrentlyVisible ? "none" : "block";
+      
+      toggleResponsesBtn.textContent = isCurrentlyVisible ? "Mostrar Comentários" : "Ocultar Comentários";
+      
+      if (responses.length === 0) { 
+          if (noCommentsMessage) {
+            noCommentsMessage.style.display = responsesElement.style.display === "block" ? "block" : "none";
+          }
+      } else { 
+          if (noCommentsMessage) noCommentsMessage.style.display = "none";
+      }
+
+      postCommentsState[postId] = responsesElement.style.display === 'block';
     });
 
     const responseForm = responseFormContainer.querySelector("form");
@@ -298,7 +354,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            postId,
+            postId: postId,
+            userId: currentUser.id, 
             userName: currentUser.nome,
             content: responseContent,
           }),
@@ -313,40 +370,84 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (data.ok) {
           responseForm.reset();
           responseFormContainer.style.display = "none";
-          displayResponses(postId, data.post.responses);
+          loadPosts();
+        } else {
+            alert(data.message || "Erro ao adicionar resposta.");
         }
       } catch (error) {
         console.error("Erro ao enviar resposta:", error);
+        alert("Erro ao conectar com o servidor para adicionar resposta.");
       }
     });
 
     return post;
   }
 
-  function displayResponses(postId, responses) {
+  function displayResponses(postId, responses, shouldBeVisible = false) {
     const responsesContainer = document.getElementById(`responses-${postId}`);
     const toggleButton = document.querySelector(`.toggle-responses-btn[data-post-id="${postId}"]`);
-    responsesContainer.innerHTML = "";
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    
+    if (!responsesContainer) {
+      console.error(`Container de respostas para postId ${postId} não encontrado.`);
+      return;
+    }
 
-    responses.forEach((response) => {
-      const responseElement = document.createElement("div");
-      responseElement.className = "response";
-      responseElement.innerHTML = `
-        <p><strong>${response.userName}:</strong> ${response.content}</p>
-        ${currentUser.id === response.userId || userIsAdmin ? `<button class="delete-response-btn" data-post-id="${postId}" data-response-id="${response.id}">Excluir Resposta</button>` : ""}
-      `;
-      responsesContainer.appendChild(responseElement);
+    const noCommentsMessage = responsesContainer.querySelector(".no-comments-message");
+
+    Array.from(responsesContainer.children).forEach(child => {
+        if (!child.classList.contains('no-comments-message')) {
+            responsesContainer.removeChild(child);
+        }
     });
 
-    if (responses.length > 0) {
-      responsesContainer.style.display = "block";
-      toggleButton.style.display = "inline-block";
-      toggleButton.textContent = "Ocultar Comentários";
-    } else {
-      responsesContainer.style.display = "none";
-      toggleButton.style.display = "none";
+    if (responses.length === 0) {
+      if (noCommentsMessage) {
+          noCommentsMessage.style.display = shouldBeVisible ? "block" : "none"; 
+      }
+      responsesContainer.style.display = shouldBeVisible ? "block" : "none"; 
+
+      if (toggleButton) {
+          toggleButton.textContent = shouldBeVisible ? "Ocultar Comentários" : "Mostrar Comentários";
+      }
+    } else { 
+      if (noCommentsMessage) {
+          noCommentsMessage.style.display = "none"; 
+      }
+      responses.forEach((response) => {
+        const responseElement = document.createElement("div");
+        responseElement.className = "response";
+        let photoFileName = "default-profile.png"; 
+        if (response.userFoto) {
+          if (response.userFoto.startsWith('/uploads/')) {
+            photoFileName = response.userFoto.substring('/uploads/'.length);
+          } else if (response.userFoto.startsWith('uploads/')) {
+            photoFileName = response.userFoto.substring('uploads/'.length);
+          } else {
+            photoFileName = response.userFoto; 
+          }
+        }
+        const photoSrc = `http://localhost:3000/uploads/${photoFileName}`;
+
+
+        responseElement.innerHTML = `
+          <div class="user-profile">
+            <img src="${photoSrc}" 
+                 onerror="this.src='img/default-profile.png'" 
+                 alt="Foto de ${response.userName}" 
+                 class="profile-pic">
+            <p><strong>${response.userName}:</strong> ${response.content}</p>
+          </div>
+          ${(currentUser.id === response.userId || userIsAdmin) ? `<button class="delete-response-btn" data-post-id="${postId}" data-response-id="${response.idResponse}">Excluir Resposta</button>` : ""}
+        `;
+        responsesContainer.appendChild(responseElement); 
+      });
+
+      responsesContainer.style.display = shouldBeVisible ? "block" : "none";
+      if (toggleButton) {
+        toggleButton.textContent = shouldBeVisible ? "Ocultar Comentários" : "Mostrar Comentários";
+      }
     }
+    if (toggleButton) toggleButton.style.display = "inline-block";
   }
 
   loadPosts();
@@ -358,12 +459,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       const cidadeSelect = document.getElementById("cidades");
       
       if (!estadoSelect.value || estadoSelect.value === "") {
-        alert("Por favor, selecione um estado");
+        alert("Por favor, selecione um estado.");
         return;
       }
       
       if (!cidadeSelect.value || cidadeSelect.value === "") {
-        alert("Por favor, selecione uma cidade");
+        alert("Por favor, selecione uma cidade.");
         return;
       }
       const token = localStorage.getItem("token");
@@ -375,8 +476,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       const userName = currentUser.nome;
-      const estadoSelecionado = document.getElementById("estados").options[document.getElementById("estados").selectedIndex].text;
-      const cidadeSelecionada = document.getElementById("cidades").options[document.getElementById("cidades").selectedIndex].text;
+      const estadoSelecionado = estadoSelect.options[estadoSelect.selectedIndex].text;
+      const cidadeSelecionada = cidadeSelect.options[cidadeSelect.selectedIndex].text;
       const region = `${cidadeSelecionada}, ${estadoSelecionado}`;
       const content = document.getElementById("content").value;
 
@@ -402,20 +503,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const data = await response.json();
         if (data.ok) {
-          const postElement = createPostElement(
-            userName,
-            region,
-            content,
-            data.post.id,
-            currentUser.id
-          );
-          postList.appendChild(postElement);
+          loadPosts();
           postForm.reset();
-          document.getElementById("estados").selectedIndex = 0;
-          document.getElementById("cidades").selectedIndex = 0;
+          estadoSelect.selectedIndex = 0;
+          cidadeSelect.selectedIndex = 0;
+          cidadeSelect.disabled = true;
+          cidadeSelect.innerHTML = '<option value="" selected disabled> Selecione um estado primeiro </option>';
+          document.querySelector("#estado-selecionado").textContent = "";
+          document.querySelector("#cidade-selecionada").textContent = "";
+
+        } else {
+            alert(data.message || "Erro ao criar post.");
         }
       } catch (error) {
         console.error("Erro ao criar post:", error);
+        alert("Erro ao conectar com o servidor para criar post.");
       }
     });
   }
@@ -443,8 +545,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const data = await response.json();
         if (data.ok) loadPosts();
+        else alert(data.message || "Erro ao deletar resposta.");
       } catch (error) {
         console.error("Erro ao deletar resposta:", error);
+        alert("Erro ao conectar com o servidor para deletar resposta.");
       }
     }
   });

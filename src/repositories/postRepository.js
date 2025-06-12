@@ -1,86 +1,165 @@
-import fs from "fs";
-import path from "path";
+import conexao from "../database/conexao.js";
 
-const filePath = path.resolve("./src/database/posts.json");
+const PostRepository = {
+  async getAllPosts() {
+    try {
+      const sql = `
+        SELECT 
+            p.idPost,
+            p.region,
+            p.content,
+            DATE_FORMAT(p.createdAt, '%Y-%m-%dT%H:%i:%s.000Z') AS createdAt,
+            p.Users_id AS userId,
+            u.nome AS userName,
+            u.foto AS userFoto
+        FROM post AS p
+        JOIN users AS u ON p.Users_id = u.id
+        ORDER BY p.createdAt DESC;
+      `;
+      const [postsRows] = await conexao.query(sql);
 
-function loadPosts() {
-  try {
-    if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, JSON.stringify([], null, 2));
-      return [];
+      const postsWithResponses = await Promise.all(postsRows.map(async (post) => {
+        const responsesSql = `
+          SELECT
+              r.idResponse,
+              r.content,
+              DATE_FORMAT(r.createdAt, '%Y-%m-%dT%H:%i:%s.000Z') AS createdAt,
+              r.Users_id AS userId,
+              u.nome AS userName,
+              u.foto AS userFoto
+          FROM responses AS r
+          JOIN users AS u ON r.Users_id = u.id
+          WHERE r.Post_idPost = ?
+          ORDER BY r.createdAt ASC;
+        `;
+        const [responsesRows] = await conexao.query(responsesSql, [post.idPost]);
+        return {
+          ...post,
+          responses: responsesRows
+        };
+      }));
+
+      return postsWithResponses;
+    } catch (error) {
+      console.error("Erro ao carregar posts no repositório:", error);
+      throw new Error("Não foi possível carregar os posts.");
     }
-    const data = fs.readFileSync(filePath, "utf-8");
-    return JSON.parse(data);
-  } catch (error) {
-    console.error("Erro ao carregar posts:", error);
-    return [];
-  }
-}
+  },
 
-function savePosts(posts) {
-  try {
-    fs.writeFileSync(filePath, JSON.stringify(posts, null, 2));
-  } catch (error) {
-    console.error("Erro ao salvar posts:", error);
-  }
-}
+  async getPostById(postId) {
+    try {
+      const sql = `
+        SELECT 
+            p.idPost,
+            p.region,
+            p.content,
+            DATE_FORMAT(p.createdAt, '%Y-%m-%dT%H:%i:%s.000Z') AS createdAt,
+            p.Users_id AS userId,
+            u.nome AS userName,
+            u.foto AS userFoto
+        FROM post AS p
+        JOIN users AS u ON p.Users_id = u.id
+        WHERE p.idPost = ?;
+      `;
+      const [rows] = await conexao.query(sql, [postId]);
+      if (rows.length === 0) return null;
 
-function addPost(newPost) {
-  const posts = loadPosts();
-  newPost.id = posts.length > 0 ? Math.max(...posts.map((p) => p.id)) + 1 : 1;
-  newPost.createdAt = new Date().toISOString();
-  posts.push(newPost);
-  savePosts(posts);
-  return newPost;
-}
+      const post = rows[0];
 
-function deletePost(postId) {
-  const posts = loadPosts();
-  const index = posts.findIndex((p) => p.id == postId);
-  if (index !== -1) {
-    posts.splice(index, 1);
-    savePosts(posts);
-    return true;
-  }
-  return false;
-}
+      const responsesSql = `
+          SELECT
+              r.idResponse,
+              r.content,
+              DATE_FORMAT(r.createdAt, '%Y-%m-%dT%H:%i:%s.000Z') AS createdAt,
+              r.Users_id AS userId,
+              u.nome AS userName,
+              u.foto AS userFoto
+          FROM responses AS r
+          JOIN users AS u ON r.Users_id = u.id
+          WHERE r.Post_idPost = ?
+          ORDER BY r.createdAt ASC;
+        `;
+      const [responsesRows] = await conexao.query(responsesSql, [post.idPost]);
 
-function addResponse(postId, response) {
-  const posts = loadPosts();
-  const post = posts.find((p) => p.id == postId);
-  if (post) {
-    if (!post.responses) post.responses = [];
-    response.id =
-      post.responses.length > 0
-        ? Math.max(...post.responses.map((r) => r.id)) + 1
-        : 1;
-    response.createdAt = new Date().toISOString();
-    post.responses.push(response);
-    savePosts(posts);
-    return response;
-  }
-  return null;
-}
+      return {
+        ...post,
+        responses: responsesRows
+      };
 
-function deleteResponse(postId, responseId) {
-  const posts = loadPosts();
-  const post = posts.find((p) => p.id == postId);
-  if (post && post.responses) {
-    const index = post.responses.findIndex((r) => r.id == responseId);
-    if (index !== -1) {
-      post.responses.splice(index, 1);
-      savePosts(posts);
-      return true;
+    } catch (error) {
+      console.error("Erro ao buscar post por ID no repositório:", error);
+      throw new Error("Não foi possível buscar o post.");
     }
-  }
-  return false;
-}
+  },
 
-export default {
-  loadPosts,
-  savePosts,
-  addPost,
-  deletePost,
-  addResponse,
-  deleteResponse,
+  async addPost(newPost) {
+    try {
+      const sql = `
+        INSERT INTO post (region, content, createdAt, Users_id)
+        VALUES (?, ?, ?, ?);
+      `;
+      const [result] = await conexao.query(sql, [
+        newPost.region,
+        newPost.content,
+        new Date(),
+        newPost.userId,
+      ]);
+      
+      if (result.affectedRows > 0) {
+        return { idPost: result.insertId, ...newPost, createdAt: new Date().toISOString() };
+      }
+      console.warn("Nenhuma linha afetada ao adicionar post, pode ter havido um problema.");
+      return null;
+    } catch (error) {
+      console.error("Erro ao adicionar post no repositório:", error);
+      throw new Error("Não foi possível adicionar o post.");
+    }
+  },
+
+  async deletePost(postId) {
+    try {
+      const sql = `DELETE FROM post WHERE idPost = ?;`;
+      const [result] = await conexao.query(sql, [postId]);
+      return result.affectedRows > 0;
+    } catch (error) {
+      console.error("Erro ao deletar post no repositório:", error);
+      throw new Error("Não foi possível deletar o post.");
+    }
+  },
+
+  async addResponse(postId, response) {
+    try {
+      const sql = `
+        INSERT INTO responses (content, createdAt, Users_id, Post_idPost)
+        VALUES (?, ?, ?, ?);
+      `;
+      const [result] = await conexao.query(sql, [
+        response.content,
+        new Date(),
+        response.userId,
+        postId,
+      ]);
+      
+      if (result.affectedRows > 0) {
+        return { idResponse: result.insertId, ...response, createdAt: new Date().toISOString() };
+      }
+      return null;
+    } catch (error) {
+      console.error("Erro ao adicionar resposta no repositório:", error);
+      throw new Error("Não foi possível adicionar a resposta.");
+    }
+  },
+
+  async deleteResponse(responseId) {
+    try {
+      const sql = `DELETE FROM responses WHERE idResponse = ?;`;
+      const [result] = await conexao.query(sql, [responseId]);
+      return result.affectedRows > 0;
+    } catch (error) {
+      console.error("Erro ao deletar resposta no repositório:", error);
+      throw new Error("Não foi possível deletar a resposta.");
+    }
+  },
 };
+
+export default PostRepository;

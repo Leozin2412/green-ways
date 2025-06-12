@@ -56,8 +56,7 @@ export const checkPostOwnerOrAdmin = async (req, res, next) => {
       });
     }
 
-    const posts = await PostRepository.loadPosts();
-    const post = posts.find((p) => p.id == postId);
+    const post = await PostRepository.getPostById(postId);
 
     if (!post) {
       return res.status(404).json({
@@ -81,6 +80,7 @@ export const checkPostOwnerOrAdmin = async (req, res, next) => {
     req.post = post;
     next();
   } catch (error) {
+    console.error("Erro em checkPostOwnerOrAdmin:", error);
     return res.status(500).json({
       ok: false,
       message: "Erro interno ao verificar propriedade do post",
@@ -101,8 +101,7 @@ export const checkResponseOwnerOrAdmin = async (req, res, next) => {
       });
     }
 
-    const posts = await PostRepository.loadPosts();
-    const post = posts.find((p) => p.id == postId);
+    const post = await PostRepository.getPostById(postId);
 
     if (!post) {
       return res.status(404).json({
@@ -112,7 +111,7 @@ export const checkResponseOwnerOrAdmin = async (req, res, next) => {
       });
     }
 
-    const response = post.responses?.find((r) => r.id == responseId);
+    const response = post.responses?.find((r) => r.idResponse == responseId);
     if (!response) {
       return res.status(404).json({
         ok: false,
@@ -136,6 +135,7 @@ export const checkResponseOwnerOrAdmin = async (req, res, next) => {
     req.response = response;
     next();
   } catch (error) {
+    console.error("Erro em checkResponseOwnerOrAdmin:", error);
     return res.status(500).json({
       ok: false,
       message: "Erro interno ao verificar propriedade da resposta",
@@ -179,6 +179,7 @@ export const checkOwnerOrAdmin = async (req, res, next) => {
     req.targetUser = user;
     next();
   } catch (error) {
+    console.error("Erro em checkOwnerOrAdmin:", error);
     return res.status(500).json({
       ok: false,
       message: "Erro interno ao verificar propriedade do usuário",
