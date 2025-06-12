@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registre-se agora</title>
+  <link rel="stylesheet" href="css/registrar.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <a href="index.html" style="position: absolute; top: 40px; left: 50px; font-size: 30px; color: white;"> 
+    <i class="fa-solid fa-arrow-left"></i>
+  </a>
+  <div class="wrapper">
+    <form id="registerForm" action="login.html">
+      <h1>Registre-se</h1>
+
+      <div class="input-box">
+        <input type="text" id="username" placeholder="Nome Completo " >
+        <i class='bx bxs-user'></i>
+        <span class="name erro" ></span>
+      </div>
+      
+      <div class="input-box">
+        <input type="email" id="email" placeholder="E-mail" >
+        <i class='bx bxs-at'>@</i>
+        <span class="email erro" ></span>
+      </div>
+      <div class="input-box">
+        <input type="password" id="password" placeholder="Senha" >
+        <i class='bx bxs-lock-alt'></i>
+        <span class="password erro" ></span>
+      </div>
+      <div class="input-box">
+        <input type="password" id="confirmPassword" placeholder="Confirme sua senha" >
+        <i class='bx bxs-lock-alt'></i>
+        <span class="passwordConfirm erro" ></span>      
+      </div>
+      <button type="submit" class="btn">Registrar</button>
+      <div class="register-link">
+        <p>Já tem uma conta? <a href="login.html">Login</a></p>
+      </div>
+    </form>     
+  </div>
+
+  <script src="js/registrar.js"></script>
+</body>
+</html>

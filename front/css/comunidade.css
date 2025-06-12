@@ -1,0 +1,771 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+/*-------------------------------------------Tags Gerais---------------------------------------*/
+.loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loader {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.user-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.user-profile {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #4caf50;
+}
+#username-display {
+    font-weight: bold;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  #username-display {
+      font-weight: bold;
+      color: white;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    #username-display:hover {
+      color: #4caf50;
+    }
+    
+  .login-icon {
+    color: white;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .login-icon:hover {
+    color: #4caf50;
+    transform: scale(1.1);
+  }
+.namePost {
+  font-weight: bold;
+  color: #333;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  outline: none;
+  font-family: "Inter", sans-serif;
+}
+body {
+  background-color: #b1c2b4d2;
+  margin: 0;
+  padding: 0;
+}
+h3 {
+  font-size: 50px;
+}
+p {
+  color: #0000009c;
+}
+
+.logged {
+  pointer-events: none;
+  cursor: default;
+  font-size: 15px;
+  margin-left: auto;
+  color: rgb(255, 255, 255);
+  font-weight: 400;
+  padding-right: 10px;
+}
+
+/*-------------------------------------------Início Header---------------------------------------*/
+
+.menu {
+  max-width: 1400px;
+  max-height: 1200px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+.fundo {
+  background-color: rgba(0, 0, 0, 0.363);
+  z-index: 3;
+  min-height: 120px;
+  width: 100%;
+}
+header {
+  background-image: url(".././img/menu.jpg");
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  text-align: center;
+}
+nav ul {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  text-shadow: 5px;
+  list-style: none;
+}
+nav ul a {
+  color: rgb(255, 255, 255);
+  margin: 40px;
+  font-size: 15px;
+  text-transform: uppercase;
+  display: block;
+  font-weight: 400;
+}
+nav ul a::after {
+  content: "";
+  background-color: #ffffff;
+  height: 3px;
+  width: 0%;
+  display: block;
+  margin: 0 auto;
+  transition: 0.3s;
+}
+nav ul a:hover::after {
+  width: 100%;
+}
+.nav-links {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  justify-content: center;
+}
+.login-icon {
+  font-size: 15px;
+  margin-left: auto;
+  color: rgb(255, 255, 255);
+  font-weight: 400;
+  padding-right: 10px;
+}
+
+.banner {
+  display: flex;
+  justify-content: center;
+}
+.banner .textobanner {
+  margin: 190px;
+  padding: 0 29px;
+}
+.banner .textobanner .l1 {
+  font-size: 59px;
+  color: white;
+  position: absolute;
+  left: 150px;
+  top: 230px;
+}
+.banner .textobanner .l2 {
+  font-size: 59px;
+  color: white;
+  position: absolute;
+  left: 290px;
+  top: 290px;
+}
+.banner .textobanner p {
+  font-size: 17px;
+  color: white;
+  position: absolute;
+  right: 0;
+  top: 130px;
+  padding: 5px;
+  width: 370px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+#name {
+  color: white;
+  padding-inline: 10px;
+}
+
+#logoutBtn {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  color: white;
+  background-color: transparent;
+  border-radius: 50px;
+  border-color: white;
+
+  padding: 3px 13px;
+  cursor: pointer;
+}
+#logoutBtn:hover {
+  border-color: #193b127d;
+  color: white;
+  transition: ease-in-out 0.4s;
+}
+
+/*-------------------------------------------Início Contéudo---------------------------------------*/
+
+.conteinermain {
+  padding: 30px 10px;
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: justify;
+}
+.contentmain {
+  background-color: #f6f2e8;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  padding: 30px;
+  line-height: 1.6;
+}
+#bv {
+  font-size: 35px;
+  margin-top: 0;
+  color: #334a00;
+}
+.contentmain p {
+  margin-bottom: 5px;
+}
+.hero {
+  padding: 2px 20px;
+}
+.post {
+  background-color: #cad3c8;
+  border: 1px solid #9ebda4d2;
+  border-radius: 5px;
+  padding: 20px;
+  flex: 1 1 calc(50% - 20px);
+  margin: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.post h3 {
+  margin-top: 0;
+}
+.compartilhe {
+  color: #3b3b39;
+  font-size: 25px;
+  padding: 5px 18px;
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: center;
+}
+.namePost {
+  font-size: 18px;
+  color: black;
+  font-weight: bold;
+}
+.exp {
+  color: #334a00;
+  font-size: 25px;
+  padding: 0px 18px;
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/*-------------------------------------------Início Formulário---------------------------------------*/
+
+.post-form {
+  background-color: #cad3c8;
+  border: 1px solid #9ebda4d2;
+  border-radius: 5px;
+  padding: 20px;
+  flex: 1 1 calc(50% - 20px);
+  margin: 15px;
+
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+form label {
+  display: block;
+  margin-top: 10px;
+}
+form input,
+form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid;
+  border-radius: 4px;
+}
+form button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: #2a5e33;
+  border-radius: 5px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+form button:hover {
+  background: #1a4821;
+}
+#post-list h3 {
+  font-size: 25px;
+}
+
+.delete-btn {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: #2a5e33;
+  border-radius: 5px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+.delete-btn:hover {
+  background: #1a4821;
+}
+.delete-btn:focus {
+  outline: none;
+}
+
+/*-------------------------------------------Início Rodapé---------------------------------------*/
+footer {
+  background-color: #334a00;
+  text-align: center;
+  padding-top: 50px;
+  margin-top: 40px;
+}
+footer ul {
+  color: white;
+  padding: 10px;
+}
+footer ul a {
+  padding: 5px;
+}
+.copy {
+  padding: 20px;
+  color: white;
+}
+.fot a :hover {
+  transform: translateY(-5px);
+  transition: transform 0.5s ease;
+}
+.frase {
+  padding-top: 30px;
+}
+
+/*-------------------------------------------Início Responsividade---------------------------------------*/
+
+/* Media Query para telas com no máximo 767px */
+@media (max-width: 767px) {
+  /* ----- Responsividade Cabeçalho  ----- */
+  .menu {
+    padding: 0 2%;
+  }
+
+  .fundo {
+    min-height: 80px;
+  }
+
+  header {
+    background-size: cover;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column; /* Coloca o conteúdo verticalmente */
+    align-items: center; /* Centraliza todos os itens dentro do nav */
+  }
+
+  .login-icon {
+    font-size: 20px; /* Aumenta o tamanho do ícone */
+    margin-bottom: 10px; /* Espaço entre o ícone e os links */
+    display: block;
+    text-align: center; /* Centraliza o ícone */
+    margin-top: 20px; /* Espaço acima do ícone */
+    width: 100%;
+  }
+
+  nav ul {
+    flex-direction: column; /* Coloca os links em coluna */
+    margin-left: 0;
+    margin-right: 0;
+    text-align: center;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav ul li {
+    margin: 10px 0; /* Espaço entre os itens da lista */
+  }
+
+  nav ul a {
+    margin: 0;
+    font-size: 15px;
+    display: block;
+    padding: 10px 0;
+  }
+
+  .banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-top: 20px; /* Espaço entre a navegação e o banner */
+  }
+
+  .banner .textobanner {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .banner .textobanner .l1,
+  .banner .textobanner .l2 {
+    font-size: 36px;
+    position: static;
+  }
+
+  .banner .textobanner p {
+    font-size: 14px;
+    position: static;
+    padding: 5px;
+    width: auto;
+    word-wrap: break-word;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  /* ----- Responsividade Contéudo  ----- */
+
+  .post-form {
+    background-color: #cad3c8;
+    border: 1px solid #9ebda4d2;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 0px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .response-form-container {
+    align-items: start;
+  }
+  .conteinermain {
+    padding: 15px;
+  }
+
+  .contentmain {
+    padding: 15px;
+  }
+
+  #bv {
+    font-size: 21px;
+    text-align: start;
+  }
+
+  .contentmain p {
+    margin-bottom: 10px;
+  }
+
+  .hero {
+    padding: 10px;
+  }
+
+  .post {
+    flex: 1 1 100%;
+    margin: 10px 0;
+  }
+
+  .compartilhe {
+    font-size: 20px;
+  }
+
+  .exp {
+    font-size: 20px;
+  }
+
+  form button {
+    padding: 8px 12px;
+  }
+
+  #post-list h3 {
+    font-size: 20px;
+  }
+}
+
+/* Responsividade para telas com min-width: 768px e max-width: 1024px */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  /* ----- Responsividade Cabeçalho  ----- */
+  .menu {
+    padding: 0 3%;
+  }
+
+  .fundo {
+    min-height: 100px;
+  }
+
+  header {
+    background-size: cover;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .login-icon {
+    font-size: 35px;
+    margin-bottom: 25px;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 25px;
+  }
+
+  nav ul {
+    flex-direction: row;
+    justify-content: center;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav ul li {
+    margin: 0 20px;
+  }
+
+  nav ul a {
+    margin: 0;
+    font-size: 18px;
+    display: block;
+    padding: 10px 0;
+  }
+
+  .banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-top: 30px;
+  }
+
+  .banner .textobanner {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .banner .textobanner .l1,
+  .banner .textobanner .l2 {
+    font-size: 48px;
+    position: static;
+  }
+
+  .banner .textobanner p {
+    font-size: 16px;
+    position: static;
+    padding: 5px;
+    width: auto;
+    word-wrap: break-word;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  /* ----- Responsividade Contéudo  ----- */
+  .post-form {
+    margin: 10px;
+  }
+  .conteinermain {
+    padding: 20px;
+  }
+
+  .contentmain {
+    padding: 20px;
+  }
+
+  #bv {
+    font-size: 30px;
+    text-align: start;
+  }
+
+  .contentmain p {
+    margin-bottom: 10px;
+  }
+
+  .hero {
+    padding: 10px;
+  }
+
+  .post {
+    flex: 1 1 calc(50% - 20px);
+    margin: 10px;
+  }
+
+  .compartilhe {
+    font-size: 22px;
+  }
+
+  .exp {
+    font-size: 22px;
+  }
+
+  form button {
+    padding: 8px 12px;
+  }
+
+  #post-list h3 {
+    font-size: 22px;
+  }
+}
+/* Estilo para os botões */
+#post-list button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: #2a5e33;
+  border-radius: 5px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+#post-list button:hover {
+  background-color: #1a4821;
+}
+
+/* Estilo específico para o botão "Responder" */
+button.reply-btn {
+  padding: 8px 16px; /* Tamanho do botão "Responder" */
+  font-size: 14px; /* Tamanho da fonte do botão "Responder" */
+  margin-top: 10px;
+  margin-bottom: 7px;
+}
+
+/* Estilo para o bloco de respostas */
+.responses {
+  background-color: #9ebda4d2; /* Cor do fundo */
+  border: 1px solid #2a5e33; /* Borda para diferenciar do post */
+  padding: 10px;
+  margin-right: 10px; /* Espaçamento leve para a direita */
+  border-radius: 5px; /* Bordas arredondadas */
+  display: none; /* Inicialmente oculto */
+  margin-top: 10px; /* Espaçamento entre o botão de ocultar e as respostas */
+}
+
+/* Quando houver respostas, o fundo ficará visível */
+.responses:not(:empty) {
+  display: block;
+}
+
+/* Organizando o botão de Mostrar/Ocultar Comentários acima das respostas e botões */
+.responses-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Espaçamento entre os elementos dentro da container */
+}
+
+/* Garantir que o botão de mostrar/ocultar sempre fique acima dos outros */
+.toggle-responses-btn {
+  align-self: flex-start; /* Alinha o botão à esquerda */
+  padding: 6px 12px; /* Ajuste de padding para o botão de mostrar/ocultar */
+  font-size: 13px; /* Ajuste no tamanho da fonte */
+  margin-bottom: 5px; /* Espaçamento abaixo do botão */
+}
+
+textarea {
+  resize: none;
+  width: 100%; /* Preenche a largura disponível */
+  /* Define uma altura fixa */
+  box-sizing: border-box; /* Garante que o padding não ultrapasse o tamanho total */
+}
+.post {
+  max-width: 100%; /* Limita a largura do post para 100% do contêiner */
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* Garantir que padding e border não ultrapassem a largura */
+  overflow-wrap: break-word; /* Garante que o texto longo que não cabe seja quebrado para a linha seguinte */
+  word-wrap: break-word; /* Para navegadores mais antigos, mas está em desuso */
+}
+
+.post p {
+  margin: 0;
+  padding: 0;
+  word-wrap: break-word; /* Quebra a palavra se necessário */
+  white-space: normal; /* Garante que o texto tenha quebras de linha apropriadas */
+}
+
+.caixa-resposta {
+  margin: 10px;
+}
+.response-form-container form {
+  display: flex;
+  flex-direction: column; /* Coloca os elementos na coluna */
+  gap: 10px; /* Espaçamento entre os elementos */
+  align-items: stretch; /* Garante que os botões se alinhem à largura do formulário */
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-start; /* Alinha os botões à esquerda */
+  gap: 10px; /* Espaçamento entre os botões */
+}
+
+.delete-btn,
+button[type="submit"] {
+  padding: 8px 16px;
+  margin-top: 15px;
+  border-radius: 5px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.toggle-responses-btn {
+  background-color: #2a5e33;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.toggle-responses-btn:hover {
+  background: #1a4821;
+}
+.no-comments-message {
+  color: black;
+  font-style: italic;
+  margin-top: 10px;
+}
