@@ -119,12 +119,14 @@ const { nome, email, senha, confirma } = req.body;
         ok: false,
         message: msgErrors,
       });
+      
     } ;
 
 const senhaHash= await bcrypt.hash(senha,SALT_ROUNDS)
 const user={nome:nome,email:email,senha:senhaHash,acesso:"user"};
 const resp=await UserRepository.create(user);
 console.log(resp);
+next()
   },
 
   editUser: async (req, res, next) => {
