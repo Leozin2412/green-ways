@@ -8,6 +8,15 @@ import bodyParser from 'body-parser';
 import mysql from 'mysql2/promise';
 import conexao from "./database/conexao.js";
 
+
+console.log("--- [DEBUG] Verificando Variáveis de Ambiente ---");
+console.log(`MYSQLHOST: ${process.env.MYSQLHOST}`);
+console.log(`MYSQLUSER: ${process.env.MYSQLUSER}`);
+console.log(`MYSQLDATABASE: ${process.env.MYSQLDATABASE}`);
+console.log(`PORT (do Railway): ${process.env.PORT}`);
+console.log("---
+
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
