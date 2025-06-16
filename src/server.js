@@ -9,12 +9,14 @@ import mysql from 'mysql2/promise';
 import conexao from "./database/conexao.js";
 
 
+// Coloque este bloco logo após suas linhas de 'import'
+
 console.log("--- [DEBUG] Verificando Variáveis de Ambiente ---");
 console.log(`MYSQLHOST: ${process.env.MYSQLHOST}`);
 console.log(`MYSQLUSER: ${process.env.MYSQLUSER}`);
 console.log(`MYSQLDATABASE: ${process.env.MYSQLDATABASE}`);
 console.log(`PORT (do Railway): ${process.env.PORT}`);
-console.log("---
+console.log("----------------------------------------------");
 
 
 const __filename = fileURLToPath(import.meta.url);
