@@ -1,0 +1,11 @@
+#npm install express
+              bcrypt  
+              jsonwebtoken
+
+
+//////// .env exemplo ///////////////
+PORT = 3000
+HOST = 127.0.0.1
+AUTOR = 'Leonardo Monteiro'
+SECRET = 'chave de criptografia'
+TOKEN_EXPIRE = 86400
