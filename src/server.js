@@ -25,10 +25,12 @@ async function startServer() {
   try {
     console.log("Conectando ao servidor MySQL para verificar o banco de dados...");
     bootstrapConnection = await mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: ''
+      host: process.env.MYSQLHOST || 'localhost',
+      user: process.env.MYSQLUSER || 'root',
+      password:process.env.MYSQLPASSWORD || '',
+  port: process.env.MYSQLPORT || 3306
     });
+
 
     await bootstrapConnection.query(`CREATE DATABASE IF NOT EXISTS \`GreenWaysOFC\` DEFAULT CHARACTER SET utf8;`);
     console.log("Banco de dados 'GreenWaysOFC' verificado/criado.");
