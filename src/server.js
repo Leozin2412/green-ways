@@ -27,6 +27,14 @@ app.use('/uploads', express.static(path.join(__dirname, '..', 'public', 'uploads
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Depois (procurando pela sua pasta 'front')
+app.use(express.static(path.join(__dirname, '..', 'front')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'front', 'index.html'));
+});
+
+
 async function startServer() {
   let bootstrapConnection;
   try {
