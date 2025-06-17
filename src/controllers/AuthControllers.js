@@ -6,7 +6,7 @@ import fs from "fs";
 import { isCompleteName, isEmail, isPassword } from "../shared/util.js";
 
 const SECRET = process.env.JWT_SECRET;
-const TOKEN_EXPIRE = eval(process.env.TOKEN_EXPIRE||'1h');
+const TOKEN_EXPIRE = process.env.TOKEN_EXPIRE || '1h'; 
 const SALT_ROUNDS = 10;
 
 const AuthController = {
