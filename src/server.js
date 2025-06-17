@@ -8,14 +8,11 @@ import bodyParser from 'body-parser';
 import mysql from 'mysql2/promise';
 import conexao from "./database/conexao.js";
 
-
-// Coloque este bloco logo após suas linhas de 'import'
-
+// --- Bloco de Debug (opcional, mas útil) ---
 console.log("--- [DEBUG] Verificando Variáveis de Ambiente ---");
 console.log(`MYSQLHOST: ${process.env.MYSQLHOST}`);
 console.log(`MYSQLUSER: ${process.env.MYSQLUSER}`);
-console.log(`MYSQLDATABASE: ${process.env.MYSQLDATABASE}`);
-console.log(`PORT (do Railway): ${process.env.PORT}`);
+// ... e as outras se quiser ...
 console.log("----------------------------------------------");
 
 
@@ -38,10 +35,9 @@ async function startServer() {
     bootstrapConnection = await mysql.createConnection({
       host: process.env.MYSQLHOST || 'localhost',
       user: process.env.MYSQLUSER || 'root',
-      password:process.env.MYSQLPASSWORD || '',
-  port: process.env.MYSQLPORT || 3306
+      password: process.env.MYSQLPASSWORD || '',
+      port: process.env.MYSQLPORT || 3306
     });
-
 
     await bootstrapConnection.query(`CREATE DATABASE IF NOT EXISTS \`GreenWaysOFC\` DEFAULT CHARACTER SET utf8;`);
     console.log("Banco de dados 'GreenWaysOFC' verificado/criado.");
@@ -50,6 +46,7 @@ async function startServer() {
 
     console.log("Conectando ao banco 'GreenWaysOFC' para criar as tabelas...");
     
+    // Agora usando o pool principal para criar todas as tabelas
     await conexao.query(`
       CREATE TABLE IF NOT EXISTS \`users\` (
         \`id\` INT(11) NOT NULL AUTO_INCREMENT,
@@ -100,17 +97,4 @@ async function startServer() {
 
     console.log("Tabelas verificadas/criadas com sucesso.");
     
-    app.listen(config.port, config.host, () => {
-      console.log(`🚀 Servidor rodando em http://${config.host}:${config.port}`);
-    });
-
-  } catch (erro) {
-    console.error('ERRO FATAL AO INICIALIZAR A APLICAÇÃO:', erro);
-    
-    if (bootstrapConnection) await bootstrapConnection.end();
-    
-    process.exit(1);
-  }
-}
-
-startServer();
+    // Inicia o servidor somente após o banco estar
