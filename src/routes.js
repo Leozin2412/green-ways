@@ -45,9 +45,6 @@ const upload = multer({
   fileFilter
 }).single("foto");
 
-routes.get("/", (req, res) => {
-  res.status(200).json({ mensagem: "Viagens Sustentáveis" });
-});
 
 routes.delete("/users/removePhoto", verifyToken, checkOwnerOrAdmin, async (req, res) => {
   try {
