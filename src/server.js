@@ -12,9 +12,9 @@ import conexao from "./database/conexao.js";
 console.log("--- [DEBUG] Verificando Variáveis de Ambiente ---");
 console.log(`MYSQLHOST: ${process.env.MYSQLHOST}`);
 console.log(`MYSQLUSER: ${process.env.MYSQLUSER}`);
-// ... e as outras se quiser ...
+console.log(`MYSQLDATABASE: ${process.env.MYSQLDATABASE}`);
+console.log(`PORT (do Railway): ${process.env.PORT}`);
 console.log("----------------------------------------------");
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,7 +26,6 @@ app.use(routes);
 app.use('/uploads', express.static(path.join(__dirname, '..', 'public', 'uploads')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 
 async function startServer() {
   let bootstrapConnection;
@@ -46,7 +45,6 @@ async function startServer() {
 
     console.log("Conectando ao banco 'GreenWaysOFC' para criar as tabelas...");
     
-    // Agora usando o pool principal para criar todas as tabelas
     await conexao.query(`
       CREATE TABLE IF NOT EXISTS \`users\` (
         \`id\` INT(11) NOT NULL AUTO_INCREMENT,
@@ -97,4 +95,20 @@ async function startServer() {
 
     console.log("Tabelas verificadas/criadas com sucesso.");
     
-    // Inicia o servidor somente após o banco estar
+    // Inicia o servidor somente após o banco estar 100% pronto
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`🚀 Servidor rodando na porta ${PORT}`);
+    });
+
+  } catch (erro) { // <-- AQUI COMEÇA O BLOCO CATCH
+    console.error('ERRO FATAL AO INICIALIZAR A APLICAÇÃO:', erro);
+    
+    if (bootstrapConnection) await bootstrapConnection.end();
+    
+    process.exit(1);
+  } // <-- AQUI FECHA O BLOCO CATCH
+} // <-- AQUI FECHA A FUNÇÃO startServer
+
+// Inicia todo o processo
+startServer();
