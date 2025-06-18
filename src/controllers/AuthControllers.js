@@ -5,7 +5,7 @@ import { loadUser, saveUser } from "../database/usuario.js";
 import fs from "fs";
 import { isCompleteName, isEmail, isPassword } from "../shared/util.js";
 
-const SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET;
 const TOKEN_EXPIRE = process.env.TOKEN_EXPIRE || '1h'; 
 const SALT_ROUNDS = 10;
 
@@ -54,7 +54,7 @@ console.log(validaSenha)
            console.log('login: ', user);
 
     
-      const token = jwt.sign(user, SECRET, { expiresIn: TOKEN_EXPIRE });
+      const token = jwt.sign(user, JWT_SECRET, { expiresIn: TOKEN_EXPIRE });
 
       return res.status(200).json({
         status: 200,
