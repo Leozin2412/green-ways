@@ -38,7 +38,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
                 nome: username,
                 email: email,
                 senha: password,
-                acesso: "public",
+                acesso: "user",
                 confirma: confirmPassword,
                 foto: null
             })
