@@ -63,33 +63,4 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     }
 });
 
-async function initAdminUser() {
-    try {
-        const adminData = {
-            nome: "ADM",
-            email: "campergames68@gmail.com",
-            senha: "1234",
-            confirma: "1234",
-            acesso: "admin",
-            foto: null
-        };
-
-        const response = await fetch('https://green-ways-production.up.railway.app/users/registrar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(adminData)
-        });
-
-        if (response.status === 400) {
-            const data = await response.json();
-            if (!data.message.includes("já cadastrado")) {
-                console.error("Erro ao criar admin:", data.message);
-            }
-        }
-    } catch (error) {
-        console.error("Erro ao verificar admin:", error);
-    }
-}
 
