@@ -56,7 +56,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
             return;
         }
 
-        window.location.href = '/front/login.html';
+        window.location.href = '/login.html';
     } catch (error) {
         console.error("Erro ao registrar:", error);
         alert("Erro ao conectar com o servidor");
