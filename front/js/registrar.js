@@ -29,7 +29,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     }
 
     try {
-        const response = await fetch('http://localhost:3000/users/registrar', {
+        const response = await fetch('https://green-ways-production.up.railway.app/users/registrar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ async function initAdminUser() {
             foto: null
         };
 
-        const response = await fetch('http://localhost:3000/users/registrar', {
+        const response = await fetch('https://green-ways-production.up.railway.app/users/registrar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
