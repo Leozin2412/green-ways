@@ -22,7 +22,7 @@ async function fetchUserProfile(id) {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(
-      `http://localhost:3000/users/get-by-id?id=${id}`,
+      `https://green-ways-production.up.railway.app/users/get-by-id?id=${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
           
           const timestamp = new Date().getTime(); 
-          profilePic.src = `http://localhost:3000/uploads/${photoFileName}?${timestamp}`;
+          profilePic.src = `https://green-ways-production.up.railway.app/uploads/${photoFileName}?${timestamp}`;
           profilePic.alt = `Foto de ${userData.nome}`;
           profilePic.onerror = () => {
             profilePic.src = "img/default-profile.png";
@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3000/posts", {
+      const response = await fetch("https://green-ways-production.up.railway.app/posts", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         photoFileName = userFoto; 
       }
     }
-    const photoSrc = `http://localhost:3000/uploads/${photoFileName}`;
+    const photoSrc = `https://green-ways-production.up.railway.app/uploads/${photoFileName}`;
 
 
     post.innerHTML = `
@@ -281,7 +281,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`http://localhost:3000/posts/delete/${postId}`, {
+        const response = await fetch(`https://green-ways-production.up.railway.app/posts/delete/${postId}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -347,7 +347,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const responseContent = responseForm.querySelector(".response-content").value;
 
       try {
-        const response = await fetch("http://localhost:3000/posts/response", {
+        const response = await fetch("https://green-ways-production.up.railway.app/posts/response", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -426,7 +426,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             photoFileName = response.userFoto; 
           }
         }
-        const photoSrc = `http://localhost:3000/uploads/${photoFileName}`;
+        const photoSrc = `https://green-ways-production.up.railway.app/uploads/${photoFileName}`;
 
 
         responseElement.innerHTML = `
@@ -482,7 +482,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const content = document.getElementById("content").value;
 
       try {
-        const response = await fetch("http://localhost:3000/posts/create", {
+        const response = await fetch("https://green-ways-production.up.railway.app/posts/create", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -529,7 +529,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const responseId = event.target.getAttribute("data-response-id");
 
       try {
-        const response = await fetch("http://localhost:3000/posts/response/delete", {
+        const response = await fetch("https://green-ways-production.up.railway.app/posts/response/delete", {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
