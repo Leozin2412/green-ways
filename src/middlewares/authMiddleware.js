@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import UserRepository from "../repositories/UserRepository.js";
 import PostRepository from "../repositories/postRepository.js";
 
-const SECRET = process.env.SECRET;
+const SECRET = process.env.JWT_SECRET;
 
 export const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
