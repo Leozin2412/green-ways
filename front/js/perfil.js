@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const API_BASE_URL = "http://localhost:3000";
+  const API_BASE_URL = "https://green-ways-production.up.railway.app";
   const DEFAULT_AVATAR =
     "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><circle cx='50' cy='50' r='50' fill='%23e5e7eb'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='40' fill='%239ca3af'>+</text></svg>";
 
