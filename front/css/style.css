@@ -83,7 +83,7 @@ p {
   width: 100%;
 }
 header {
-  background-image: url(".././img/menu.jpg");
+  background-image: url(".././img/menu-teste3.webp");
   background-position: center;
   background-size: cover;
   background-attachment: fixed;
@@ -229,6 +229,7 @@ nav ul a:hover::after {
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-top: 0px;
+  margin-bottom: 30px;
 }
 .leaf p {
   font-size: 1.2em;
@@ -241,7 +242,6 @@ nav ul a:hover::after {
 .carousel-container {
   position: relative;
   width: 100%;
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -265,12 +265,13 @@ nav ul a:hover::after {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
 }
 .carousel-item h4 {
   margin-top: 10px;
 }
 .carousel-item:hover {
-  transform: translateY(-10px);
+  transform: scale(1.05);
   transition: transform 0.5s ease;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
@@ -313,7 +314,7 @@ footer ul a {
   color: white;
 }
 .fot a :hover {
-  transform: translateY(-5px);
+  transform: scale(1.15);
   transition: transform 0.5s ease;
 }
 

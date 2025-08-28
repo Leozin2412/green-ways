@@ -10,7 +10,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url('.././img/menu.jpg') no-repeat center center/cover; /* Fundo como na imagem fornecida */
+  background: url('.././img/menu-teste3.webp') no-repeat center center/cover; /* Fundo como na imagem fornecida */
 }
 
 .wrapper {
@@ -35,7 +35,6 @@ h1 {
   margin-bottom: 30px;
 }
 
-
   .input-box {
     position: relative;
     margin-bottom: 30px;
@@ -46,9 +45,13 @@ h1 {
   bottom: -20px;
   left: 10px;
   font-size: 14px;
-  color: rgba(255, 0, 0, 0.808);
+  color: #e63f3f;
   background-color: transparent;
-
+  font-weight: 500;
+  margin-top: 4px;
+  margin-left: 8px;
+  display: block;
+  text-shadow: 1px 1px 1px rgba(19, 17, 17, 0.986);
 }
 
 .input-box input {
