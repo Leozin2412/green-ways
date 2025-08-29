@@ -1,13 +1,36 @@
-
 /*-------------------------------------------Tags Gerais---------------------------------------*/
+.erro:empty {
+  display: none;
+}
 .erro {
-  margin-top: 15px; /* Espaçamento do h1 */
-  margin-bottom: 10px; /* Espaçamento do input abaixo */
-  text-align: center; /* Centraliza o texto */
-  color: rgba(255, 0, 0, 0.808);
-  background-color: transparent; /* Fundo transparente */
-  font-size: 14px; /* Tamanho de fonte moderado */
-  font-weight: 500; /* Peso intermediário */
+  color: #842029;
+  background-color: #f8d7da;
+  border: 1px solid #a81625;
+  padding: 12px 16px;
+  padding-left: 20px;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  font-size: 14px;
+  position: relative;
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 20px;
+  overflow: hidden;
+}
+
+.erro::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background-color: #a81625;
+   /* vermelho estilo Bootstrap */
 }
 
 
@@ -22,7 +45,7 @@ body{
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: url(".././img/menu.jpg") no-repeat;
+  background: url(".././img/menu-teste3.webp") no-repeat;
   background-size: cover;
   background-position: center;
 }
