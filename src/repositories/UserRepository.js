@@ -2,22 +2,34 @@
   import bcrypt, { compare } from "bcryptjs";
   import conexao from "../database/conexao.js";
   import { PrismaClient } from '../../generated/prism/index.js';
+import { create } from "domain";
 
   const prisma=new PrismaClient()
-  async function main(){
-      const allUsers = await prisma.users.findMany() 
-    console.log(allUsers)
-  }
-  main()
-    .then(async () => {
-      await prisma.$disconnect()
-    })
-    .catch(async (e) => {
-      console.error(e)
-      await prisma.$disconnect()
-      process.exit(1)
-    })
+  const UserRepository={
 
+async create(user){
+const newUser=await prisma.users.create({
+  data:{
+    nome:user.nome,
+    email:user.email,
+    senha:user.senha,
+    acesso:user.acesso  
+
+  }
+})
+  return newUser   
+}
+}
+
+    
+/*
+  }
+
+
+
+
+
+  
   const UserRepository = {
     async getAll() {
       return loadUser();
@@ -164,5 +176,5 @@
     }
   },
   };
-
+*/
   export default UserRepository;

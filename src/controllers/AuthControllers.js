@@ -78,6 +78,14 @@ console.log(validaSenha)
 const { nome, email, senha, confirma } = req.body;
     const msgErrors = [];
 
+    const senhaHash= await bcrypt.hash(senha,SALT_ROUNDS)
+const user={nome:nome,email:email,senha:senhaHash,acesso:"user"};
+const resp=await UserRepository.create(user);
+
+
+
+console.log(resp);
+/*
     console.log(nome, email, senha, confirma);
     const usuarioExistente = await UserRepository.getByEmail(email)
     //validar informações (nome, email e senha, confirma)
@@ -120,11 +128,7 @@ const { nome, email, senha, confirma } = req.body;
         message: msgErrors,
       });
     } ;
-
-const senhaHash= await bcrypt.hash(senha,SALT_ROUNDS)
-const user={nome:nome,email:email,senha:senhaHash,acesso:"user"};
-const resp=await UserRepository.create(user);
-console.log(resp);
+*/
   },
 
   editUser: async (req, res, next) => {
