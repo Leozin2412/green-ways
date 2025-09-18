@@ -18,10 +18,28 @@ const newUser=await prisma.users.create({
   }
 })
   return newUser   
-}
-}
+},
 
-    
+async getByEmail(email){
+  const user=await prisma.users.findUnique({
+    where:{email:email}
+  })
+  return user
+},
+async getById(id){
+  const user=await prisma.users.findUnique({
+    where:{id:id}
+  })
+return user
+  },
+ async login(email) {
+    const user=await prisma.users.findUnique({
+      where:{email:email}
+    })
+    return user
+  },
+   
+}
 /*
   }
 
@@ -31,31 +49,10 @@ const newUser=await prisma.users.create({
 
   
   const UserRepository = {
-    async getAll() {
-      return loadUser();
-    },
+   
+   
 
-    async getById(id) {
-      const sql = `select * from users where id=? limit 1`;
-      try{
-        const[rows]=await conexao.query(sql,[id]);
-        return rows.length>0? rows[0]:null;
-      }catch(erro){
-        console.error("Erron no repisitório ao consultar ID",erro)
-        throw erro
-      }
-    },
 
-  async getByEmail(email) {
-      try {
-          const sql = `SELECT * FROM users WHERE email = ?`;
-          const [rows] = await conexao.execute(sql, [email]);
-          return rows[0] || null; 
-            } catch (erro) {
-          console.error('Erro ao buscar usuário por email:', erro);
-          throw erro; 
-      }
-  },
 
   async login(email) {
     try {
@@ -69,16 +66,7 @@ const newUser=await prisma.users.create({
   }
   ,
 
-  async create(user){
-  const sql='insert into users (nome,email,senha) values (?,?,?);'
-  const list= await conexao.execute(sql,
-      [
-          user.nome,user.email,user.senha
-      ]).catch(erro=>{
-          return[erro]
-      })   
-      return list[0]
-  },
+  
 
   async update(currentEmail,userData){
   try{const sql=`update users set nome=?, email=?, senha=?, foto=? where email=?`

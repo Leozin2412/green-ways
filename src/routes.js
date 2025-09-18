@@ -71,7 +71,7 @@ routes.delete("/users/removePhoto", verifyToken, checkOwnerOrAdmin, async (req, 
 routes.post("/users/login", AuthController.login);
 routes.post("/users/registrar", AuthController.createUser, AuthController.login);
 routes.delete("/users/deleteUser", verifyToken, checkOwnerOrAdmin, AuthController.deleteUser);
-routes.get("/users/get-by-id", verifyToken, AuthController.getUserById);
+routes.get("/users/get-by-id", /*verifyToken,*/ AuthController.getUserById);
 
 routes.post(
   "/users/updateProfile",

@@ -1,8 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import UserRepository from "../repositories/UserRepository.js";
-import { loadUser, saveUser } from "../database/usuario.js";
-import fs from "fs";
 import { isCompleteName, isEmail, isPassword } from "../shared/util.js";
 
 const SECRET = process.env.SECRET;
@@ -25,8 +23,14 @@ const AuthController = {
       try{
         const{email,senha}=req.body;
         ;
-        const usuario=await UserRepository.login(email);
-
+        if (!email) {
+      return res.status(400).json({ message: "Email is required." });
+    }
+    if (!senha) {
+      return res.status(400).json({ message: "Password is required." });
+    }
+      ;
+const usuario=await UserRepository.login(email)
         if(!usuario){
           return res.status(401).json({
             status:401,
@@ -34,6 +38,7 @@ const AuthController = {
             message:'Usuário não encontrado'
           })
         }
+          
 console.log(usuario.senha)
 console.log(senha)
         const validaSenha=await bcrypt.compare(senha,usuario.senha);
@@ -72,20 +77,13 @@ console.log(validaSenha)
         message: 'Erro interno no servidor',
       });
     }
-  },
+  },//ok
   
   createUser: async (req, res, next) => {
 const { nome, email, senha, confirma } = req.body;
+
     const msgErrors = [];
 
-    const senhaHash= await bcrypt.hash(senha,SALT_ROUNDS)
-const user={nome:nome,email:email,senha:senhaHash,acesso:"user"};
-const resp=await UserRepository.create(user);
-
-
-
-console.log(resp);
-/*
     console.log(nome, email, senha, confirma);
     const usuarioExistente = await UserRepository.getByEmail(email)
     //validar informações (nome, email e senha, confirma)
@@ -120,16 +118,25 @@ console.log(resp);
       }
     }
     //criando novo usuario de acesso comum "user"
-    if (msgErrors.length > 0) {
+    
+
+
+    const senhaHash= await bcrypt.hash(senha,SALT_ROUNDS)
+const user={nome:nome,email:email,senha:senhaHash,acesso:"user"};
+const resp=await UserRepository.create(user);
+
+
+
+console.log(resp);
+if (msgErrors.length > 0) {
       //retornando mensagem de erro (necessário usar o return para parar a execução)
       return res.status(400).json({
         status: 400,
         ok: false,
         message: msgErrors,
       });
-    } ;
-*/
-  },
+    }else{return res.status(200).json({status:200,ok:true,message:"Dados válidos"})} ;
+  },//ok
 
   editUser: async (req, res, next) => {
     try {
@@ -197,7 +204,9 @@ deleteUser: async (req, res) => {
   getUserById: async (req, res) => {
     try {
       const { id } = req.query;
-      const usuario = await UserRepository.getById(id);
+      const numericId = parseInt(id, 10);
+      const usuario = await UserRepository.getById(numericId);
+      console.log(usuario);
       if (!usuario) {
         return res
           .status(404)
@@ -215,7 +224,7 @@ deleteUser: async (req, res) => {
     } catch (error) {
       res.status(500).json({ ok: false, message: "Erro interno" });
     }
-  },
+  },//ok
 
   updateProfile: async (req, res) => {
   try {
