@@ -38,6 +38,18 @@ return user
     })
     return user
   },
+   async update(currentEmail,data){
+    const user= prisma.users.update({
+      where:{email:currentEmail},
+      data:{
+        nome:data.nome,
+        email:data.email,
+        senha:data.senha,
+        foto:data.foto
+      }
+    })
+    return user
+   }
    
 }
 /*
@@ -52,38 +64,6 @@ return user
    
    
 
-
-
-  async login(email) {
-    try {
-      const sql = 'SELECT * FROM users WHERE email = ?;';
-      const [rows] = await conexao.query(sql, [email]);
-      return rows.length > 0 ? rows[0] : null; 
-    } catch (erro) {
-      console.error('Erro no login:', erro);
-      return null;  
-    }
-  }
-  ,
-
-  
-
-  async update(currentEmail,userData){
-  try{const sql=`update users set nome=?, email=?, senha=?, foto=? where email=?`
-  const values=[
-    userData.nome,
-    userData.email,
-    userData.senha,
-    userData.foto,
-    currentEmail
-  ];
-  await conexao.query(sql,values);
-  console.log("Usuarios atualizados")
-  }catch(error){
-    console.error("Erro ao atualizar usuário:", error);
-    throw new Error("Falha ao atualizar dados no banco de dados")
-  }
-  },
   async desatiarAtivar(identifier) {
     try {
       //me da a opção de usar ou email ou id como identificador para desativar email

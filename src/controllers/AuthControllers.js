@@ -19,7 +19,7 @@ const AuthController = {
     return true;
   },
 
-      login:async(req,res)=>{
+  login:async(req,res)=>{
       try{
         const{email,senha}=req.body;
         ;
@@ -161,11 +161,11 @@ if (msgErrors.length > 0) {
         senha: senhaHash,
         foto,
       }); 
-      next();
+      res.json({ ok: true, message: "Usuário atualizado com sucesso" });
     } catch (error) {
       res.status(500).json({ ok: false, message: error.message });
     }
-  },
+  },//ok
 
 deleteUser: async (req, res) => {
   try {
