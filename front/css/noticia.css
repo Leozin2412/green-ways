@@ -1,6 +1,3 @@
-
- 
-
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
@@ -84,7 +81,7 @@ p {
   width: 100%;
 }
 header {
-  background-image: url(".././img/menu-teste3.webp");
+  background-image: url(".././img/banner.webp");
   background-position: center;
   background-size: cover;
   background-attachment: fixed;
@@ -195,14 +192,35 @@ nav ul a:hover::after {
   color: white;
   transition: ease-in-out 0.4s;
 }
+
+/*-------------------------------------------Início Leaf---------------------------------------*/
+
+.leaf {
+  background-color: #cad3c8;
+  border: 1px solid #9ebda4d2;
+  border-radius: 5px;
+  padding: 20px;
+  flex: 1 1 calc(50% - 20px);
+  margin: 12px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+  margin-bottom: 0px;
+}
+.leaf p {
+  font-size: 1.2em;
+  margin-top: 0;
+  color: #3b3b39;
+}
 .container {
-  padding: 40px 20px;
+  padding: 30px 20px;
   margin: 0 auto;
   text-align: justify;
+  margin-bottom: 10px;
 }
 .content {
   
-   padding: 20px;
+  padding: 20px;
   line-height: 1.6;
   
  
@@ -244,7 +262,7 @@ nav ul a:hover::after {
 
 .noticia img {
    width: 100%;
-  height: 180px;         
+  height: 270px;         
   border-radius: 15px;
   object-fit: cover;       
   margin-bottom: 10px;
@@ -277,7 +295,7 @@ nav ul a:hover::after {
 
 .noticia-content p {
              
-  font-size: 14px;
+  font-size: 17px;
   color: #000000;
   line-height: 1.4;
   display: -webkit-box;
@@ -295,22 +313,24 @@ nav ul a:hover::after {
   color: #f8f8f8;
   font-weight: bold;
 }
+
 .tip {
-   display: inline-block;
-  padding: 8px 16px;
+  display: inline-block;
+  padding: 17px 230px;
   background-color: #334a00;
   color: white;
   text-decoration: none;
   border-radius: 10px;
   align-self: center;  
-  font-size: 14px;
+  font-size: 16px;
+   white-space: nowrap;
  
 }
 .tip:hover {
   background-color: #1f2d02;
 }
 
-    footer {
+footer {
   background-color: #334a00;
   text-align: center;
   padding-top: 50px;
@@ -387,6 +407,7 @@ footer ul a {
     padding: 10px 0;
   }
 
+  
   .banner {
     display: flex;
     flex-direction: column;
@@ -417,7 +438,6 @@ footer ul a {
     text-align: center;
     margin: 10px 0;
   }
-
   /* ----- Responsividade Container ----- */
   .container {
     padding: 20px 10px;
