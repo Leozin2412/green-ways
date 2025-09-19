@@ -227,31 +227,26 @@ nav ul a:hover::after {
 }
  .noticias-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  transition: transform 1s ease;
+  flex-wrap: wrap;      /* Permite múltiplas linhas */
   justify-content: center;
- 
-  
+  align-items: flex-start; /* Alinha os cards pelo topo */
+  gap: 20px;
 }
 
-
 .noticia {
-   flex: 0 1 calc(33.333% - 20px);
+  flex: 0 0 calc(33.333% - 20px); /* Desktop */
   max-width: calc(33.333% - 20px);
-   box-sizing: border-box;
+  box-sizing: border-box;
   padding: 20px;
   background: #f6f2e8;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; 
+  justify-content: flex-start; /* Não centraliza verticalmente, deixa o conteúdo empilhado */
   transition: transform 0.5s ease, box-shadow 0.5s ease;
-  min-height: 450px;
-  width: 2px;
+  min-height: auto; /* Remove altura fixa */
 }
-
 
 .noticia:hover {
   transform: scale(1.05);
@@ -260,13 +255,18 @@ nav ul a:hover::after {
 }
 
 
+
 .noticia img {
-   width: 100%;
-  height: 270px;         
+  width: 100%;
+  height: auto;   /* Ajusta a altura da imagem automaticamente */
   border-radius: 15px;
-  object-fit: cover;       
+  object-fit: cover;
   margin-bottom: 10px;
 }
+.noticia img {
+    height: 150px;
+  }
+
 
 .noticia-content {
   flex: 1;                 
@@ -275,7 +275,8 @@ nav ul a:hover::after {
   justify-content: space-between; 
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 16px; 
+  padding: 16px;
+  width: 100%;
 }
 
 .noticia-content h3 {
@@ -316,7 +317,7 @@ nav ul a:hover::after {
 
 .tip {
   display: inline-block;
-  padding: 17px 230px;
+  padding: 10px 40px;
   background-color: #334a00;
   color: white;
   text-decoration: none;
@@ -439,85 +440,36 @@ footer ul a {
     margin: 10px 0;
   }
   /* ----- Responsividade Container ----- */
-  .container {
-    padding: 20px 10px;
-  }
-
-  .content {
-    padding: 15px;
-    box-shadow: none;
-  }
-
-  .content h2 {
-    font-size: 1.5em;
-    margin: 0;
-    padding: 0;
-    letter-spacing: normal;
-    text-align: left;
-  }
-
-  .content p {
-    margin-bottom: 15px;
-    font-size: 14px;
-    letter-spacing: normal;
-  }
-
-  .leaves {
+    .noticias-container {
     flex-direction: column;
     align-items: center;
   }
 
-  .leaf {
-    flex: 1 1 100%;
-    margin: 10px 0;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  .noticia {
+    flex: 0 0 100%;
+    width: 90%;
+    max-width: 500px;
+  }
+  .noticia h3{
+    font-size: 17px;
+    text-align: none;
+  }
+  .noticia p {
+    font-size: 15px;
+    text-align: none;
   }
 
-  .leaf h3 {
-    font-size: 1.2em;
-    margin-top: 0;
-    margin-bottom: 10px;
-    letter-spacing: normal;
-  }
 
-  .quote {
-    padding: 15px;
+  .noticia img {
+    height: 150px;
+  }
+  .tip {
+    padding: 10px 50px;  /* bem ajustado pro mobile */
     font-size: 14px;
-    letter-spacing: normal;
   }
 
-  .signal-list {
-    flex-direction: column;
-  }
-
-  .signal-item {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 10px;
-    letter-spacing: normal;
-  }
-
-  .signal-item img {
-    width: 40px;
-    height: 40px;
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-
-  .signal-item h4 {
-    font-size: 1.1em;
-    margin: 0;
-    letter-spacing: normal;
-  }
-
-  .signal-item p {
-    font-size: 13px;
-    margin: 5px 0 0 0;
-    letter-spacing: normal;
-  }
 }
+
 
 /* Media Query para telas com largura entre 768px e 1023px */
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -598,4 +550,32 @@ footer ul a {
     text-align: center;
     margin: 10px 0;
   }
+    .noticias-container {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .noticia {
+    flex: 0 0 90%;
+    margin: 10px 0;
+  }
+   .noticia img {
+    height: 150px;
+  }
+  .noticia h3{
+    font-size: 17px;
+    text-align: none;
+  }
+  .noticia p {
+    font-size: 14px;
+    text-align: none;
+  }
+  .tip {
+    padding: 12px 45px; 
+    font-size: 15px;
+  }
+
 }
+
+ 
+
