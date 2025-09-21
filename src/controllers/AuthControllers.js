@@ -199,7 +199,7 @@ deleteUser: async (req, res) => {
     console.error("Erro no controller ao desativar usuário:", error);
     res.status(500).json({ ok: false, message: "Ocorreu um erro no servidor." });
   }
-},
+},//ok
 
   getUserById: async (req, res) => {
     try {
@@ -231,12 +231,12 @@ deleteUser: async (req, res) => {
     // A primeira parte, de validação, permanece a mesma...
     const { id, nome, email, currentPassword, newPassword, confirmPassword } = req.body;
     const fotoFile = req.file;
-
-    if (!id) {
+const numericId = parseInt(id, 10);
+    if (!numericId) {
       return res.status(400).json({ ok: false, message: "ID não fornecido" });
     }
 
-    const currentUser = await UserRepository.getById(id);
+    const currentUser = await UserRepository.getById(numericId);
     if (!currentUser) {
       return res.status(404).json({ ok: false, message: "Usuário não encontrado" });
     }
@@ -257,9 +257,9 @@ deleteUser: async (req, res) => {
     
     // 2. Adicionamos cada campo ao objeto APENAS se ele for válido.
     // Isso "blinda" o back-end contra valores nulos ou a string "undefined" do front-end.
-    if (nome && nome !== 'undefined') dataToUpdate.nome = nome;
-    if (email && email !== 'undefined') dataToUpdate.email = email;
     
+if (nome) dataToUpdate.nome = req.body.nome;
+if (fotoFile) dataToUpdate.foto = req.file.path; // Save the path from multer
     if (newPassword) {
       const senhaHash = await bcrypt.hash(newPassword, 10); // SALT_ROUNDS = 10 (exemplo)
       dataToUpdate.senha = senhaHash;
@@ -270,7 +270,7 @@ deleteUser: async (req, res) => {
     }
 
     // 3. Chamamos o repositório com o ID e o objeto de dados limpo.
-    const updatedUser = await UserRepository.updateProfile(id, dataToUpdate);
+    const updatedUser = await UserRepository.updateProfile(numericId, dataToUpdate);
     
     if (!updatedUser) {
       return res.status(500).json({ ok: false, message: "Falha ao atualizar usuário" });

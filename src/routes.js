@@ -43,7 +43,7 @@ const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter
-}).single("foto");
+}).single("fotoFile");
 
 routes.get("/", (req, res) => {
   res.status(200).json({ mensagem: "Viagens Sustentáveis" });
@@ -70,10 +70,10 @@ routes.delete("/users/removePhoto", verifyToken, checkOwnerOrAdmin, async (req, 
 
 routes.post("/users/login", AuthController.login);
 routes.post("/users/registrar", AuthController.createUser, AuthController.login);
-routes.delete("/users/deleteUser", verifyToken, checkOwnerOrAdmin, AuthController.deleteUser);
-routes.get("/users/get-by-id", /*verifyToken,*/ AuthController.getUserById);
+routes.put("/users/deleteUser", verifyToken, checkOwnerOrAdmin, AuthController.deleteUser);
+routes.get("/users/get-by-id", verifyToken, AuthController.getUserById);
 
-routes.post(
+routes.put(
   "/users/updateProfile",
   (req, res, next) => {
     upload(req, res, (err) => {
@@ -84,12 +84,12 @@ routes.post(
       next();
     });
   },
-  verifyToken,
-  checkOwnerOrAdmin,
+  //verifyToken,
+  //checkOwnerOrAdmin,
   AuthController.updateProfile,
 );
 
-routes.put("/users/editUser", /*verifyToken, checkOwnerOrAdmin,*/ AuthController.editUser);
+routes.put("/users/editUser", verifyToken, checkOwnerOrAdmin, AuthController.editUser);
 routes.get("/posts", PostController.getAllPosts);
 routes.post("/posts/create", verifyToken, PostController.createPost);
 routes.delete("/posts/delete/:postId", verifyToken, checkPostOwnerOrAdmin, PostController.deletePost);

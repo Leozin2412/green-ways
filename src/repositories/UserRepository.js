@@ -49,9 +49,64 @@ return user
       }
     })
     return user
-   }
-   
-}
+   },
+   async desatiarAtivar(identifier){
+    try{
+      let whereClause={}; 
+      if (typeof identifier === 'number') {
+        whereClause.id = identifier;
+      } else {
+        whereClause.email = identifier;
+      }
+      const updatedUser= await prisma.users.updateMany({
+        where:whereClause,
+        data:{
+          ativo:0
+        }      
+      })
+      return updatedUser
+    }catch (error) {
+      console.error("Erro ao desativar usuário:", error);
+      throw error;
+    }
+},
+  async updateProfile(id, dataToUpdate) {
+    try {
+    
+  
+      const updatedUser= await prisma.users.update({
+        where:{id:id},
+        data:dataToUpdate
+      })
+      return updatedUser
+  
+
+    } catch (error) {
+      console.error("Erro no repositório ao atualizar perfil:", error);
+      throw error;
+    }
+  },  
+ async removeProfilePhoto(userId) {
+      try {
+      
+      const removePhoto= await prisma.users.update({
+        where:{id:userId},
+        data:{foto:null}
+      })
+      return removePhoto
+  
+    } catch (error) {
+      
+      console.error("Erro no repositório ao remover foto de perfil:", error);
+      throw error;
+    }
+  },
+  };
+
+
+
+
+
 /*
   }
 
@@ -64,32 +119,7 @@ return user
    
    
 
-  async desatiarAtivar(identifier) {
-    try {
-      //me da a opção de usar ou email ou id como identificador para desativar email
-      const column = typeof identifier === 'number' ? 'id' : 'email';
-      const sql = `UPDATE users SET ativo = 0 WHERE ${column} = ?`;
-      const [result] = await conexao.query(sql, [identifier]);
-
-      return result.affectedRows > 0;
-
-    } catch (error) {
-      console.error("Erro ao desativar usuário:", error);
-      throw error;
-    }
-  },
-    async deleteByEmail(email) {
-      const users = loadUser();
-      const index = users.findIndex(
-        (user) => user.email.toLowerCase() === email.toLowerCase()
-      );
-      if (index !== -1) {
-        users.splice(index, 1);
-        saveUser(users);
-      }
-    },
-
-
+  
 
   // O método agora recebe o ID e um único objeto com os dados
   async updateProfile(id, dataToUpdate) {

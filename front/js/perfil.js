@@ -80,14 +80,20 @@ document.addEventListener("DOMContentLoaded", function () {
     // try {
       const formData = new FormData();
       if (elements.fotoInput.files[0]) {
-        formData.append("foto", elements.fotoInput.files[0]);
+        formData.append("fotoFile", elements.fotoInput.files[0]);
       }
-      formData.append("id", currentUser.id);
-      formData.append("nome", elements.usernameInput.value);
-      formData.append("currentPassword", elements.currentPasswordInput.value);
-      formData.append("email", currentUser.email);
-      formData.append("newPassword", elements.newPasswordInput.value);
-      formData.append("confirmPassword", elements.confirmPasswordInput.value);
+     if (elements.usernameInput.value) {
+  formData.append("nome", elements.usernameInput.value);
+}
+if (elements.newPasswordInput.value) {
+  formData.append("newPassword", elements.newPasswordInput.value);
+  formData.append("confirmPassword", elements.confirmPasswordInput.value);
+}
+
+
+formData.append("id", currentUser.id);
+formData.append("email", currentUser.email);
+formData.append("currentPassword", elements.currentPasswordInput.value);
 
       const queryParams = new URLSearchParams({
         id: currentUser.id,
@@ -98,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const response = await fetch(
         `${API_BASE_URL}/users/updateProfile?${queryParams}`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             Authorization: `Bearer ${token}`,
           },
