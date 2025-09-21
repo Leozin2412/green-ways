@@ -7,7 +7,6 @@
   align-items: center;
   gap: 10px;
 }
-
 #username-display {
   font-weight: bold;
   color: white;
@@ -17,17 +16,17 @@
 }
 
 #username-display {
-    font-weight: bold;
-    color: white;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  #username-display:hover {
-    color: #4caf50;
-  }
-  
+  font-weight: bold;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#username-display:hover {
+  color: #4caf50;
+}
+
 .login-icon {
   color: white;
   font-size: 1.1rem;
@@ -47,7 +46,7 @@
   font-family: "Inter", sans-serif;
 }
 body {
-  background-color: #b1c2b4;
+  background-color:  #b1c2b4d2;
   margin: 0;
   padding: 0;
 }
@@ -55,9 +54,8 @@ h3 {
   font-size: 50px;
 }
 p {
-  color: #000;
+  color: #0000009c;
 }
-
 .logged {
   pointer-events: none;
   cursor: default;
@@ -195,28 +193,6 @@ nav ul a:hover::after {
   transition: ease-in-out 0.4s;
 }
 
-.container {
-  padding: 40px 20px;
-  margin: 0 auto;
-  text-align: justify;
-}
-.content {
-  background-color: #f6f2e8;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 15px;
-  padding: 30px;
-  line-height: 1.6;
-}
-.content h2 {
-  font-size: 2em;
-  margin-top: 0;
-  color: #334a00;
-}
-.content p {
-  margin-bottom: 20px;
-  color: #3b3b39;
-}
-
 /*-------------------------------------------Início Leaf---------------------------------------*/
 
 .leaf {
@@ -228,73 +204,132 @@ nav ul a:hover::after {
   margin: 12px;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-top: 0px;
-  margin-bottom: 30px;
+  margin-top: 30px;
+  margin-bottom: 0px;
 }
 .leaf p {
   font-size: 1.2em;
   margin-top: 0;
   color: #3b3b39;
 }
-
-/*-------------------------------------------Início Carrossel---------------------------------------*/
-
-.carousel-container {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2px;
+.container {
+  padding: 30px 20px;
+  margin: 0 auto;
+  text-align: justify;
+  margin-bottom: 10px;
 }
-.carousel {
+.content {
+  
+  padding: 20px;
+  line-height: 1.6;
+  
+ 
+}
+ .noticias-container {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap;      /* Permite múltiplas linhas */
+  justify-content: center;
+  align-items: flex-start; /* Alinha os cards pelo topo */
   gap: 20px;
-  transition: transform 1s ease;
-  justify-content: center;
 }
-.carousel-item {
-  flex: 0 0 calc(25% - 20px);
+
+.noticia {
+  flex: 0 0 calc(33.333% - 20px); /* Desktop */
+  max-width: calc(33.333% - 20px);
   box-sizing: border-box;
   padding: 20px;
   background: #f6f2e8;
   border-radius: 20px;
-  height: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start; /* Não centraliza verticalmente, deixa o conteúdo empilhado */
   transition: transform 0.5s ease, box-shadow 0.5s ease;
+  min-height: auto; /* Remove altura fixa */
 }
-.carousel-item h4 {
-  margin-top: 10px;
-}
-.carousel-item:hover {
+
+.noticia:hover {
   transform: scale(1.05);
   transition: transform 0.5s ease;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-.carousel-item img {
+
+
+
+.noticia img {
   width: 100%;
-  height: 190px;
+  height: auto;   /* Ajusta a altura da imagem automaticamente */
   border-radius: 15px;
-  object-fit:cover;
+  object-fit: cover;
+  margin-bottom: 10px;
 }
+.noticia img {
+    height: 150px;
+  }
+
+
+.noticia-content {
+  flex: 1;                 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 16px;
+  width: 100%;
+}
+
+.noticia-content h3 {
+  font-size: 18px;
+  color: #000000;
+  height: 2.6em;
+  line-height: 1.3em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; 
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 0 8px 0; 
+}
+  
+
+
+.noticia-content p {
+             
+  font-size: 17px;
+  color: #000000;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 4; 
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 5.6em;
+  margin: 0 0 12px 0; 
+;}
+  
+  
+.noticia-content a {
+  text-decoration: none;
+  color: #f8f8f8;
+  font-weight: bold;
+}
+
 .tip {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 10px 40px;
   background-color: #334a00;
   color: white;
   text-decoration: none;
   border-radius: 10px;
-  margin-top: 10px;
+  align-self: center;  
+  font-size: 16px;
+   white-space: nowrap;
+ 
 }
 .tip:hover {
   background-color: #1f2d02;
 }
-
-/*-------------------------------------------Início Rodapé---------------------------------------*/
 
 footer {
   background-color: #334a00;
@@ -314,8 +349,11 @@ footer ul a {
   color: white;
 }
 .fot a :hover {
-  transform: scale(1.15);
+  transform: translateY(-5px);
   transition: transform 0.5s ease;
+}
+.frase {
+  padding-top: 30px;
 }
 
 /*-------------------------------------------Início Responsividade---------------------------------------*/
@@ -326,6 +364,7 @@ footer ul a {
   .menu {
     padding: 0 2%;
   }
+
   .fundo {
     min-height: 80px;
   }
@@ -348,6 +387,7 @@ footer ul a {
     margin-top: 20px; /* Espaço acima do ícone */
     width: 100%;
   }
+
   nav ul {
     flex-direction: column; /* Coloca os links em coluna */
     margin-left: 0;
@@ -368,6 +408,7 @@ footer ul a {
     padding: 10px 0;
   }
 
+  
   .banner {
     display: flex;
     flex-direction: column;
@@ -398,53 +439,37 @@ footer ul a {
     text-align: center;
     margin: 10px 0;
   }
-
-  .container {
-    padding: 20px 10px;
-  }
-
-  .content {
-    padding: 15px;
-    box-shadow: none;
-  }
-
-  .content h2 {
-    font-size: 1.5em;
-    margin: 0;
-    padding: 0;
-    letter-spacing: normal;
-    align-items: center;
-  }
-
-  .content p {
-    margin-bottom: 15px;
-    font-size: 14px;
-    letter-spacing: normal;
-  }
-
-  /* ----- Responsividade Carrosel  ----- */
-
-  .carousel {
+  /* ----- Responsividade Container ----- */
+    .noticias-container {
     flex-direction: column;
     align-items: center;
   }
 
-  .carousel-item {
+  .noticia {
     flex: 0 0 100%;
     width: 90%;
-    margin: 10px 0;
-    height: auto; /* Permitir que a altura seja ajustada conforme o conteúdo */
+    max-width: 500px;
+  }
+  .noticia h3{
+    font-size: 17px;
+    text-align: none;
+  }
+  .noticia p {
+    font-size: 15px;
+    text-align: none;
   }
 
-  .carousel-item img {
-    height: auto; /* Permitir que a imagem se ajuste automaticamente */
+
+  .noticia img {
+    height: 150px;
+  }
+  .tip {
+    padding: 10px 50px;  /* bem ajustado pro mobile */
+    font-size: 14px;
   }
 
-  .prev-button,
-  .next-button {
-    display: none; /* Remover botões de seta */
-  }
 }
+
 
 /* Media Query para telas com largura entre 768px e 1023px */
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -525,27 +550,32 @@ footer ul a {
     text-align: center;
     margin: 10px 0;
   }
-
-  /* ----- Responsividade Carrosel  ----- */
-
-  .carousel {
-    flex-direction: row;
-    flex-wrap: wrap; /* Permitir múltiplas linhas de itens */
+    .noticias-container {
+    flex-wrap: wrap;
     justify-content: center;
   }
 
-  .carousel-item {
-    flex: 0 0 calc(50% - 20px);
-    width: auto;
-    height: auto;
+  .noticia {
+    flex: 0 0 90%;
+    margin: 10px 0;
   }
-
-  .carousel-item img {
+   .noticia img {
     height: 150px;
   }
-
-  .prev-button,
-  .next-button {
-    display: block;
+  .noticia h3{
+    font-size: 17px;
+    text-align: none;
   }
+  .noticia p {
+    font-size: 14px;
+    text-align: none;
+  }
+  .tip {
+    padding: 12px 45px; 
+    font-size: 15px;
+  }
+
 }
+
+ 
+
