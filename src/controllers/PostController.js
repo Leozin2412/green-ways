@@ -1,5 +1,6 @@
 import PostRepository from "../repositories/postRepository.js";
 
+
 const PostController = {
   getAllPosts: async (req, res) => {
     try {
