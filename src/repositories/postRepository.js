@@ -3,27 +3,34 @@ import path from "path";
 import conexao from "../database/conexao.js";
 const filePath = path.resolve("./src/database/posts.json");
 import { v4 as uuidv4 } from "uuid";
+import { PrismaClient } from '../../generated/prism/index.js';
 
+const prisma= new PrismaClient()
 // Carregar os posts vindo do banco de dados 
-async function loadPosts() {
+const PostRepository={
+async loadPosts() {
   try {
-    const [rows] = await conexao.promise().query("SELECT * FROM post ORDER BY createdAt DESC");
-    return rows;
+    const posts=await prisma.post.findMany(
+      {orderBy:{createdAt:'desc'}}
+    )
+    return posts
   } catch (error) {
     console.error("Erro ao carregar posts:", error);
     return [];
   }
-}
-
-function savePosts(posts) {
-  try {
-    fs.writeFileSync(filePath, JSON.stringify(posts, null, 2));
-  } catch (error) {
-    console.error("Erro ao salvar posts:", error);
-  }
-}
-
-async function addPost({ userId, region, content }) {
+},
+async addPost(userID,region,content){
+  const createPost=await prisma.post.create({
+    data:{
+      region:region,
+      content:content,
+      Users_id: userID,
+    }
+  })
+  return createPost
+},
+/*
+async  addPost({ userId, region, content }) {
   const sql = `INSERT INTO post (idPost, region, content, User_idUsers, createdAt, responses) VALUES (?, ?, ?, ?, ?, ?)`;
   const idPost = uuidv4();
   const createdAt = new Date();
@@ -39,12 +46,12 @@ async function addPost({ userId, region, content }) {
     ]);
     return result;
   } catch (error) {
-    console.error("Erro ao adicionar post:", error);
+    console.error("Erro ao salvar post:", error);
     return null;
   }
-}
+},*/
 
-async function deletePost(idPost) {
+async  deletePost(idPost) {
   const sql = `DELETE FROM post WHERE idPost = ?`;
   try {
     const [result] = await conexao.promise().execute(sql, [idPost]);
@@ -61,11 +68,11 @@ async function deletePost(idPost) {
     console.error("Erro ao deletar post:", error);
     throw error;
   }
-}
+},
 
 
 
-function addResponse(postId, response) {
+async addResponse(postId, response) {
   const posts = loadPosts();
   const post = posts.find((p) => p.id == postId);
   if (post) {
@@ -80,9 +87,9 @@ function addResponse(postId, response) {
     return response;
   }
   return null;
-}
+},
 
-function deleteResponse(postId, responseId) {
+ deleteResponse(postId, responseId) {
   const posts = loadPosts();
   const post = posts.find((p) => p.id == postId);
   if (post && post.responses) {
@@ -95,12 +102,5 @@ function deleteResponse(postId, responseId) {
   }
   return false;
 }
-
-export default {
-  loadPosts,
-  savePosts,
-  addPost,
-  deletePost,
-  addResponse,
-  deleteResponse,
-};
+}
+export default PostRepository

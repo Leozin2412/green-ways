@@ -2,7 +2,7 @@ import PostRepository from "../repositories/postRepository.js";
 
 
 const PostController = {
-  getAllPosts: async (req, res) => {
+  getAllPosts: async (res) => {
     try {
       const posts = await PostRepository.loadPosts();
       res.json({ ok: true, posts });
@@ -21,7 +21,6 @@ const PostController = {
       }
       const newPost = await PostRepository.addPost({
         userId,
-        userName,
         region,
         content,
       });
