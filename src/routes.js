@@ -90,7 +90,7 @@ export default function createRoutes(AuthController, PostController, UserReposit
     AuthController.updateProfile,
   );
 
-  routes.post("/users/editUser", verifyToken, checkOwnerOrAdmin, AuthController.editUser);
+  routes.post("/users/updateProfile", verifyToken, checkOwnerOrAdmin, AuthController.updateProfile);
   routes.get("/posts", PostController.getAllPosts);
   routes.post("/posts/create", verifyToken, PostController.createPost);
   routes.delete("/posts/delete/:postId", verifyToken, checkPostOwnerOrAdmin, PostController.deletePost);
