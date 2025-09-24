@@ -2,7 +2,7 @@ import PostRepository from "../repositories/postRepository.js";
 
 
 const PostController = {
-  getAllPosts: async (res) => {
+  getAllPosts: async (req,res) => {
     try {
       const posts = await PostRepository.loadPosts();
       res.json({ ok: true, posts });
@@ -13,17 +13,15 @@ const PostController = {
 
   createPost: async (req, res) => {
     try {
-      const { userId, userName, region, content } = req.body;
-      if (!userId || !userName || !region || !content) {
+      const { userId,region, content } = req.body;
+      const numericUserId = parseInt(userId, 10);
+      if (!numericUserId  ||!region || !content) {
         return res
           .status(400)
           .json({ ok: false, message: "Campos obrigatórios" });
       }
-      const newPost = await PostRepository.addPost({
-        userId,
-        region,
-        content,
-      });
+      const newPost = await PostRepository.addPost(numericUserId, region, content);
+      
       res.status(201).json({ ok: true, post: newPost });
     } catch (error) {
       res.status(500).json({ ok: false, message: error.message });
@@ -33,7 +31,8 @@ const PostController = {
   deletePost: async (req, res) => {
     try {
       const { postId } = req.params;
-      await PostRepository.deletePost(postId);
+      const numericPostId = parseInt(postId, 10);
+      await PostRepository.deletePost(numericPostId);
       res.json({ ok: true, message: "Post deletado" });
     } catch (error) {
       res.status(500).json({ ok: false, message: error.message });

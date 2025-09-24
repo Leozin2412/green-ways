@@ -11,7 +11,12 @@ const PostRepository={
 async loadPosts() {
   try {
     const posts=await prisma.post.findMany(
-      {orderBy:{createdAt:'desc'}}
+      {orderBy:{createdAt:'desc'},
+        include:{users:{
+        select:{
+          foto:true,
+          nome:true
+      }}}}
     )
     return posts
   } catch (error) {
@@ -29,45 +34,13 @@ async addPost(userID,region,content){
   })
   return createPost
 },
-/*
-async  addPost({ userId, region, content }) {
-  const sql = `INSERT INTO post (idPost, region, content, User_idUsers, createdAt, responses) VALUES (?, ?, ?, ?, ?, ?)`;
-  const idPost = uuidv4();
-  const createdAt = new Date();
-  const responses = 0;
-  try {
-    const [result] = await conexao.promise().execute(sql, [
-      idPost,
-      region,
-      content,
-      userId,
-      createdAt,
-      responses
-    ]);
-    return result;
-  } catch (error) {
-    console.error("Erro ao salvar post:", error);
-    return null;
-  }
-},*/
+
 
 async  deletePost(idPost) {
-  const sql = `DELETE FROM post WHERE idPost = ?`;
-  try {
-    const [result] = await conexao.promise().execute(sql, [idPost]);
-
-    // Depois de deletar do banco, deleta do array local (se necessário)
-    const index = conexao.findIndex((p) => p.id == idPost);
-    if (index !== -1) {
-      conexao.splice(index, 1);
-      savePosts(conexao);
-    }
-
-    return result;
-  } catch (error) {
-    console.error("Erro ao deletar post:", error);
-    throw error;
-  }
+ const deletePost= await prisma.post.delete({
+    where:{idPost:idPost}
+  })
+  return deletePost
 },
 
 

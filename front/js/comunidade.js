@@ -185,11 +185,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (data.ok) {
         data.posts.forEach((post) => {
           const postElement = createPostElement(
-            post.userName,
+            post.users.nome,
             post.region,
             post.content,
             post.id,
-            post.userId
+            post.Users_id
           );
           postList.appendChild(postElement);
           if (post.responses && post.responses.length > 0) {
@@ -202,13 +202,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  function createPostElement(userName, region, content, postId, userId) {
+  function createPostElement(userName, region, content, postId, Users_id) {
     const post = document.createElement("article");
     post.className = "post";
     post.innerHTML = `
     <div class="caixa-resposta">
         <div class="user-profile">
-            <img src="/public/uploads/profile_${userId}.jpg" 
+            <img src="/public/uploads/profile_${Users_id}.jpg" 
                  onerror="this.src='img/default-profile.png'" 
                  alt="Foto de ${userName}" 
                  class="profile-pic">
@@ -239,7 +239,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     const deleteBtn = post.querySelector(".delete-btn");
 
-    if (currentUser.id !== userId && !userIsAdmin) {
+    if (currentUser.id !== Users_id && !userIsAdmin) {
       deleteBtn.style.display = "none";
     }
 

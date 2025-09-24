@@ -5713,7 +5713,7 @@ export namespace Prisma {
   export type postCreateInput = {
     region: string
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     coments?: comentsCreateNestedManyWithoutPostInput
     users: usersCreateNestedOneWithoutPostInput
     responses?: responsesCreateNestedManyWithoutPostInput
@@ -5723,7 +5723,7 @@ export namespace Prisma {
     idPost?: number
     region: string
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     Users_id: number
     coments?: comentsUncheckedCreateNestedManyWithoutPostInput
     responses?: responsesUncheckedCreateNestedManyWithoutPostInput
@@ -5752,7 +5752,7 @@ export namespace Prisma {
     idPost?: number
     region: string
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     Users_id: number
   }
 
@@ -5772,7 +5772,7 @@ export namespace Prisma {
 
   export type responsesCreateInput = {
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     post: postCreateNestedOneWithoutResponsesInput
     users: usersCreateNestedOneWithoutResponsesInput
   }
@@ -5780,7 +5780,7 @@ export namespace Prisma {
   export type responsesUncheckedCreateInput = {
     idResponse?: number
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     Users_id: number
     Post_idPost: number
   }
@@ -5803,7 +5803,7 @@ export namespace Prisma {
   export type responsesCreateManyInput = {
     idResponse?: number
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     Users_id: number
     Post_idPost: number
   }
@@ -6714,7 +6714,7 @@ export namespace Prisma {
   export type postCreateWithoutComentsInput = {
     region: string
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     users: usersCreateNestedOneWithoutPostInput
     responses?: responsesCreateNestedManyWithoutPostInput
   }
@@ -6723,7 +6723,7 @@ export namespace Prisma {
     idPost?: number
     region: string
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     Users_id: number
     responses?: responsesUncheckedCreateNestedManyWithoutPostInput
   }
@@ -6876,14 +6876,14 @@ export namespace Prisma {
 
   export type responsesCreateWithoutPostInput = {
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     users: usersCreateNestedOneWithoutResponsesInput
   }
 
   export type responsesUncheckedCreateWithoutPostInput = {
     idResponse?: number
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     Users_id: number
   }
 
@@ -6988,7 +6988,7 @@ export namespace Prisma {
   export type postCreateWithoutResponsesInput = {
     region: string
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     coments?: comentsCreateNestedManyWithoutPostInput
     users: usersCreateNestedOneWithoutPostInput
   }
@@ -6997,7 +6997,7 @@ export namespace Prisma {
     idPost?: number
     region: string
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     Users_id: number
     coments?: comentsUncheckedCreateNestedManyWithoutPostInput
   }
@@ -7123,7 +7123,7 @@ export namespace Prisma {
   export type postCreateWithoutUsersInput = {
     region: string
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     coments?: comentsCreateNestedManyWithoutPostInput
     responses?: responsesCreateNestedManyWithoutPostInput
   }
@@ -7132,7 +7132,7 @@ export namespace Prisma {
     idPost?: number
     region: string
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     coments?: comentsUncheckedCreateNestedManyWithoutPostInput
     responses?: responsesUncheckedCreateNestedManyWithoutPostInput
   }
@@ -7149,14 +7149,14 @@ export namespace Prisma {
 
   export type responsesCreateWithoutUsersInput = {
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     post: postCreateNestedOneWithoutResponsesInput
   }
 
   export type responsesUncheckedCreateWithoutUsersInput = {
     idResponse?: number
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     Post_idPost: number
   }
 
@@ -7239,7 +7239,7 @@ export namespace Prisma {
   export type responsesCreateManyPostInput = {
     idResponse?: number
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     Users_id: number
   }
 
@@ -7294,13 +7294,13 @@ export namespace Prisma {
     idPost?: number
     region: string
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
   }
 
   export type responsesCreateManyUsersInput = {
     idResponse?: number
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     Post_idPost: number
   }
 

@@ -25,7 +25,7 @@ model post {
   idPost    Int         @id @default(autoincrement())
   region    String      @db.VarChar(100)
   content   String      @db.VarChar(300)
-  createdAt DateTime    @db.DateTime(0)
+  createdAt DateTime    @default(now()) @db.DateTime(0)
   Users_id  Int
   coments   coments[]
   users     users       @relation(fields: [Users_id], references: [id], onDelete: Cascade, map: "fk_post_user")
@@ -37,7 +37,7 @@ model post {
 model responses {
   idResponse  Int      @id @default(autoincrement())
   content     String   @db.VarChar(300)
-  createdAt   DateTime @db.DateTime(0)
+  createdAt   DateTime @default(now()) @db.DateTime(0)
   Users_id    Int
   Post_idPost Int
   post        post     @relation(fields: [Post_idPost], references: [idPost], onDelete: Cascade, map: "fk_responses_post1")
