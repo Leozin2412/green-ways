@@ -1,7 +1,7 @@
 /**
  * @fileoverview Shared types for ESLint Core.
  */
-import { JSONSchema4 } from "json-schema";
+import type { JSONSchema4 } from "json-schema";
 /**
  * Represents an error inside of a file.
  */
@@ -90,8 +90,10 @@ export interface RulesMetaDocs {
     category?: string | undefined;
     /**
      * Indicates if the rule is generally recommended for all users.
+     *
+     * Note - this will always be a boolean for core rules, but may be used in any way by plugins.
      */
-    recommended?: boolean | undefined;
+    recommended?: unknown;
     /**
      * Indicates if the rule is frozen (no longer accepting feature requests).
      */
@@ -100,7 +102,7 @@ export interface RulesMetaDocs {
 /**
  * Meta information about a rule.
  */
-export interface RulesMeta<MessageIds extends string = string, ExtRuleDocs = unknown> {
+export interface RulesMeta<MessageIds extends string = string, RuleOptions = unknown[], ExtRuleDocs = unknown> {
     /**
      * Properties that are used when documenting the rule.
      */
@@ -113,8 +115,10 @@ export interface RulesMeta<MessageIds extends string = string, ExtRuleDocs = unk
      * The schema for the rule options. Required if the rule has options.
      */
     schema?: JSONSchema4 | JSONSchema4[] | false | undefined;
-    /** Any default options to be recursively merged on top of any user-provided options. */
-    defaultOptions?: unknown[];
+    /**
+     * Any default options to be recursively merged on top of any user-provided options.
+     **/
+    defaultOptions?: RuleOptions;
     /**
      * The messages that the rule can report.
      */
@@ -437,7 +441,7 @@ export interface RuleDefinition<Options extends RuleDefinitionTypeOptions = Rule
     /**
      * The meta information for the rule.
      */
-    meta?: RulesMeta<Options["MessageIds"], Options["ExtRuleDocs"]>;
+    meta?: RulesMeta<Options["MessageIds"], Options["RuleOptions"], Options["ExtRuleDocs"]>;
     /**
      * Creates the visitor that ESLint uses to apply the rule during traversal.
      * @param context The rule context.
@@ -451,6 +455,33 @@ export interface RuleDefinition<Options extends RuleDefinitionTypeOptions = Rule
         MessageIds: Options["MessageIds"];
     }>): Options["Visitor"];
 }
+/**
+ * Defaults for non-language-related `RuleDefinition` options.
+ */
+export interface CustomRuleTypeDefinitions {
+    RuleOptions: unknown[];
+    MessageIds: string;
+    ExtRuleDocs: Record<string, unknown>;
+}
+/**
+ * A helper type to define language specific specializations of the `RuleDefinition` type.
+ *
+ * @example
+ * ```ts
+ * type YourRuleDefinition<
+ * 	Options extends Partial<CustomRuleTypeDefinitions> = {},
+ * > = CustomRuleDefinitionType<
+ * 	{
+ * 		LangOptions: YourLanguageOptions;
+ * 		Code: YourSourceCode;
+ * 		Visitor: YourRuleVisitor;
+ * 		Node: YourNode;
+ * 	},
+ * 	Options
+ * >;
+ * ```
+ */
+export type CustomRuleDefinitionType<LanguageSpecificOptions extends Omit<RuleDefinitionTypeOptions, keyof CustomRuleTypeDefinitions>, Options extends Partial<CustomRuleTypeDefinitions>> = RuleDefinition<LanguageSpecificOptions & Required<Options & Omit<CustomRuleTypeDefinitions, keyof Options>>>;
 /**
  * The human readable severity level used in a configuration.
  */
@@ -479,19 +510,28 @@ export interface LinterOptionsConfig {
      * Indicates what to do when an unused disable directive is found.
      */
     reportUnusedDisableDirectives?: boolean | Severity;
+    /**
+     * A severity value indicating if and how unused inline configs should be
+     * tracked and reported.
+     */
+    reportUnusedInlineConfigs?: Severity;
 }
-/**
- * Shared settings that are accessible from within plugins.
- */
-export type SettingsConfig = Record<string, unknown>;
 /**
  * The configuration for a rule.
  */
-export type RuleConfig = Severity | [Severity, ...unknown[]];
+export type RuleConfig<RuleOptions extends unknown[] = unknown[]> = Severity | [Severity, ...Partial<RuleOptions>];
 /**
  * A collection of rules and their configurations.
  */
-export type RulesConfig = Record<string, RuleConfig>;
+export interface RulesConfig {
+    [key: string]: RuleConfig;
+}
+/**
+ * A collection of settings.
+ */
+export interface SettingsConfig {
+    [key: string]: unknown;
+}
 /**
  * Generic options for the `Language` type.
  */
@@ -654,7 +694,7 @@ interface InlineConfigElement {
 /**
  * Generic options for the `SourceCodeBase` type.
  */
-interface SourceCodeBaseTypeOptions {
+export interface SourceCodeBaseTypeOptions {
     LangOptions: LanguageOptions;
     RootNode: unknown;
     SyntaxElementWithLoc: unknown;

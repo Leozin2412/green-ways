@@ -1,11 +1,16 @@
+
 import { createConnection } from 'mysql2';
 
-const conexao = createConnection({
-  host: 'localhost',
-  port: 3306,
-  user: 'root',
-  password: '',
-  multipleStatements: true  // Permite executar várias queries em uma string só
-});
+function getConexao() {
+  const conexao = createConnection({
+    host: 'localhost',
+    port: 3306,
+    user: 'root',
+    password: '',
+    database: 'GreenWaysOFC', 
+    multipleStatements: true
+  });
+  return conexao;
+}
 
-export default conexao;
+export default { getConexao };

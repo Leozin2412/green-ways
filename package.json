@@ -3,7 +3,7 @@
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.6.1",
     "express": "^4.21.2",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
@@ -16,18 +16,20 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --env-file .env ./src/server.js"
+    "test": "poku",
+    "dev": "nodemon src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "cross-env": "^10.0.0",
     "eslint": "^9.23.0",
     "nodemon": "^3.1.9",
     "poku": "^3.0.2",
     "prettier": "^3.5.3",
-    "sinon": "^21.0.0"
+    "sinon": "^21.0.0",
+    "testdouble": "^3.20.2"
   }
 }

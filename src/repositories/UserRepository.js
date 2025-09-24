@@ -1,106 +1,125 @@
-import { usuarios, saveUser, loadUser } from "../database/usuario.js";
-import bcrypt, { compare } from "bcryptjs";
-import conexao from "../database/conexao.js"
+// Removemos todas as importações que não são mais necessárias (bcrypt, usuario.js)
+// A importação do 'conexao' também foi removida, pois será injetada.
 
-const UserRepository = {
-  async getAll() {
-    return loadUser();
-  },
+// A fábrica recebe o módulo do banco 'db' como dependência.
+export default function createUserRepository(db) {
+  return {
+    // FUNÇÃO REESCRITA PARA USAR SQL
+    async getAll() {
+      const conexao = db.getConexao();
+      // Boa prática: nunca retorne a senha dos usuários em uma listagem.
+      const sql = 'SELECT idUsers, nome, email, foto, permissao, ativo FROM users;';
+      try {
+        const [rows] = await conexao.promise().query(sql);
+        return rows;
+      } catch (error) {
+        console.error("Erro no repositório ao buscar todos os usuários:", error);
+        throw error;
+      }
+    },
 
-  async getById(id) {
-    const sql = `select * from users where idUsers=? limit 1`;
-    try{
-      const[rows]=await conexao.promise().query(sql,[id]);
-      return rows.length>0? rows[0]:null;
-    }catch(erro){
-      console.error("Erro no repositório ao consultar ID",erro)
-      throw erro
-    }
-  },
+    async getById(id) {
+      const conexao = db.getConexao();
+      // Seleciona todos os campos, exceto a senha
+      const sql = 'SELECT idUsers, nome, email, foto, permissao, ativo FROM users WHERE idUsers = ? LIMIT 1;';
+      try {
+        const [rows] = await conexao.promise().query(sql, [id]);
+        return rows.length > 0 ? rows[0] : null;
+      } catch (error) {
+        console.error("Erro no repositório ao consultar por ID:", error);
+        throw error;
+      }
+    },
 
- async getByEmail(email) {
-    try {
-        const sql = `SELECT * FROM users WHERE email = ?`;
+    async getByEmail(email) {
+      const conexao = db.getConexao();
+      // Seleciona todos os campos, incluindo a senha, pois pode ser usado para verificação interna.
+      const sql = 'SELECT * FROM users WHERE email = ?;';
+      try {
         const [rows] = await conexao.promise().execute(sql, [email]);
-        return rows[0] || null; 
-          } catch (erro) {
-        console.error('Erro ao buscar usuário por email:', erro);
-        throw erro; 
-    }
-},
+        return rows[0] || null;
+      } catch (error) {
+        console.error('Erro ao buscar usuário por email:', error);
+        throw error;
+      }
+    },
 
-async login(email) {
-  try {
-    const sql = 'SELECT * FROM users WHERE email = ?;';
-    const [rows] = await conexao.promise().query(sql, [email]);
-    return rows.length > 0 ? rows[0] : null; 
-  } catch (erro) {
-    console.error('Erro no login:', erro);
-    return null;  
-  }
+    async login(email) {
+      const conexao = db.getConexao();
+      // A função de login precisa da senha para comparar, então selecionamos tudo.
+      const sql = 'SELECT * FROM users WHERE email = ?;';
+      try {
+        const [rows] = await conexao.promise().query(sql, [email]);
+        return rows.length > 0 ? rows[0] : null;
+      } catch (error) {
+        console.error('Erro no login (repositório):', error);
+        throw error;
+      }
+    },
+
+    async create(user) {
+      const conexao = db.getConexao();
+      const sql = 'INSERT INTO users (nome, email, senha) VALUES (?, ?, ?);';
+      try {
+        const [result] = await conexao.promise().execute(sql, [
+          user.nome, user.email, user.senha
+        ]);
+        return result;
+      } catch (error) {
+        console.error('Erro ao criar usuário:', error);
+        throw error;
+      }
+    },
+
+    // FUNÇÃO REESCRITA PARA USAR SQL
+    async updateProfile(id, updatedData) {
+      const conexao = db.getConexao();
+      const sql = 'UPDATE users SET nome = ?, email = ?, senha = ?, foto = ? WHERE idUsers = ?;';
+      try {
+        const [result] = await conexao.promise().execute(sql, [
+          updatedData.nome,
+          updatedData.email,
+          updatedData.senha,
+          updatedData.foto,
+          id
+        ]);
+        if (result.affectedRows > 0) {
+          return this.getById(id); // Retorna o usuário atualizado (sem a senha)
+        }
+        return null;
+      } catch (error) {
+        console.error('Erro ao atualizar perfil:', error);
+        throw error;
+      }
+    },
+
+    // FUNÇÃO NOVA, ADICIONADA PARA CONSISTÊNCIA
+    async deleteById(id) {
+        const conexao = db.getConexao();
+        const sql = 'DELETE FROM users WHERE idUsers = ?;';
+        try {
+            const [result] = await conexao.promise().execute(sql, [id]);
+            return result;
+        } catch (error) {
+            console.error('Erro ao deletar usuário por ID:', error);
+            throw error;
+        }
+    },
+
+    // FUNÇÃO REESCRITA PARA USAR SQL
+    async removeProfilePhoto(userId) {
+      const conexao = db.getConexao();
+      const sql = 'UPDATE users SET foto = NULL WHERE idUsers = ?;';
+      try {
+        const [result] = await conexao.promise().execute(sql, [userId]);
+        if (result.affectedRows > 0) {
+            return this.getById(userId);
+        }
+        return null;
+      } catch (error) {
+        console.error('Erro ao remover foto de perfil:', error);
+        throw error;
+      }
+    },
+  };
 }
-,
-
-async create(user){
- const sql='insert into users (nome,email,senha) values (?,?,?);'
- const list= await conexao.promise().execute(sql,
-    [
-        user.nome,user.email,user.senha
-    ]).catch(erro=>{
-        return[erro]
-    })   
-    return list[0]
-},
-
-  async update(email, user) {
-    const users = loadUser();
-    const usuario = users.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase()
-    );
-    if (usuario) {
-      usuario.nome = user.nome;
-      usuario.email = user.email;
-      usuario.senha = user.senha;
-      usuario.foto = user.foto || usuario.foto;
-      saveUser(users);
-    }
-  },
-
-  async deleteByEmail(email) {
-    const users = loadUser();
-    const index = users.findIndex(
-      (user) => user.email.toLowerCase() === email.toLowerCase()
-    );
-    if (index !== -1) {
-      users.splice(index, 1);
-      saveUser(users);
-    }
-  },
-
-  async updateProfile(id, nome, email, senha, foto) {
-    const users = loadUser();
-    const usuarioIndex = users.findIndex((u) => u.id == id);
-    if (usuarioIndex === -1) throw new Error("Usuário não encontrado");
-
-    const user = users[usuarioIndex];
-    if (nome) user.nome = nome;
-    if (email) user.email = email;
-    if (senha) user.senha = senha;
-    if (foto) user.foto = foto;
-
-    saveUser(users);
-    return JSON.parse(JSON.stringify(user));
-  },
-
-  async removeProfilePhoto(userId) {
-    const users = loadUser();
-    const userIndex = users.findIndex((u) => u.id == userId);
-    if (userIndex === -1) throw new Error("Usuário não encontrado");
-
-    users[userIndex].foto = null;
-    saveUser(users);
-    return users[userIndex];
-  },
-};
-
-export default UserRepository;

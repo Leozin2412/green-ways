@@ -1,106 +1,92 @@
-import fs from "fs";
 import path from "path";
-import conexao from "../database/conexao.js";
+
 const filePath = path.resolve("./src/database/posts.json");
-import { v4 as uuidv4 } from "uuid";
 
-// Carregar os posts vindo do banco de dados 
-async function loadPosts() {
-  try {
-    const [rows] = await conexao.promise().query("SELECT * FROM post ORDER BY createdAt DESC");
-    return rows;
-  } catch (error) {
-    console.error("Erro ao carregar posts:", error);
-    return [];
-  }
-}
+// A fábrica agora recebe TODAS as suas dependências.
+export default function createPostRepository(db, uuid, fs) {
+  const repository = {
+    async loadPosts() {
+      const conexao = db.getConexao();
+      try {
+        const [rows] = await conexao.promise().query("SELECT * FROM post ORDER BY createdAt DESC");
+        return rows;
+      } catch (error) {
+        console.error("Erro ao carregar posts:", error);
+        return [];
+      }
+    },
 
-function savePosts(posts) {
-  try {
-    fs.writeFileSync(filePath, JSON.stringify(posts, null, 2));
-  } catch (error) {
-    console.error("Erro ao salvar posts:", error);
-  }
-}
+    savePosts(posts) {
+      try {
+        // Usa o 'fs' injetado
+        fs.writeFileSync(filePath, JSON.stringify(posts, null, 2));
+      } catch (error)
+      {
+        console.error("Erro ao salvar posts:", error);
+      }
+    },
 
-async function addPost({ userId, region, content }) {
-  const sql = `INSERT INTO post (idPost, region, content, User_idUsers, createdAt, responses) VALUES (?, ?, ?, ?, ?, ?)`;
-  const idPost = uuidv4();
-  const createdAt = new Date();
-  const responses = 0;
-  try {
-    const [result] = await conexao.promise().execute(sql, [
-      idPost,
-      region,
-      content,
-      userId,
-      createdAt,
-      responses
-    ]);
-    return result;
-  } catch (error) {
-    console.error("Erro ao adicionar post:", error);
-    return null;
-  }
-}
+    async addPost({ userId, region, content }) {
+      const conexao = db.getConexao();
+      const sql = `INSERT INTO post (idPost, region, content, User_idUsers, createdAt, responses) VALUES (?, ?, ?, ?, ?, ?)`;
+      // Usa o 'uuid' injetado
+      const idPost = uuid.v4();
+      const createdAt = new Date();
+      const responses = 0;
+      try {
+        const [result] = await conexao.promise().execute(sql, [
+          idPost, region, content, userId, createdAt, responses
+        ]);
+        return result;
+      } catch (error) {
+        console.error("Erro ao adicionar post:", error);
+        return null;
+      }
+    },
 
-async function deletePost(idPost) {
-  const sql = `DELETE FROM post WHERE idPost = ?`;
-  try {
-    const [result] = await conexao.promise().execute(sql, [idPost]);
+    async deletePost(idPost) {
+      const conexao = db.getConexao();
+      const sql = `DELETE FROM post WHERE idPost = ?`;
+      try {
+        const [result] = await conexao.promise().execute(sql, [idPost]);
+        return result;
+      } catch (error) {
+        console.error("Erro ao deletar post:", error);
+        throw error;
+      }
+    },
+    
+    async addResponse(postId, response) {
+      const posts = await this.loadPosts();
+      const post = posts.find((p) => p.id == postId);
+      if (post) {
+        if (!post.responses) post.responses = [];
+        response.id =
+          post.responses.length > 0
+            ? Math.max(...post.responses.map((r) => r.id)) + 1
+            : 1;
+        response.createdAt = new Date().toISOString();
+        post.responses.push(response);
+        this.savePosts(posts);
+        return response;
+      }
+      return null;
+    },
 
-    // Depois de deletar do banco, deleta do array local (se necessário)
-    const index = conexao.findIndex((p) => p.id == idPost);
-    if (index !== -1) {
-      conexao.splice(index, 1);
-      savePosts(conexao);
+    async deleteResponse(postId, responseId) {
+      const posts = await this.loadPosts();
+      const post = posts.find((p) => p.id == postId);
+      if (post && post.responses) {
+        const index = post.responses.findIndex((r) => r.id == responseId);
+        if (index !== -1) {
+          post.responses.splice(index, 1);
+          this.savePosts(posts);
+          return true;
+        }
+      }
+      return false;
     }
+  };
 
-    return result;
-  } catch (error) {
-    console.error("Erro ao deletar post:", error);
-    throw error;
-  }
+  return repository;
 }
-
-
-
-function addResponse(postId, response) {
-  const posts = loadPosts();
-  const post = posts.find((p) => p.id == postId);
-  if (post) {
-    if (!post.responses) post.responses = [];
-    response.id =
-      post.responses.length > 0
-        ? Math.max(...post.responses.map((r) => r.id)) + 1
-        : 1;
-    response.createdAt = new Date().toISOString();
-    post.responses.push(response);
-    savePosts(posts);
-    return response;
-  }
-  return null;
-}
-
-function deleteResponse(postId, responseId) {
-  const posts = loadPosts();
-  const post = posts.find((p) => p.id == postId);
-  if (post && post.responses) {
-    const index = post.responses.findIndex((r) => r.id == responseId);
-    if (index !== -1) {
-      post.responses.splice(index, 1);
-      savePosts(posts);
-      return true;
-    }
-  }
-  return false;
-}
-
-export default {
-  loadPosts,
-  savePosts,
-  addPost,
-  deletePost,
-  addResponse,
-  deleteResponse,
-};
