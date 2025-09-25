@@ -2,7 +2,7 @@ const lastAccess = localStorage.getItem("lastAccess");
 function estados() {
   carregarLocalidades("estados");
 }
-
+//teste
 function parseJwt(token) {
   try {
     const base64Url = token.split('.')[1];
@@ -318,6 +318,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       } catch (error) {
         console.error("Erro ao enviar resposta:", error);
       }
+      loadPosts()
     });
 
     return post;
