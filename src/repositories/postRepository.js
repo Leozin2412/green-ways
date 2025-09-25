@@ -67,13 +67,14 @@ async  deletePost(numericPostId) {
 
 
 async addResponse(numericPostId,numericUserId, content) {
-  const coments=prisma.coments.create({
+  const coments=await prisma.coments.create({
     data:{
       Post_idPost:numericPostId,
       Users_id:numericUserId,
       content:content
     }
   })
+  return coments
 },
 
  deleteResponse(postId, responseId) {

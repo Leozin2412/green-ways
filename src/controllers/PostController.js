@@ -50,8 +50,13 @@ const PostController = {
           .status(400)
           .json({ ok: false, message: "Campos obrigatórios" });
       }
-      const response = await PostRepository.addResponse(numericPostId,numericUserId,content);
-      res.status(201).json({ ok: true, response });
+      await PostRepository.addResponse(
+        numericPostId,
+        numericUserId,
+        content
+      );
+      res.status(201).json({ ok: true, message: "Resposta adicionada com sucesso" });
+
     } catch (error) {
       res.status(500).json({ ok: false, message: error.message });
     }

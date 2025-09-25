@@ -2,7 +2,7 @@ const lastAccess = localStorage.getItem("lastAccess");
 function estados() {
   carregarLocalidades("estados");
 }
-//teste
+
 function parseJwt(token) {
   try {
     const base64Url = token.split('.')[1];
@@ -184,6 +184,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (data.ok) {
         data.posts.forEach((post) => {
+          console.log("Processando post:", post);
           const postElement = createPostElement(
             post.users.nome,
             post.region,
@@ -191,9 +192,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             post.idPost,
             post.Users_id
           );
+          
           postList.appendChild(postElement);
-          if (post.responses && post.responses.length > 0) {
-            displayResponses(post.id, post.responses);
+          if (post.coments && post.coments.length > 0) {
+            displayResponses(post.idPost, post.coments);
           }
         });
       }
@@ -313,7 +315,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (data.ok) {
           responseForm.reset();
           responseFormContainer.style.display = "none";
-          displayResponses(postId, data.post.responses);
+     
         }
       } catch (error) {
         console.error("Erro ao enviar resposta:", error);
@@ -334,9 +336,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const responseElement = document.createElement("div");
       responseElement.className = "response";
       responseElement.innerHTML = `
-        <p><strong>${response.userName}:</strong> ${response.content}</p>
-        ${currentUser.id === response.userId || userIsAdmin ? `<button class="delete-response-btn" data-post-id="${postId}" data-response-id="${response.id}">Excluir Resposta</button>` : ""}
-      `;
+      <p><strong>${response.users.nome}:</strong> ${response.content}</p>
+      ${currentUser.id === response.Users_id || userIsAdmin ? `<button class="delete-response-btn" data-post-id="${postId}" data-response-id="${response.idComents}">Excluir Resposta</button>` : ""}
+    `;
       responsesContainer.appendChild(responseElement);
     });
 
