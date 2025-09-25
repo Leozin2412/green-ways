@@ -24,11 +24,6 @@ export type coments = $Result.DefaultSelection<Prisma.$comentsPayload>
  */
 export type post = $Result.DefaultSelection<Prisma.$postPayload>
 /**
- * Model responses
- * 
- */
-export type responses = $Result.DefaultSelection<Prisma.$responsesPayload>
-/**
  * Model users
  * 
  */
@@ -188,16 +183,6 @@ export class PrismaClient<
     * ```
     */
   get post(): Prisma.postDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.responses`: Exposes CRUD operations for the **responses** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Responses
-    * const responses = await prisma.responses.findMany()
-    * ```
-    */
-  get responses(): Prisma.responsesDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.users`: Exposes CRUD operations for the **users** model.
@@ -650,7 +635,6 @@ export namespace Prisma {
   export const ModelName: {
     coments: 'coments',
     post: 'post',
-    responses: 'responses',
     users: 'users'
   };
 
@@ -670,7 +654,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "coments" | "post" | "responses" | "users"
+      modelProps: "coments" | "post" | "users"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -803,72 +787,6 @@ export namespace Prisma {
           count: {
             args: Prisma.postCountArgs<ExtArgs>
             result: $Utils.Optional<PostCountAggregateOutputType> | number
-          }
-        }
-      }
-      responses: {
-        payload: Prisma.$responsesPayload<ExtArgs>
-        fields: Prisma.responsesFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.responsesFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$responsesPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.responsesFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$responsesPayload>
-          }
-          findFirst: {
-            args: Prisma.responsesFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$responsesPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.responsesFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$responsesPayload>
-          }
-          findMany: {
-            args: Prisma.responsesFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$responsesPayload>[]
-          }
-          create: {
-            args: Prisma.responsesCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$responsesPayload>
-          }
-          createMany: {
-            args: Prisma.responsesCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.responsesDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$responsesPayload>
-          }
-          update: {
-            args: Prisma.responsesUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$responsesPayload>
-          }
-          deleteMany: {
-            args: Prisma.responsesDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.responsesUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.responsesUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$responsesPayload>
-          }
-          aggregate: {
-            args: Prisma.ResponsesAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateResponses>
-          }
-          groupBy: {
-            args: Prisma.responsesGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ResponsesGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.responsesCountArgs<ExtArgs>
-            result: $Utils.Optional<ResponsesCountAggregateOutputType> | number
           }
         }
       }
@@ -1032,7 +950,6 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     coments?: comentsOmit
     post?: postOmit
-    responses?: responsesOmit
     users?: usersOmit
   }
 
@@ -1115,12 +1032,10 @@ export namespace Prisma {
 
   export type PostCountOutputType = {
     coments: number
-    responses: number
   }
 
   export type PostCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     coments?: boolean | PostCountOutputTypeCountComentsArgs
-    responses?: boolean | PostCountOutputTypeCountResponsesArgs
   }
 
   // Custom InputTypes
@@ -1141,13 +1056,6 @@ export namespace Prisma {
     where?: comentsWhereInput
   }
 
-  /**
-   * PostCountOutputType without action
-   */
-  export type PostCountOutputTypeCountResponsesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: responsesWhereInput
-  }
-
 
   /**
    * Count Type UsersCountOutputType
@@ -1156,13 +1064,11 @@ export namespace Prisma {
   export type UsersCountOutputType = {
     coments: number
     post: number
-    responses: number
   }
 
   export type UsersCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     coments?: boolean | UsersCountOutputTypeCountComentsArgs
     post?: boolean | UsersCountOutputTypeCountPostArgs
-    responses?: boolean | UsersCountOutputTypeCountResponsesArgs
   }
 
   // Custom InputTypes
@@ -1188,13 +1094,6 @@ export namespace Prisma {
    */
   export type UsersCountOutputTypeCountPostArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: postWhereInput
-  }
-
-  /**
-   * UsersCountOutputType without action
-   */
-  export type UsersCountOutputTypeCountResponsesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: responsesWhereInput
   }
 
 
@@ -2381,7 +2280,6 @@ export namespace Prisma {
     Users_id?: boolean
     coments?: boolean | post$comentsArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
-    responses?: boolean | post$responsesArgs<ExtArgs>
     _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
 
@@ -2399,7 +2297,6 @@ export namespace Prisma {
   export type postInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     coments?: boolean | post$comentsArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
-    responses?: boolean | post$responsesArgs<ExtArgs>
     _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -2408,7 +2305,6 @@ export namespace Prisma {
     objects: {
       coments: Prisma.$comentsPayload<ExtArgs>[]
       users: Prisma.$usersPayload<ExtArgs>
-      responses: Prisma.$responsesPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       idPost: number
@@ -2758,7 +2654,6 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     coments<T extends post$comentsArgs<ExtArgs> = {}>(args?: Subset<T, post$comentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$comentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     users<T extends usersDefaultArgs<ExtArgs> = {}>(args?: Subset<T, usersDefaultArgs<ExtArgs>>): Prisma__usersClient<$Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    responses<T extends post$responsesArgs<ExtArgs> = {}>(args?: Subset<T, post$responsesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$responsesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3160,30 +3055,6 @@ export namespace Prisma {
   }
 
   /**
-   * post.responses
-   */
-  export type post$responsesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the responses
-     */
-    select?: responsesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the responses
-     */
-    omit?: responsesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: responsesInclude<ExtArgs> | null
-    where?: responsesWhereInput
-    orderBy?: responsesOrderByWithRelationInput | responsesOrderByWithRelationInput[]
-    cursor?: responsesWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ResponsesScalarFieldEnum | ResponsesScalarFieldEnum[]
-  }
-
-  /**
    * post without action
    */
   export type postDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3199,981 +3070,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: postInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model responses
-   */
-
-  export type AggregateResponses = {
-    _count: ResponsesCountAggregateOutputType | null
-    _avg: ResponsesAvgAggregateOutputType | null
-    _sum: ResponsesSumAggregateOutputType | null
-    _min: ResponsesMinAggregateOutputType | null
-    _max: ResponsesMaxAggregateOutputType | null
-  }
-
-  export type ResponsesAvgAggregateOutputType = {
-    idResponse: number | null
-    Users_id: number | null
-    Post_idPost: number | null
-  }
-
-  export type ResponsesSumAggregateOutputType = {
-    idResponse: number | null
-    Users_id: number | null
-    Post_idPost: number | null
-  }
-
-  export type ResponsesMinAggregateOutputType = {
-    idResponse: number | null
-    content: string | null
-    createdAt: Date | null
-    Users_id: number | null
-    Post_idPost: number | null
-  }
-
-  export type ResponsesMaxAggregateOutputType = {
-    idResponse: number | null
-    content: string | null
-    createdAt: Date | null
-    Users_id: number | null
-    Post_idPost: number | null
-  }
-
-  export type ResponsesCountAggregateOutputType = {
-    idResponse: number
-    content: number
-    createdAt: number
-    Users_id: number
-    Post_idPost: number
-    _all: number
-  }
-
-
-  export type ResponsesAvgAggregateInputType = {
-    idResponse?: true
-    Users_id?: true
-    Post_idPost?: true
-  }
-
-  export type ResponsesSumAggregateInputType = {
-    idResponse?: true
-    Users_id?: true
-    Post_idPost?: true
-  }
-
-  export type ResponsesMinAggregateInputType = {
-    idResponse?: true
-    content?: true
-    createdAt?: true
-    Users_id?: true
-    Post_idPost?: true
-  }
-
-  export type ResponsesMaxAggregateInputType = {
-    idResponse?: true
-    content?: true
-    createdAt?: true
-    Users_id?: true
-    Post_idPost?: true
-  }
-
-  export type ResponsesCountAggregateInputType = {
-    idResponse?: true
-    content?: true
-    createdAt?: true
-    Users_id?: true
-    Post_idPost?: true
-    _all?: true
-  }
-
-  export type ResponsesAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which responses to aggregate.
-     */
-    where?: responsesWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of responses to fetch.
-     */
-    orderBy?: responsesOrderByWithRelationInput | responsesOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: responsesWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` responses from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` responses.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned responses
-    **/
-    _count?: true | ResponsesCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: ResponsesAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: ResponsesSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: ResponsesMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: ResponsesMaxAggregateInputType
-  }
-
-  export type GetResponsesAggregateType<T extends ResponsesAggregateArgs> = {
-        [P in keyof T & keyof AggregateResponses]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateResponses[P]>
-      : GetScalarType<T[P], AggregateResponses[P]>
-  }
-
-
-
-
-  export type responsesGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: responsesWhereInput
-    orderBy?: responsesOrderByWithAggregationInput | responsesOrderByWithAggregationInput[]
-    by: ResponsesScalarFieldEnum[] | ResponsesScalarFieldEnum
-    having?: responsesScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: ResponsesCountAggregateInputType | true
-    _avg?: ResponsesAvgAggregateInputType
-    _sum?: ResponsesSumAggregateInputType
-    _min?: ResponsesMinAggregateInputType
-    _max?: ResponsesMaxAggregateInputType
-  }
-
-  export type ResponsesGroupByOutputType = {
-    idResponse: number
-    content: string
-    createdAt: Date
-    Users_id: number
-    Post_idPost: number
-    _count: ResponsesCountAggregateOutputType | null
-    _avg: ResponsesAvgAggregateOutputType | null
-    _sum: ResponsesSumAggregateOutputType | null
-    _min: ResponsesMinAggregateOutputType | null
-    _max: ResponsesMaxAggregateOutputType | null
-  }
-
-  type GetResponsesGroupByPayload<T extends responsesGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<ResponsesGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ResponsesGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ResponsesGroupByOutputType[P]>
-            : GetScalarType<T[P], ResponsesGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type responsesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    idResponse?: boolean
-    content?: boolean
-    createdAt?: boolean
-    Users_id?: boolean
-    Post_idPost?: boolean
-    post?: boolean | postDefaultArgs<ExtArgs>
-    users?: boolean | usersDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["responses"]>
-
-
-
-  export type responsesSelectScalar = {
-    idResponse?: boolean
-    content?: boolean
-    createdAt?: boolean
-    Users_id?: boolean
-    Post_idPost?: boolean
-  }
-
-  export type responsesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"idResponse" | "content" | "createdAt" | "Users_id" | "Post_idPost", ExtArgs["result"]["responses"]>
-  export type responsesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    post?: boolean | postDefaultArgs<ExtArgs>
-    users?: boolean | usersDefaultArgs<ExtArgs>
-  }
-
-  export type $responsesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "responses"
-    objects: {
-      post: Prisma.$postPayload<ExtArgs>
-      users: Prisma.$usersPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      idResponse: number
-      content: string
-      createdAt: Date
-      Users_id: number
-      Post_idPost: number
-    }, ExtArgs["result"]["responses"]>
-    composites: {}
-  }
-
-  type responsesGetPayload<S extends boolean | null | undefined | responsesDefaultArgs> = $Result.GetResult<Prisma.$responsesPayload, S>
-
-  type responsesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<responsesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ResponsesCountAggregateInputType | true
-    }
-
-  export interface responsesDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['responses'], meta: { name: 'responses' } }
-    /**
-     * Find zero or one Responses that matches the filter.
-     * @param {responsesFindUniqueArgs} args - Arguments to find a Responses
-     * @example
-     * // Get one Responses
-     * const responses = await prisma.responses.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends responsesFindUniqueArgs>(args: SelectSubset<T, responsesFindUniqueArgs<ExtArgs>>): Prisma__responsesClient<$Result.GetResult<Prisma.$responsesPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Responses that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {responsesFindUniqueOrThrowArgs} args - Arguments to find a Responses
-     * @example
-     * // Get one Responses
-     * const responses = await prisma.responses.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends responsesFindUniqueOrThrowArgs>(args: SelectSubset<T, responsesFindUniqueOrThrowArgs<ExtArgs>>): Prisma__responsesClient<$Result.GetResult<Prisma.$responsesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Responses that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {responsesFindFirstArgs} args - Arguments to find a Responses
-     * @example
-     * // Get one Responses
-     * const responses = await prisma.responses.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends responsesFindFirstArgs>(args?: SelectSubset<T, responsesFindFirstArgs<ExtArgs>>): Prisma__responsesClient<$Result.GetResult<Prisma.$responsesPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Responses that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {responsesFindFirstOrThrowArgs} args - Arguments to find a Responses
-     * @example
-     * // Get one Responses
-     * const responses = await prisma.responses.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends responsesFindFirstOrThrowArgs>(args?: SelectSubset<T, responsesFindFirstOrThrowArgs<ExtArgs>>): Prisma__responsesClient<$Result.GetResult<Prisma.$responsesPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Responses that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {responsesFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Responses
-     * const responses = await prisma.responses.findMany()
-     * 
-     * // Get first 10 Responses
-     * const responses = await prisma.responses.findMany({ take: 10 })
-     * 
-     * // Only select the `idResponse`
-     * const responsesWithIdResponseOnly = await prisma.responses.findMany({ select: { idResponse: true } })
-     * 
-     */
-    findMany<T extends responsesFindManyArgs>(args?: SelectSubset<T, responsesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$responsesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Responses.
-     * @param {responsesCreateArgs} args - Arguments to create a Responses.
-     * @example
-     * // Create one Responses
-     * const Responses = await prisma.responses.create({
-     *   data: {
-     *     // ... data to create a Responses
-     *   }
-     * })
-     * 
-     */
-    create<T extends responsesCreateArgs>(args: SelectSubset<T, responsesCreateArgs<ExtArgs>>): Prisma__responsesClient<$Result.GetResult<Prisma.$responsesPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Responses.
-     * @param {responsesCreateManyArgs} args - Arguments to create many Responses.
-     * @example
-     * // Create many Responses
-     * const responses = await prisma.responses.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends responsesCreateManyArgs>(args?: SelectSubset<T, responsesCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Responses.
-     * @param {responsesDeleteArgs} args - Arguments to delete one Responses.
-     * @example
-     * // Delete one Responses
-     * const Responses = await prisma.responses.delete({
-     *   where: {
-     *     // ... filter to delete one Responses
-     *   }
-     * })
-     * 
-     */
-    delete<T extends responsesDeleteArgs>(args: SelectSubset<T, responsesDeleteArgs<ExtArgs>>): Prisma__responsesClient<$Result.GetResult<Prisma.$responsesPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Responses.
-     * @param {responsesUpdateArgs} args - Arguments to update one Responses.
-     * @example
-     * // Update one Responses
-     * const responses = await prisma.responses.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends responsesUpdateArgs>(args: SelectSubset<T, responsesUpdateArgs<ExtArgs>>): Prisma__responsesClient<$Result.GetResult<Prisma.$responsesPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Responses.
-     * @param {responsesDeleteManyArgs} args - Arguments to filter Responses to delete.
-     * @example
-     * // Delete a few Responses
-     * const { count } = await prisma.responses.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends responsesDeleteManyArgs>(args?: SelectSubset<T, responsesDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Responses.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {responsesUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Responses
-     * const responses = await prisma.responses.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends responsesUpdateManyArgs>(args: SelectSubset<T, responsesUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Responses.
-     * @param {responsesUpsertArgs} args - Arguments to update or create a Responses.
-     * @example
-     * // Update or create a Responses
-     * const responses = await prisma.responses.upsert({
-     *   create: {
-     *     // ... data to create a Responses
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Responses we want to update
-     *   }
-     * })
-     */
-    upsert<T extends responsesUpsertArgs>(args: SelectSubset<T, responsesUpsertArgs<ExtArgs>>): Prisma__responsesClient<$Result.GetResult<Prisma.$responsesPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Responses.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {responsesCountArgs} args - Arguments to filter Responses to count.
-     * @example
-     * // Count the number of Responses
-     * const count = await prisma.responses.count({
-     *   where: {
-     *     // ... the filter for the Responses we want to count
-     *   }
-     * })
-    **/
-    count<T extends responsesCountArgs>(
-      args?: Subset<T, responsesCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], ResponsesCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Responses.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ResponsesAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends ResponsesAggregateArgs>(args: Subset<T, ResponsesAggregateArgs>): Prisma.PrismaPromise<GetResponsesAggregateType<T>>
-
-    /**
-     * Group by Responses.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {responsesGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends responsesGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: responsesGroupByArgs['orderBy'] }
-        : { orderBy?: responsesGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, responsesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetResponsesGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the responses model
-   */
-  readonly fields: responsesFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for responses.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__responsesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    post<T extends postDefaultArgs<ExtArgs> = {}>(args?: Subset<T, postDefaultArgs<ExtArgs>>): Prisma__postClient<$Result.GetResult<Prisma.$postPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    users<T extends usersDefaultArgs<ExtArgs> = {}>(args?: Subset<T, usersDefaultArgs<ExtArgs>>): Prisma__usersClient<$Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the responses model
-   */
-  interface responsesFieldRefs {
-    readonly idResponse: FieldRef<"responses", 'Int'>
-    readonly content: FieldRef<"responses", 'String'>
-    readonly createdAt: FieldRef<"responses", 'DateTime'>
-    readonly Users_id: FieldRef<"responses", 'Int'>
-    readonly Post_idPost: FieldRef<"responses", 'Int'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * responses findUnique
-   */
-  export type responsesFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the responses
-     */
-    select?: responsesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the responses
-     */
-    omit?: responsesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: responsesInclude<ExtArgs> | null
-    /**
-     * Filter, which responses to fetch.
-     */
-    where: responsesWhereUniqueInput
-  }
-
-  /**
-   * responses findUniqueOrThrow
-   */
-  export type responsesFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the responses
-     */
-    select?: responsesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the responses
-     */
-    omit?: responsesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: responsesInclude<ExtArgs> | null
-    /**
-     * Filter, which responses to fetch.
-     */
-    where: responsesWhereUniqueInput
-  }
-
-  /**
-   * responses findFirst
-   */
-  export type responsesFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the responses
-     */
-    select?: responsesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the responses
-     */
-    omit?: responsesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: responsesInclude<ExtArgs> | null
-    /**
-     * Filter, which responses to fetch.
-     */
-    where?: responsesWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of responses to fetch.
-     */
-    orderBy?: responsesOrderByWithRelationInput | responsesOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for responses.
-     */
-    cursor?: responsesWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` responses from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` responses.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of responses.
-     */
-    distinct?: ResponsesScalarFieldEnum | ResponsesScalarFieldEnum[]
-  }
-
-  /**
-   * responses findFirstOrThrow
-   */
-  export type responsesFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the responses
-     */
-    select?: responsesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the responses
-     */
-    omit?: responsesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: responsesInclude<ExtArgs> | null
-    /**
-     * Filter, which responses to fetch.
-     */
-    where?: responsesWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of responses to fetch.
-     */
-    orderBy?: responsesOrderByWithRelationInput | responsesOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for responses.
-     */
-    cursor?: responsesWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` responses from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` responses.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of responses.
-     */
-    distinct?: ResponsesScalarFieldEnum | ResponsesScalarFieldEnum[]
-  }
-
-  /**
-   * responses findMany
-   */
-  export type responsesFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the responses
-     */
-    select?: responsesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the responses
-     */
-    omit?: responsesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: responsesInclude<ExtArgs> | null
-    /**
-     * Filter, which responses to fetch.
-     */
-    where?: responsesWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of responses to fetch.
-     */
-    orderBy?: responsesOrderByWithRelationInput | responsesOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing responses.
-     */
-    cursor?: responsesWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` responses from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` responses.
-     */
-    skip?: number
-    distinct?: ResponsesScalarFieldEnum | ResponsesScalarFieldEnum[]
-  }
-
-  /**
-   * responses create
-   */
-  export type responsesCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the responses
-     */
-    select?: responsesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the responses
-     */
-    omit?: responsesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: responsesInclude<ExtArgs> | null
-    /**
-     * The data needed to create a responses.
-     */
-    data: XOR<responsesCreateInput, responsesUncheckedCreateInput>
-  }
-
-  /**
-   * responses createMany
-   */
-  export type responsesCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many responses.
-     */
-    data: responsesCreateManyInput | responsesCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * responses update
-   */
-  export type responsesUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the responses
-     */
-    select?: responsesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the responses
-     */
-    omit?: responsesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: responsesInclude<ExtArgs> | null
-    /**
-     * The data needed to update a responses.
-     */
-    data: XOR<responsesUpdateInput, responsesUncheckedUpdateInput>
-    /**
-     * Choose, which responses to update.
-     */
-    where: responsesWhereUniqueInput
-  }
-
-  /**
-   * responses updateMany
-   */
-  export type responsesUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update responses.
-     */
-    data: XOR<responsesUpdateManyMutationInput, responsesUncheckedUpdateManyInput>
-    /**
-     * Filter which responses to update
-     */
-    where?: responsesWhereInput
-    /**
-     * Limit how many responses to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * responses upsert
-   */
-  export type responsesUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the responses
-     */
-    select?: responsesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the responses
-     */
-    omit?: responsesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: responsesInclude<ExtArgs> | null
-    /**
-     * The filter to search for the responses to update in case it exists.
-     */
-    where: responsesWhereUniqueInput
-    /**
-     * In case the responses found by the `where` argument doesn't exist, create a new responses with this data.
-     */
-    create: XOR<responsesCreateInput, responsesUncheckedCreateInput>
-    /**
-     * In case the responses was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<responsesUpdateInput, responsesUncheckedUpdateInput>
-  }
-
-  /**
-   * responses delete
-   */
-  export type responsesDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the responses
-     */
-    select?: responsesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the responses
-     */
-    omit?: responsesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: responsesInclude<ExtArgs> | null
-    /**
-     * Filter which responses to delete.
-     */
-    where: responsesWhereUniqueInput
-  }
-
-  /**
-   * responses deleteMany
-   */
-  export type responsesDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which responses to delete
-     */
-    where?: responsesWhereInput
-    /**
-     * Limit how many responses to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * responses without action
-   */
-  export type responsesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the responses
-     */
-    select?: responsesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the responses
-     */
-    omit?: responsesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: responsesInclude<ExtArgs> | null
   }
 
 
@@ -4397,7 +3293,6 @@ export namespace Prisma {
     ativo?: boolean
     coments?: boolean | users$comentsArgs<ExtArgs>
     post?: boolean | users$postArgs<ExtArgs>
-    responses?: boolean | users$responsesArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["users"]>
 
@@ -4417,7 +3312,6 @@ export namespace Prisma {
   export type usersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     coments?: boolean | users$comentsArgs<ExtArgs>
     post?: boolean | users$postArgs<ExtArgs>
-    responses?: boolean | users$responsesArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -4426,7 +3320,6 @@ export namespace Prisma {
     objects: {
       coments: Prisma.$comentsPayload<ExtArgs>[]
       post: Prisma.$postPayload<ExtArgs>[]
-      responses: Prisma.$responsesPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -4778,7 +3671,6 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     coments<T extends users$comentsArgs<ExtArgs> = {}>(args?: Subset<T, users$comentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$comentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     post<T extends users$postArgs<ExtArgs> = {}>(args?: Subset<T, users$postArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$postPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    responses<T extends users$responsesArgs<ExtArgs> = {}>(args?: Subset<T, users$responsesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$responsesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5206,30 +4098,6 @@ export namespace Prisma {
   }
 
   /**
-   * users.responses
-   */
-  export type users$responsesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the responses
-     */
-    select?: responsesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the responses
-     */
-    omit?: responsesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: responsesInclude<ExtArgs> | null
-    where?: responsesWhereInput
-    orderBy?: responsesOrderByWithRelationInput | responsesOrderByWithRelationInput[]
-    cursor?: responsesWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ResponsesScalarFieldEnum | ResponsesScalarFieldEnum[]
-  }
-
-  /**
    * users without action
    */
   export type usersDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5284,17 +4152,6 @@ export namespace Prisma {
   export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
 
 
-  export const ResponsesScalarFieldEnum: {
-    idResponse: 'idResponse',
-    content: 'content',
-    createdAt: 'createdAt',
-    Users_id: 'Users_id',
-    Post_idPost: 'Post_idPost'
-  };
-
-  export type ResponsesScalarFieldEnum = (typeof ResponsesScalarFieldEnum)[keyof typeof ResponsesScalarFieldEnum]
-
-
   export const UsersScalarFieldEnum: {
     id: 'id',
     nome: 'nome',
@@ -5329,13 +4186,6 @@ export namespace Prisma {
   };
 
   export type postOrderByRelevanceFieldEnum = (typeof postOrderByRelevanceFieldEnum)[keyof typeof postOrderByRelevanceFieldEnum]
-
-
-  export const responsesOrderByRelevanceFieldEnum: {
-    content: 'content'
-  };
-
-  export type responsesOrderByRelevanceFieldEnum = (typeof responsesOrderByRelevanceFieldEnum)[keyof typeof responsesOrderByRelevanceFieldEnum]
 
 
   export const NullsOrder: {
@@ -5471,7 +4321,6 @@ export namespace Prisma {
     Users_id?: IntFilter<"post"> | number
     coments?: ComentsListRelationFilter
     users?: XOR<UsersScalarRelationFilter, usersWhereInput>
-    responses?: ResponsesListRelationFilter
   }
 
   export type postOrderByWithRelationInput = {
@@ -5482,7 +4331,6 @@ export namespace Prisma {
     Users_id?: SortOrder
     coments?: comentsOrderByRelationAggregateInput
     users?: usersOrderByWithRelationInput
-    responses?: responsesOrderByRelationAggregateInput
     _relevance?: postOrderByRelevanceInput
   }
 
@@ -5497,7 +4345,6 @@ export namespace Prisma {
     Users_id?: IntFilter<"post"> | number
     coments?: ComentsListRelationFilter
     users?: XOR<UsersScalarRelationFilter, usersWhereInput>
-    responses?: ResponsesListRelationFilter
   }, "idPost">
 
   export type postOrderByWithAggregationInput = {
@@ -5524,67 +4371,6 @@ export namespace Prisma {
     Users_id?: IntWithAggregatesFilter<"post"> | number
   }
 
-  export type responsesWhereInput = {
-    AND?: responsesWhereInput | responsesWhereInput[]
-    OR?: responsesWhereInput[]
-    NOT?: responsesWhereInput | responsesWhereInput[]
-    idResponse?: IntFilter<"responses"> | number
-    content?: StringFilter<"responses"> | string
-    createdAt?: DateTimeFilter<"responses"> | Date | string
-    Users_id?: IntFilter<"responses"> | number
-    Post_idPost?: IntFilter<"responses"> | number
-    post?: XOR<PostScalarRelationFilter, postWhereInput>
-    users?: XOR<UsersScalarRelationFilter, usersWhereInput>
-  }
-
-  export type responsesOrderByWithRelationInput = {
-    idResponse?: SortOrder
-    content?: SortOrder
-    createdAt?: SortOrder
-    Users_id?: SortOrder
-    Post_idPost?: SortOrder
-    post?: postOrderByWithRelationInput
-    users?: usersOrderByWithRelationInput
-    _relevance?: responsesOrderByRelevanceInput
-  }
-
-  export type responsesWhereUniqueInput = Prisma.AtLeast<{
-    idResponse?: number
-    AND?: responsesWhereInput | responsesWhereInput[]
-    OR?: responsesWhereInput[]
-    NOT?: responsesWhereInput | responsesWhereInput[]
-    content?: StringFilter<"responses"> | string
-    createdAt?: DateTimeFilter<"responses"> | Date | string
-    Users_id?: IntFilter<"responses"> | number
-    Post_idPost?: IntFilter<"responses"> | number
-    post?: XOR<PostScalarRelationFilter, postWhereInput>
-    users?: XOR<UsersScalarRelationFilter, usersWhereInput>
-  }, "idResponse">
-
-  export type responsesOrderByWithAggregationInput = {
-    idResponse?: SortOrder
-    content?: SortOrder
-    createdAt?: SortOrder
-    Users_id?: SortOrder
-    Post_idPost?: SortOrder
-    _count?: responsesCountOrderByAggregateInput
-    _avg?: responsesAvgOrderByAggregateInput
-    _max?: responsesMaxOrderByAggregateInput
-    _min?: responsesMinOrderByAggregateInput
-    _sum?: responsesSumOrderByAggregateInput
-  }
-
-  export type responsesScalarWhereWithAggregatesInput = {
-    AND?: responsesScalarWhereWithAggregatesInput | responsesScalarWhereWithAggregatesInput[]
-    OR?: responsesScalarWhereWithAggregatesInput[]
-    NOT?: responsesScalarWhereWithAggregatesInput | responsesScalarWhereWithAggregatesInput[]
-    idResponse?: IntWithAggregatesFilter<"responses"> | number
-    content?: StringWithAggregatesFilter<"responses"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"responses"> | Date | string
-    Users_id?: IntWithAggregatesFilter<"responses"> | number
-    Post_idPost?: IntWithAggregatesFilter<"responses"> | number
-  }
-
   export type usersWhereInput = {
     AND?: usersWhereInput | usersWhereInput[]
     OR?: usersWhereInput[]
@@ -5598,7 +4384,6 @@ export namespace Prisma {
     ativo?: IntFilter<"users"> | number
     coments?: ComentsListRelationFilter
     post?: PostListRelationFilter
-    responses?: ResponsesListRelationFilter
   }
 
   export type usersOrderByWithRelationInput = {
@@ -5611,7 +4396,6 @@ export namespace Prisma {
     ativo?: SortOrder
     coments?: comentsOrderByRelationAggregateInput
     post?: postOrderByRelationAggregateInput
-    responses?: responsesOrderByRelationAggregateInput
     _relevance?: usersOrderByRelevanceInput
   }
 
@@ -5628,7 +4412,6 @@ export namespace Prisma {
     ativo?: IntFilter<"users"> | number
     coments?: ComentsListRelationFilter
     post?: PostListRelationFilter
-    responses?: ResponsesListRelationFilter
   }, "id" | "email">
 
   export type usersOrderByWithAggregationInput = {
@@ -5661,7 +4444,7 @@ export namespace Prisma {
 
   export type comentsCreateInput = {
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     post: postCreateNestedOneWithoutComentsInput
     users: usersCreateNestedOneWithoutComentsInput
   }
@@ -5669,7 +4452,7 @@ export namespace Prisma {
   export type comentsUncheckedCreateInput = {
     idComents?: number
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     Users_id: number
     Post_idPost: number
   }
@@ -5692,7 +4475,7 @@ export namespace Prisma {
   export type comentsCreateManyInput = {
     idComents?: number
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     Users_id: number
     Post_idPost: number
   }
@@ -5716,7 +4499,6 @@ export namespace Prisma {
     createdAt?: Date | string
     coments?: comentsCreateNestedManyWithoutPostInput
     users: usersCreateNestedOneWithoutPostInput
-    responses?: responsesCreateNestedManyWithoutPostInput
   }
 
   export type postUncheckedCreateInput = {
@@ -5726,7 +4508,6 @@ export namespace Prisma {
     createdAt?: Date | string
     Users_id: number
     coments?: comentsUncheckedCreateNestedManyWithoutPostInput
-    responses?: responsesUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type postUpdateInput = {
@@ -5735,7 +4516,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coments?: comentsUpdateManyWithoutPostNestedInput
     users?: usersUpdateOneRequiredWithoutPostNestedInput
-    responses?: responsesUpdateManyWithoutPostNestedInput
   }
 
   export type postUncheckedUpdateInput = {
@@ -5745,7 +4525,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Users_id?: IntFieldUpdateOperationsInput | number
     coments?: comentsUncheckedUpdateManyWithoutPostNestedInput
-    responses?: responsesUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type postCreateManyInput = {
@@ -5770,57 +4549,6 @@ export namespace Prisma {
     Users_id?: IntFieldUpdateOperationsInput | number
   }
 
-  export type responsesCreateInput = {
-    content: string
-    createdAt?: Date | string
-    post: postCreateNestedOneWithoutResponsesInput
-    users: usersCreateNestedOneWithoutResponsesInput
-  }
-
-  export type responsesUncheckedCreateInput = {
-    idResponse?: number
-    content: string
-    createdAt?: Date | string
-    Users_id: number
-    Post_idPost: number
-  }
-
-  export type responsesUpdateInput = {
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    post?: postUpdateOneRequiredWithoutResponsesNestedInput
-    users?: usersUpdateOneRequiredWithoutResponsesNestedInput
-  }
-
-  export type responsesUncheckedUpdateInput = {
-    idResponse?: IntFieldUpdateOperationsInput | number
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Users_id?: IntFieldUpdateOperationsInput | number
-    Post_idPost?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type responsesCreateManyInput = {
-    idResponse?: number
-    content: string
-    createdAt?: Date | string
-    Users_id: number
-    Post_idPost: number
-  }
-
-  export type responsesUpdateManyMutationInput = {
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type responsesUncheckedUpdateManyInput = {
-    idResponse?: IntFieldUpdateOperationsInput | number
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Users_id?: IntFieldUpdateOperationsInput | number
-    Post_idPost?: IntFieldUpdateOperationsInput | number
-  }
-
   export type usersCreateInput = {
     nome: string
     email: string
@@ -5830,7 +4558,6 @@ export namespace Prisma {
     ativo?: number
     coments?: comentsCreateNestedManyWithoutUsersInput
     post?: postCreateNestedManyWithoutUsersInput
-    responses?: responsesCreateNestedManyWithoutUsersInput
   }
 
   export type usersUncheckedCreateInput = {
@@ -5843,7 +4570,6 @@ export namespace Prisma {
     ativo?: number
     coments?: comentsUncheckedCreateNestedManyWithoutUsersInput
     post?: postUncheckedCreateNestedManyWithoutUsersInput
-    responses?: responsesUncheckedCreateNestedManyWithoutUsersInput
   }
 
   export type usersUpdateInput = {
@@ -5855,7 +4581,6 @@ export namespace Prisma {
     ativo?: IntFieldUpdateOperationsInput | number
     coments?: comentsUpdateManyWithoutUsersNestedInput
     post?: postUpdateManyWithoutUsersNestedInput
-    responses?: responsesUpdateManyWithoutUsersNestedInput
   }
 
   export type usersUncheckedUpdateInput = {
@@ -5868,7 +4593,6 @@ export namespace Prisma {
     ativo?: IntFieldUpdateOperationsInput | number
     coments?: comentsUncheckedUpdateManyWithoutUsersNestedInput
     post?: postUncheckedUpdateManyWithoutUsersNestedInput
-    responses?: responsesUncheckedUpdateManyWithoutUsersNestedInput
   }
 
   export type usersCreateManyInput = {
@@ -6043,17 +4767,7 @@ export namespace Prisma {
     none?: comentsWhereInput
   }
 
-  export type ResponsesListRelationFilter = {
-    every?: responsesWhereInput
-    some?: responsesWhereInput
-    none?: responsesWhereInput
-  }
-
   export type comentsOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type responsesOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -6095,48 +4809,6 @@ export namespace Prisma {
   export type postSumOrderByAggregateInput = {
     idPost?: SortOrder
     Users_id?: SortOrder
-  }
-
-  export type responsesOrderByRelevanceInput = {
-    fields: responsesOrderByRelevanceFieldEnum | responsesOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type responsesCountOrderByAggregateInput = {
-    idResponse?: SortOrder
-    content?: SortOrder
-    createdAt?: SortOrder
-    Users_id?: SortOrder
-    Post_idPost?: SortOrder
-  }
-
-  export type responsesAvgOrderByAggregateInput = {
-    idResponse?: SortOrder
-    Users_id?: SortOrder
-    Post_idPost?: SortOrder
-  }
-
-  export type responsesMaxOrderByAggregateInput = {
-    idResponse?: SortOrder
-    content?: SortOrder
-    createdAt?: SortOrder
-    Users_id?: SortOrder
-    Post_idPost?: SortOrder
-  }
-
-  export type responsesMinOrderByAggregateInput = {
-    idResponse?: SortOrder
-    content?: SortOrder
-    createdAt?: SortOrder
-    Users_id?: SortOrder
-    Post_idPost?: SortOrder
-  }
-
-  export type responsesSumOrderByAggregateInput = {
-    idResponse?: SortOrder
-    Users_id?: SortOrder
-    Post_idPost?: SortOrder
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -6307,25 +4979,11 @@ export namespace Prisma {
     connect?: usersWhereUniqueInput
   }
 
-  export type responsesCreateNestedManyWithoutPostInput = {
-    create?: XOR<responsesCreateWithoutPostInput, responsesUncheckedCreateWithoutPostInput> | responsesCreateWithoutPostInput[] | responsesUncheckedCreateWithoutPostInput[]
-    connectOrCreate?: responsesCreateOrConnectWithoutPostInput | responsesCreateOrConnectWithoutPostInput[]
-    createMany?: responsesCreateManyPostInputEnvelope
-    connect?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-  }
-
   export type comentsUncheckedCreateNestedManyWithoutPostInput = {
     create?: XOR<comentsCreateWithoutPostInput, comentsUncheckedCreateWithoutPostInput> | comentsCreateWithoutPostInput[] | comentsUncheckedCreateWithoutPostInput[]
     connectOrCreate?: comentsCreateOrConnectWithoutPostInput | comentsCreateOrConnectWithoutPostInput[]
     createMany?: comentsCreateManyPostInputEnvelope
     connect?: comentsWhereUniqueInput | comentsWhereUniqueInput[]
-  }
-
-  export type responsesUncheckedCreateNestedManyWithoutPostInput = {
-    create?: XOR<responsesCreateWithoutPostInput, responsesUncheckedCreateWithoutPostInput> | responsesCreateWithoutPostInput[] | responsesUncheckedCreateWithoutPostInput[]
-    connectOrCreate?: responsesCreateOrConnectWithoutPostInput | responsesCreateOrConnectWithoutPostInput[]
-    createMany?: responsesCreateManyPostInputEnvelope
-    connect?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
   }
 
   export type comentsUpdateManyWithoutPostNestedInput = {
@@ -6350,20 +5008,6 @@ export namespace Prisma {
     update?: XOR<XOR<usersUpdateToOneWithWhereWithoutPostInput, usersUpdateWithoutPostInput>, usersUncheckedUpdateWithoutPostInput>
   }
 
-  export type responsesUpdateManyWithoutPostNestedInput = {
-    create?: XOR<responsesCreateWithoutPostInput, responsesUncheckedCreateWithoutPostInput> | responsesCreateWithoutPostInput[] | responsesUncheckedCreateWithoutPostInput[]
-    connectOrCreate?: responsesCreateOrConnectWithoutPostInput | responsesCreateOrConnectWithoutPostInput[]
-    upsert?: responsesUpsertWithWhereUniqueWithoutPostInput | responsesUpsertWithWhereUniqueWithoutPostInput[]
-    createMany?: responsesCreateManyPostInputEnvelope
-    set?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    disconnect?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    delete?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    connect?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    update?: responsesUpdateWithWhereUniqueWithoutPostInput | responsesUpdateWithWhereUniqueWithoutPostInput[]
-    updateMany?: responsesUpdateManyWithWhereWithoutPostInput | responsesUpdateManyWithWhereWithoutPostInput[]
-    deleteMany?: responsesScalarWhereInput | responsesScalarWhereInput[]
-  }
-
   export type comentsUncheckedUpdateManyWithoutPostNestedInput = {
     create?: XOR<comentsCreateWithoutPostInput, comentsUncheckedCreateWithoutPostInput> | comentsCreateWithoutPostInput[] | comentsUncheckedCreateWithoutPostInput[]
     connectOrCreate?: comentsCreateOrConnectWithoutPostInput | comentsCreateOrConnectWithoutPostInput[]
@@ -6376,48 +5020,6 @@ export namespace Prisma {
     update?: comentsUpdateWithWhereUniqueWithoutPostInput | comentsUpdateWithWhereUniqueWithoutPostInput[]
     updateMany?: comentsUpdateManyWithWhereWithoutPostInput | comentsUpdateManyWithWhereWithoutPostInput[]
     deleteMany?: comentsScalarWhereInput | comentsScalarWhereInput[]
-  }
-
-  export type responsesUncheckedUpdateManyWithoutPostNestedInput = {
-    create?: XOR<responsesCreateWithoutPostInput, responsesUncheckedCreateWithoutPostInput> | responsesCreateWithoutPostInput[] | responsesUncheckedCreateWithoutPostInput[]
-    connectOrCreate?: responsesCreateOrConnectWithoutPostInput | responsesCreateOrConnectWithoutPostInput[]
-    upsert?: responsesUpsertWithWhereUniqueWithoutPostInput | responsesUpsertWithWhereUniqueWithoutPostInput[]
-    createMany?: responsesCreateManyPostInputEnvelope
-    set?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    disconnect?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    delete?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    connect?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    update?: responsesUpdateWithWhereUniqueWithoutPostInput | responsesUpdateWithWhereUniqueWithoutPostInput[]
-    updateMany?: responsesUpdateManyWithWhereWithoutPostInput | responsesUpdateManyWithWhereWithoutPostInput[]
-    deleteMany?: responsesScalarWhereInput | responsesScalarWhereInput[]
-  }
-
-  export type postCreateNestedOneWithoutResponsesInput = {
-    create?: XOR<postCreateWithoutResponsesInput, postUncheckedCreateWithoutResponsesInput>
-    connectOrCreate?: postCreateOrConnectWithoutResponsesInput
-    connect?: postWhereUniqueInput
-  }
-
-  export type usersCreateNestedOneWithoutResponsesInput = {
-    create?: XOR<usersCreateWithoutResponsesInput, usersUncheckedCreateWithoutResponsesInput>
-    connectOrCreate?: usersCreateOrConnectWithoutResponsesInput
-    connect?: usersWhereUniqueInput
-  }
-
-  export type postUpdateOneRequiredWithoutResponsesNestedInput = {
-    create?: XOR<postCreateWithoutResponsesInput, postUncheckedCreateWithoutResponsesInput>
-    connectOrCreate?: postCreateOrConnectWithoutResponsesInput
-    upsert?: postUpsertWithoutResponsesInput
-    connect?: postWhereUniqueInput
-    update?: XOR<XOR<postUpdateToOneWithWhereWithoutResponsesInput, postUpdateWithoutResponsesInput>, postUncheckedUpdateWithoutResponsesInput>
-  }
-
-  export type usersUpdateOneRequiredWithoutResponsesNestedInput = {
-    create?: XOR<usersCreateWithoutResponsesInput, usersUncheckedCreateWithoutResponsesInput>
-    connectOrCreate?: usersCreateOrConnectWithoutResponsesInput
-    upsert?: usersUpsertWithoutResponsesInput
-    connect?: usersWhereUniqueInput
-    update?: XOR<XOR<usersUpdateToOneWithWhereWithoutResponsesInput, usersUpdateWithoutResponsesInput>, usersUncheckedUpdateWithoutResponsesInput>
   }
 
   export type comentsCreateNestedManyWithoutUsersInput = {
@@ -6434,13 +5036,6 @@ export namespace Prisma {
     connect?: postWhereUniqueInput | postWhereUniqueInput[]
   }
 
-  export type responsesCreateNestedManyWithoutUsersInput = {
-    create?: XOR<responsesCreateWithoutUsersInput, responsesUncheckedCreateWithoutUsersInput> | responsesCreateWithoutUsersInput[] | responsesUncheckedCreateWithoutUsersInput[]
-    connectOrCreate?: responsesCreateOrConnectWithoutUsersInput | responsesCreateOrConnectWithoutUsersInput[]
-    createMany?: responsesCreateManyUsersInputEnvelope
-    connect?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-  }
-
   export type comentsUncheckedCreateNestedManyWithoutUsersInput = {
     create?: XOR<comentsCreateWithoutUsersInput, comentsUncheckedCreateWithoutUsersInput> | comentsCreateWithoutUsersInput[] | comentsUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: comentsCreateOrConnectWithoutUsersInput | comentsCreateOrConnectWithoutUsersInput[]
@@ -6453,13 +5048,6 @@ export namespace Prisma {
     connectOrCreate?: postCreateOrConnectWithoutUsersInput | postCreateOrConnectWithoutUsersInput[]
     createMany?: postCreateManyUsersInputEnvelope
     connect?: postWhereUniqueInput | postWhereUniqueInput[]
-  }
-
-  export type responsesUncheckedCreateNestedManyWithoutUsersInput = {
-    create?: XOR<responsesCreateWithoutUsersInput, responsesUncheckedCreateWithoutUsersInput> | responsesCreateWithoutUsersInput[] | responsesUncheckedCreateWithoutUsersInput[]
-    connectOrCreate?: responsesCreateOrConnectWithoutUsersInput | responsesCreateOrConnectWithoutUsersInput[]
-    createMany?: responsesCreateManyUsersInputEnvelope
-    connect?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -6498,20 +5086,6 @@ export namespace Prisma {
     deleteMany?: postScalarWhereInput | postScalarWhereInput[]
   }
 
-  export type responsesUpdateManyWithoutUsersNestedInput = {
-    create?: XOR<responsesCreateWithoutUsersInput, responsesUncheckedCreateWithoutUsersInput> | responsesCreateWithoutUsersInput[] | responsesUncheckedCreateWithoutUsersInput[]
-    connectOrCreate?: responsesCreateOrConnectWithoutUsersInput | responsesCreateOrConnectWithoutUsersInput[]
-    upsert?: responsesUpsertWithWhereUniqueWithoutUsersInput | responsesUpsertWithWhereUniqueWithoutUsersInput[]
-    createMany?: responsesCreateManyUsersInputEnvelope
-    set?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    disconnect?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    delete?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    connect?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    update?: responsesUpdateWithWhereUniqueWithoutUsersInput | responsesUpdateWithWhereUniqueWithoutUsersInput[]
-    updateMany?: responsesUpdateManyWithWhereWithoutUsersInput | responsesUpdateManyWithWhereWithoutUsersInput[]
-    deleteMany?: responsesScalarWhereInput | responsesScalarWhereInput[]
-  }
-
   export type comentsUncheckedUpdateManyWithoutUsersNestedInput = {
     create?: XOR<comentsCreateWithoutUsersInput, comentsUncheckedCreateWithoutUsersInput> | comentsCreateWithoutUsersInput[] | comentsUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: comentsCreateOrConnectWithoutUsersInput | comentsCreateOrConnectWithoutUsersInput[]
@@ -6538,20 +5112,6 @@ export namespace Prisma {
     update?: postUpdateWithWhereUniqueWithoutUsersInput | postUpdateWithWhereUniqueWithoutUsersInput[]
     updateMany?: postUpdateManyWithWhereWithoutUsersInput | postUpdateManyWithWhereWithoutUsersInput[]
     deleteMany?: postScalarWhereInput | postScalarWhereInput[]
-  }
-
-  export type responsesUncheckedUpdateManyWithoutUsersNestedInput = {
-    create?: XOR<responsesCreateWithoutUsersInput, responsesUncheckedCreateWithoutUsersInput> | responsesCreateWithoutUsersInput[] | responsesUncheckedCreateWithoutUsersInput[]
-    connectOrCreate?: responsesCreateOrConnectWithoutUsersInput | responsesCreateOrConnectWithoutUsersInput[]
-    upsert?: responsesUpsertWithWhereUniqueWithoutUsersInput | responsesUpsertWithWhereUniqueWithoutUsersInput[]
-    createMany?: responsesCreateManyUsersInputEnvelope
-    set?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    disconnect?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    delete?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    connect?: responsesWhereUniqueInput | responsesWhereUniqueInput[]
-    update?: responsesUpdateWithWhereUniqueWithoutUsersInput | responsesUpdateWithWhereUniqueWithoutUsersInput[]
-    updateMany?: responsesUpdateManyWithWhereWithoutUsersInput | responsesUpdateManyWithWhereWithoutUsersInput[]
-    deleteMany?: responsesScalarWhereInput | responsesScalarWhereInput[]
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -6716,7 +5276,6 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     users: usersCreateNestedOneWithoutPostInput
-    responses?: responsesCreateNestedManyWithoutPostInput
   }
 
   export type postUncheckedCreateWithoutComentsInput = {
@@ -6725,7 +5284,6 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     Users_id: number
-    responses?: responsesUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type postCreateOrConnectWithoutComentsInput = {
@@ -6741,7 +5299,6 @@ export namespace Prisma {
     acesso?: $Enums.users_acesso
     ativo?: number
     post?: postCreateNestedManyWithoutUsersInput
-    responses?: responsesCreateNestedManyWithoutUsersInput
   }
 
   export type usersUncheckedCreateWithoutComentsInput = {
@@ -6753,7 +5310,6 @@ export namespace Prisma {
     acesso?: $Enums.users_acesso
     ativo?: number
     post?: postUncheckedCreateNestedManyWithoutUsersInput
-    responses?: responsesUncheckedCreateNestedManyWithoutUsersInput
   }
 
   export type usersCreateOrConnectWithoutComentsInput = {
@@ -6777,7 +5333,6 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: usersUpdateOneRequiredWithoutPostNestedInput
-    responses?: responsesUpdateManyWithoutPostNestedInput
   }
 
   export type postUncheckedUpdateWithoutComentsInput = {
@@ -6786,7 +5341,6 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Users_id?: IntFieldUpdateOperationsInput | number
-    responses?: responsesUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type usersUpsertWithoutComentsInput = {
@@ -6808,7 +5362,6 @@ export namespace Prisma {
     acesso?: Enumusers_acessoFieldUpdateOperationsInput | $Enums.users_acesso
     ativo?: IntFieldUpdateOperationsInput | number
     post?: postUpdateManyWithoutUsersNestedInput
-    responses?: responsesUpdateManyWithoutUsersNestedInput
   }
 
   export type usersUncheckedUpdateWithoutComentsInput = {
@@ -6820,19 +5373,18 @@ export namespace Prisma {
     acesso?: Enumusers_acessoFieldUpdateOperationsInput | $Enums.users_acesso
     ativo?: IntFieldUpdateOperationsInput | number
     post?: postUncheckedUpdateManyWithoutUsersNestedInput
-    responses?: responsesUncheckedUpdateManyWithoutUsersNestedInput
   }
 
   export type comentsCreateWithoutPostInput = {
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     users: usersCreateNestedOneWithoutComentsInput
   }
 
   export type comentsUncheckedCreateWithoutPostInput = {
     idComents?: number
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     Users_id: number
   }
 
@@ -6854,7 +5406,6 @@ export namespace Prisma {
     acesso?: $Enums.users_acesso
     ativo?: number
     coments?: comentsCreateNestedManyWithoutUsersInput
-    responses?: responsesCreateNestedManyWithoutUsersInput
   }
 
   export type usersUncheckedCreateWithoutPostInput = {
@@ -6866,35 +5417,11 @@ export namespace Prisma {
     acesso?: $Enums.users_acesso
     ativo?: number
     coments?: comentsUncheckedCreateNestedManyWithoutUsersInput
-    responses?: responsesUncheckedCreateNestedManyWithoutUsersInput
   }
 
   export type usersCreateOrConnectWithoutPostInput = {
     where: usersWhereUniqueInput
     create: XOR<usersCreateWithoutPostInput, usersUncheckedCreateWithoutPostInput>
-  }
-
-  export type responsesCreateWithoutPostInput = {
-    content: string
-    createdAt?: Date | string
-    users: usersCreateNestedOneWithoutResponsesInput
-  }
-
-  export type responsesUncheckedCreateWithoutPostInput = {
-    idResponse?: number
-    content: string
-    createdAt?: Date | string
-    Users_id: number
-  }
-
-  export type responsesCreateOrConnectWithoutPostInput = {
-    where: responsesWhereUniqueInput
-    create: XOR<responsesCreateWithoutPostInput, responsesUncheckedCreateWithoutPostInput>
-  }
-
-  export type responsesCreateManyPostInputEnvelope = {
-    data: responsesCreateManyPostInput | responsesCreateManyPostInput[]
-    skipDuplicates?: boolean
   }
 
   export type comentsUpsertWithWhereUniqueWithoutPostInput = {
@@ -6943,7 +5470,6 @@ export namespace Prisma {
     acesso?: Enumusers_acessoFieldUpdateOperationsInput | $Enums.users_acesso
     ativo?: IntFieldUpdateOperationsInput | number
     coments?: comentsUpdateManyWithoutUsersNestedInput
-    responses?: responsesUpdateManyWithoutUsersNestedInput
   }
 
   export type usersUncheckedUpdateWithoutPostInput = {
@@ -6955,158 +5481,18 @@ export namespace Prisma {
     acesso?: Enumusers_acessoFieldUpdateOperationsInput | $Enums.users_acesso
     ativo?: IntFieldUpdateOperationsInput | number
     coments?: comentsUncheckedUpdateManyWithoutUsersNestedInput
-    responses?: responsesUncheckedUpdateManyWithoutUsersNestedInput
-  }
-
-  export type responsesUpsertWithWhereUniqueWithoutPostInput = {
-    where: responsesWhereUniqueInput
-    update: XOR<responsesUpdateWithoutPostInput, responsesUncheckedUpdateWithoutPostInput>
-    create: XOR<responsesCreateWithoutPostInput, responsesUncheckedCreateWithoutPostInput>
-  }
-
-  export type responsesUpdateWithWhereUniqueWithoutPostInput = {
-    where: responsesWhereUniqueInput
-    data: XOR<responsesUpdateWithoutPostInput, responsesUncheckedUpdateWithoutPostInput>
-  }
-
-  export type responsesUpdateManyWithWhereWithoutPostInput = {
-    where: responsesScalarWhereInput
-    data: XOR<responsesUpdateManyMutationInput, responsesUncheckedUpdateManyWithoutPostInput>
-  }
-
-  export type responsesScalarWhereInput = {
-    AND?: responsesScalarWhereInput | responsesScalarWhereInput[]
-    OR?: responsesScalarWhereInput[]
-    NOT?: responsesScalarWhereInput | responsesScalarWhereInput[]
-    idResponse?: IntFilter<"responses"> | number
-    content?: StringFilter<"responses"> | string
-    createdAt?: DateTimeFilter<"responses"> | Date | string
-    Users_id?: IntFilter<"responses"> | number
-    Post_idPost?: IntFilter<"responses"> | number
-  }
-
-  export type postCreateWithoutResponsesInput = {
-    region: string
-    content: string
-    createdAt?: Date | string
-    coments?: comentsCreateNestedManyWithoutPostInput
-    users: usersCreateNestedOneWithoutPostInput
-  }
-
-  export type postUncheckedCreateWithoutResponsesInput = {
-    idPost?: number
-    region: string
-    content: string
-    createdAt?: Date | string
-    Users_id: number
-    coments?: comentsUncheckedCreateNestedManyWithoutPostInput
-  }
-
-  export type postCreateOrConnectWithoutResponsesInput = {
-    where: postWhereUniqueInput
-    create: XOR<postCreateWithoutResponsesInput, postUncheckedCreateWithoutResponsesInput>
-  }
-
-  export type usersCreateWithoutResponsesInput = {
-    nome: string
-    email: string
-    senha: string
-    foto?: string | null
-    acesso?: $Enums.users_acesso
-    ativo?: number
-    coments?: comentsCreateNestedManyWithoutUsersInput
-    post?: postCreateNestedManyWithoutUsersInput
-  }
-
-  export type usersUncheckedCreateWithoutResponsesInput = {
-    id?: number
-    nome: string
-    email: string
-    senha: string
-    foto?: string | null
-    acesso?: $Enums.users_acesso
-    ativo?: number
-    coments?: comentsUncheckedCreateNestedManyWithoutUsersInput
-    post?: postUncheckedCreateNestedManyWithoutUsersInput
-  }
-
-  export type usersCreateOrConnectWithoutResponsesInput = {
-    where: usersWhereUniqueInput
-    create: XOR<usersCreateWithoutResponsesInput, usersUncheckedCreateWithoutResponsesInput>
-  }
-
-  export type postUpsertWithoutResponsesInput = {
-    update: XOR<postUpdateWithoutResponsesInput, postUncheckedUpdateWithoutResponsesInput>
-    create: XOR<postCreateWithoutResponsesInput, postUncheckedCreateWithoutResponsesInput>
-    where?: postWhereInput
-  }
-
-  export type postUpdateToOneWithWhereWithoutResponsesInput = {
-    where?: postWhereInput
-    data: XOR<postUpdateWithoutResponsesInput, postUncheckedUpdateWithoutResponsesInput>
-  }
-
-  export type postUpdateWithoutResponsesInput = {
-    region?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    coments?: comentsUpdateManyWithoutPostNestedInput
-    users?: usersUpdateOneRequiredWithoutPostNestedInput
-  }
-
-  export type postUncheckedUpdateWithoutResponsesInput = {
-    idPost?: IntFieldUpdateOperationsInput | number
-    region?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Users_id?: IntFieldUpdateOperationsInput | number
-    coments?: comentsUncheckedUpdateManyWithoutPostNestedInput
-  }
-
-  export type usersUpsertWithoutResponsesInput = {
-    update: XOR<usersUpdateWithoutResponsesInput, usersUncheckedUpdateWithoutResponsesInput>
-    create: XOR<usersCreateWithoutResponsesInput, usersUncheckedCreateWithoutResponsesInput>
-    where?: usersWhereInput
-  }
-
-  export type usersUpdateToOneWithWhereWithoutResponsesInput = {
-    where?: usersWhereInput
-    data: XOR<usersUpdateWithoutResponsesInput, usersUncheckedUpdateWithoutResponsesInput>
-  }
-
-  export type usersUpdateWithoutResponsesInput = {
-    nome?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    senha?: StringFieldUpdateOperationsInput | string
-    foto?: NullableStringFieldUpdateOperationsInput | string | null
-    acesso?: Enumusers_acessoFieldUpdateOperationsInput | $Enums.users_acesso
-    ativo?: IntFieldUpdateOperationsInput | number
-    coments?: comentsUpdateManyWithoutUsersNestedInput
-    post?: postUpdateManyWithoutUsersNestedInput
-  }
-
-  export type usersUncheckedUpdateWithoutResponsesInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nome?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    senha?: StringFieldUpdateOperationsInput | string
-    foto?: NullableStringFieldUpdateOperationsInput | string | null
-    acesso?: Enumusers_acessoFieldUpdateOperationsInput | $Enums.users_acesso
-    ativo?: IntFieldUpdateOperationsInput | number
-    coments?: comentsUncheckedUpdateManyWithoutUsersNestedInput
-    post?: postUncheckedUpdateManyWithoutUsersNestedInput
   }
 
   export type comentsCreateWithoutUsersInput = {
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     post: postCreateNestedOneWithoutComentsInput
   }
 
   export type comentsUncheckedCreateWithoutUsersInput = {
     idComents?: number
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     Post_idPost: number
   }
 
@@ -7125,7 +5511,6 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     coments?: comentsCreateNestedManyWithoutPostInput
-    responses?: responsesCreateNestedManyWithoutPostInput
   }
 
   export type postUncheckedCreateWithoutUsersInput = {
@@ -7134,7 +5519,6 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     coments?: comentsUncheckedCreateNestedManyWithoutPostInput
-    responses?: responsesUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type postCreateOrConnectWithoutUsersInput = {
@@ -7144,29 +5528,6 @@ export namespace Prisma {
 
   export type postCreateManyUsersInputEnvelope = {
     data: postCreateManyUsersInput | postCreateManyUsersInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type responsesCreateWithoutUsersInput = {
-    content: string
-    createdAt?: Date | string
-    post: postCreateNestedOneWithoutResponsesInput
-  }
-
-  export type responsesUncheckedCreateWithoutUsersInput = {
-    idResponse?: number
-    content: string
-    createdAt?: Date | string
-    Post_idPost: number
-  }
-
-  export type responsesCreateOrConnectWithoutUsersInput = {
-    where: responsesWhereUniqueInput
-    create: XOR<responsesCreateWithoutUsersInput, responsesUncheckedCreateWithoutUsersInput>
-  }
-
-  export type responsesCreateManyUsersInputEnvelope = {
-    data: responsesCreateManyUsersInput | responsesCreateManyUsersInput[]
     skipDuplicates?: boolean
   }
 
@@ -7213,31 +5574,8 @@ export namespace Prisma {
     Users_id?: IntFilter<"post"> | number
   }
 
-  export type responsesUpsertWithWhereUniqueWithoutUsersInput = {
-    where: responsesWhereUniqueInput
-    update: XOR<responsesUpdateWithoutUsersInput, responsesUncheckedUpdateWithoutUsersInput>
-    create: XOR<responsesCreateWithoutUsersInput, responsesUncheckedCreateWithoutUsersInput>
-  }
-
-  export type responsesUpdateWithWhereUniqueWithoutUsersInput = {
-    where: responsesWhereUniqueInput
-    data: XOR<responsesUpdateWithoutUsersInput, responsesUncheckedUpdateWithoutUsersInput>
-  }
-
-  export type responsesUpdateManyWithWhereWithoutUsersInput = {
-    where: responsesScalarWhereInput
-    data: XOR<responsesUpdateManyMutationInput, responsesUncheckedUpdateManyWithoutUsersInput>
-  }
-
   export type comentsCreateManyPostInput = {
     idComents?: number
-    content: string
-    createdAt: Date | string
-    Users_id: number
-  }
-
-  export type responsesCreateManyPostInput = {
-    idResponse?: number
     content: string
     createdAt?: Date | string
     Users_id: number
@@ -7263,30 +5601,10 @@ export namespace Prisma {
     Users_id?: IntFieldUpdateOperationsInput | number
   }
 
-  export type responsesUpdateWithoutPostInput = {
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    users?: usersUpdateOneRequiredWithoutResponsesNestedInput
-  }
-
-  export type responsesUncheckedUpdateWithoutPostInput = {
-    idResponse?: IntFieldUpdateOperationsInput | number
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Users_id?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type responsesUncheckedUpdateManyWithoutPostInput = {
-    idResponse?: IntFieldUpdateOperationsInput | number
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Users_id?: IntFieldUpdateOperationsInput | number
-  }
-
   export type comentsCreateManyUsersInput = {
     idComents?: number
     content: string
-    createdAt: Date | string
+    createdAt?: Date | string
     Post_idPost: number
   }
 
@@ -7295,13 +5613,6 @@ export namespace Prisma {
     region: string
     content: string
     createdAt?: Date | string
-  }
-
-  export type responsesCreateManyUsersInput = {
-    idResponse?: number
-    content: string
-    createdAt?: Date | string
-    Post_idPost: number
   }
 
   export type comentsUpdateWithoutUsersInput = {
@@ -7329,7 +5640,6 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coments?: comentsUpdateManyWithoutPostNestedInput
-    responses?: responsesUpdateManyWithoutPostNestedInput
   }
 
   export type postUncheckedUpdateWithoutUsersInput = {
@@ -7338,7 +5648,6 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coments?: comentsUncheckedUpdateManyWithoutPostNestedInput
-    responses?: responsesUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type postUncheckedUpdateManyWithoutUsersInput = {
@@ -7346,26 +5655,6 @@ export namespace Prisma {
     region?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type responsesUpdateWithoutUsersInput = {
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    post?: postUpdateOneRequiredWithoutResponsesNestedInput
-  }
-
-  export type responsesUncheckedUpdateWithoutUsersInput = {
-    idResponse?: IntFieldUpdateOperationsInput | number
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Post_idPost?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type responsesUncheckedUpdateManyWithoutUsersInput = {
-    idResponse?: IntFieldUpdateOperationsInput | number
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Post_idPost?: IntFieldUpdateOperationsInput | number
   }
 
 

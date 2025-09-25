@@ -136,14 +136,6 @@ exports.Prisma.PostScalarFieldEnum = {
   Users_id: 'Users_id'
 };
 
-exports.Prisma.ResponsesScalarFieldEnum = {
-  idResponse: 'idResponse',
-  content: 'content',
-  createdAt: 'createdAt',
-  Users_id: 'Users_id',
-  Post_idPost: 'Post_idPost'
-};
-
 exports.Prisma.UsersScalarFieldEnum = {
   id: 'id',
   nome: 'nome',
@@ -168,10 +160,6 @@ exports.Prisma.postOrderByRelevanceFieldEnum = {
   content: 'content'
 };
 
-exports.Prisma.responsesOrderByRelevanceFieldEnum = {
-  content: 'content'
-};
-
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
@@ -191,7 +179,6 @@ exports.users_acesso = exports.$Enums.users_acesso = {
 exports.Prisma.ModelName = {
   coments: 'coments',
   post: 'post',
-  responses: 'responses',
   users: 'users'
 };
 

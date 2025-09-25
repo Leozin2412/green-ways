@@ -6,18 +6,39 @@ import { v4 as uuidv4 } from "uuid";
 import { PrismaClient } from '../../generated/prism/index.js';
 
 const prisma= new PrismaClient()
-// Carregar os posts vindo do banco de dados 
+
 const PostRepository={
 async loadPosts() {
   try {
-    const posts=await prisma.post.findMany(
-      {orderBy:{createdAt:'desc'},
-        include:{users:{
-        select:{
-          foto:true,
-          nome:true
-      }}}}
-    )
+    const posts = await prisma.post.findMany({
+  orderBy: { createdAt: 'desc' },
+  include: {
+    // Include the comments for each post
+    coments: {
+      select: {
+        // For each comment, select these fields...
+        idComents: true,
+        Post_idPost: true,
+        Users_id: true,
+        content: true,
+        // ...and also include the user who made the comment
+        users: {
+          select: {
+            nome: true,
+            foto: true
+          }
+        }
+      }
+    },
+    // Include the user who made the post
+    users: {
+      select: {
+        foto: true,
+        nome: true
+      }
+    }
+  }
+});
     return posts
   } catch (error) {
     console.error("Erro ao carregar posts:", error);
