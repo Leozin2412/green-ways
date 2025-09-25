@@ -1,86 +1,104 @@
 import fs from "fs";
 import path from "path";
-
+import conexao from "../database/conexao.js";
 const filePath = path.resolve("./src/database/posts.json");
+import { v4 as uuidv4 } from "uuid";
+import { PrismaClient } from '../../generated/prism/index.js';
 
-function loadPosts() {
+const prisma= new PrismaClient()
+
+const PostRepository={
+async loadPosts(skip, take) {
   try {
-    if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, JSON.stringify([], null, 2));
-      return [];
+    const queryOptions = {
+      orderBy: { createdAt: 'desc' },
+      include: {
+        coments: {
+          select: {
+            idComents: true,
+            Post_idPost: true,
+            Users_id: true,
+            content: true,
+            users: {
+              select: {
+                nome: true,
+                foto: true
+              }
+            }
+          },
+        },
+        users: {
+          select: {
+            foto: true,
+            nome: true
+          }
+        }
+      },
+    };
+
+    // Só adiciona a paginação à query se 'take' for um número válido > 0
+    if (take > 0) {
+      queryOptions.skip = skip;
+      queryOptions.take = take;
     }
-    const data = fs.readFileSync(filePath, "utf-8");
-    return JSON.parse(data);
+
+    const [posts, total] = await prisma.$transaction([
+      prisma.post.findMany(queryOptions),
+      // CORREÇÃO 2: Chamando a função count()
+      prisma.post.count()
+    ]);
+
+    const totalPage = take > 0 ? Math.ceil(total / take) : 1;
+
+    return { total, totalPage, posts };
   } catch (error) {
     console.error("Erro ao carregar posts:", error);
-    return [];
+    return { total: 0, totalPage: 0, posts: [] };
   }
-}
+},
 
-function savePosts(posts) {
-  try {
-    fs.writeFileSync(filePath, JSON.stringify(posts, null, 2));
-  } catch (error) {
-    console.error("Erro ao salvar posts:", error);
-  }
-}
 
-function addPost(newPost) {
-  const posts = loadPosts();
-  newPost.id = posts.length > 0 ? Math.max(...posts.map((p) => p.id)) + 1 : 1;
-  newPost.createdAt = new Date().toISOString();
-  posts.push(newPost);
-  savePosts(posts);
-  return newPost;
-}
 
-function deletePost(postId) {
-  const posts = loadPosts();
-  const index = posts.findIndex((p) => p.id == postId);
-  if (index !== -1) {
-    posts.splice(index, 1);
-    savePosts(posts);
-    return true;
-  }
-  return false;
-}
 
-function addResponse(postId, response) {
-  const posts = loadPosts();
-  const post = posts.find((p) => p.id == postId);
-  if (post) {
-    if (!post.responses) post.responses = [];
-    response.id =
-      post.responses.length > 0
-        ? Math.max(...post.responses.map((r) => r.id)) + 1
-        : 1;
-    response.createdAt = new Date().toISOString();
-    post.responses.push(response);
-    savePosts(posts);
-    return response;
-  }
-  return null;
-}
-
-function deleteResponse(postId, responseId) {
-  const posts = loadPosts();
-  const post = posts.find((p) => p.id == postId);
-  if (post && post.responses) {
-    const index = post.responses.findIndex((r) => r.id == responseId);
-    if (index !== -1) {
-      post.responses.splice(index, 1);
-      savePosts(posts);
-      return true;
+async addPost(userID,region,content){
+  const createPost=await prisma.post.create({
+    data:{
+      region:region,
+      content:content,
+      Users_id: userID,
     }
-  }
-  return false;
-}
+  })
+  return createPost
+},
 
-export default {
-  loadPosts,
-  savePosts,
-  addPost,
-  deletePost,
-  addResponse,
-  deleteResponse,
-};
+
+async  deletePost(numericPostId) {
+ const deletePost= await prisma.post.delete({
+    where:{idPost:numericPostId}
+  })
+  return deletePost
+},
+
+
+
+async addResponse(numericPostId,numericUserId, content) {
+  const coments=await prisma.coments.create({
+    data:{
+      Post_idPost:numericPostId,
+      Users_id:numericUserId,
+      content:content
+    }
+  })
+  return coments
+},
+
+ async deleteResponse( responseId) {
+const deleteComents= await prisma.coments.delete({
+  where:{
+    idComents:responseId
+  }
+})
+  return deleteComents;
+}
+}
+export default PostRepository

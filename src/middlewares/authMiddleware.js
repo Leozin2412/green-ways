@@ -57,7 +57,7 @@ export const checkPostOwnerOrAdmin = async (req, res, next) => {
     }
 
     const posts = await PostRepository.loadPosts();
-    const post = posts.find((p) => p.id == postId);
+    const post = posts.find((p) => p.idPost == postId);
 
     if (!post) {
       return res.status(404).json({
@@ -100,9 +100,10 @@ export const checkResponseOwnerOrAdmin = async (req, res, next) => {
         code: "MISSING_IDS"
       });
     }
-
+     const numericPostId = parseInt(postId, 10);
+    const numericResponseId = parseInt(responseId, 10);
     const posts = await PostRepository.loadPosts();
-    const post = posts.find((p) => p.id == postId);
+    const post = posts.find((p) => p.idPost === numericPostId);
 
     if (!post) {
       return res.status(404).json({
@@ -111,8 +112,8 @@ export const checkResponseOwnerOrAdmin = async (req, res, next) => {
         code: "POST_NOT_FOUND"
       });
     }
-
-    const response = post.responses?.find((r) => r.id == responseId);
+     const responseList = post.coments || [];
+    const response = responseList.find((r) => r.idComents === numericResponseId);
     if (!response) {
       return res.status(404).json({
         ok: false,
@@ -122,7 +123,7 @@ export const checkResponseOwnerOrAdmin = async (req, res, next) => {
     }
 
     const isAdmin = req.user.acesso === "admin";
-    const isOwner = response.userId === req.user.id;
+    const isOwner = response.Users_id === req.user.id;
 
     if (!isAdmin && !isOwner) {
       return res.status(403).json({

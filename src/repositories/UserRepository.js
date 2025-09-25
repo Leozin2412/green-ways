@@ -1,152 +1,178 @@
-import { usuarios, saveUser, loadUser } from "../database/usuario.js";
-import bcrypt, { compare } from "bcryptjs";
-import conexao from "../database/conexao.js"
+  import { usuarios, saveUser, loadUser } from "../database/usuario.js";
+  import bcrypt, { compare } from "bcryptjs";
+  import conexao from "../database/conexao.js";
+  import { PrismaClient } from '../../generated/prism/index.js';
+import { create } from "domain";
 
-const UserRepository = {
-  async getAll() {
-    return loadUser();
-  },
-
-  async getById(id) {
-    const sql = `select * from users where id=? limit 1`;
-    try{
-      const[rows]=await conexao.query(sql,[id]);
-      return rows.length>0? rows[0]:null;
-    }catch(erro){
-      console.error("Erron no repisitório ao consultar ID",erro)
-      throw erro
-    }
-  },
-
- async getByEmail(email) {
-    try {
-        const sql = `SELECT * FROM users WHERE email = ?`;
-        const [rows] = await conexao.execute(sql, [email]);
-        return rows[0] || null; 
-          } catch (erro) {
-        console.error('Erro ao buscar usuário por email:', erro);
-        throw erro; 
-    }
-},
-
-async login(email) {
-  try {
-    const sql = 'SELECT * FROM users WHERE email = ?;';
-    const [rows] = await conexao.query(sql, [email]);
-    return rows.length > 0 ? rows[0] : null; 
-  } catch (erro) {
-    console.error('Erro no login:', erro);
-    return null;  
-  }
-}
-,
+  const prisma=new PrismaClient()
+  const UserRepository={
 
 async create(user){
- const sql='insert into users (nome,email,senha) values (?,?,?);'
- const list= await conexao.execute(sql,
-    [
-        user.nome,user.email,user.senha
-    ]).catch(erro=>{
-        return[erro]
-    })   
-    return list[0]
-},
+const newUser=await prisma.users.create({
+  data:{
+    nome:user.nome,
+    email:user.email,
+    senha:user.senha,
+    acesso:user.acesso  
 
- async update(currentEmail,userData){
-try{const sql=`update users set nome=?, email=?, senha=?, foto=? where email=?`
-const values=[
-  userData.nome,
-  userData.email,
-  userData.senha,
-  userData.foto,
-  currentEmail
-];
-await conexao.query(sql,values);
-console.log("Usuarios atualizados")
-}catch(error){
-  console.error("Erro ao atualizar usuário:", error);
-  throw new Error("Falha ao atualizar dados no banco de dados")
-}
- },
-async desatiarAtivar(identifier) {
-  try {
-    //me da a opção de usar ou email ou id como identificador para desativar email
-    const column = typeof identifier === 'number' ? 'id' : 'email';
-    const sql = `UPDATE users SET ativo = 0 WHERE ${column} = ?`;
-    const [result] = await conexao.query(sql, [identifier]);
-
-    return result.affectedRows > 0;
-
-  } catch (error) {
-    console.error("Erro ao desativar usuário:", error);
-    throw error;
   }
+})
+  return newUser   
 },
-  async deleteByEmail(email) {
-    const users = loadUser();
-    const index = users.findIndex(
-      (user) => user.email.toLowerCase() === email.toLowerCase()
-    );
-    if (index !== -1) {
-      users.splice(index, 1);
-      saveUser(users);
+
+async getByEmail(email){
+  const user=await prisma.users.findUnique({
+    where:{email:email}
+  })
+  return user
+},
+async getById(id){
+  const user=await prisma.users.findUnique({
+    where:{id:id}
+  })
+return user
+  },
+ async login(email) {
+    const user=await prisma.users.findUnique({
+      where:{email:email}
+    })
+    return user
+  },
+   async update(currentEmail,data){
+    const user= prisma.users.update({
+      where:{email:currentEmail},
+      data:{
+        nome:data.nome,
+        email:data.email,
+        senha:data.senha,
+        foto:data.foto
+      }
+    })
+    return user
+   },
+   async desatiarAtivar(identifier){
+    try{
+      let whereClause={}; 
+      if (typeof identifier === 'number') {
+        whereClause.id = identifier;
+      } else {
+        whereClause.email = identifier;
+      }
+      const updatedUser= await prisma.users.updateMany({
+        where:whereClause,
+        data:{
+          ativo:0
+        }      
+      })
+      return updatedUser
+    }catch (error) {
+      console.error("Erro ao desativar usuário:", error);
+      throw error;
+    }
+},
+  async updateProfile(id, dataToUpdate) {
+    try {
+    
+  
+      const updatedUser= await prisma.users.update({
+        where:{id:id},
+        data:dataToUpdate
+      })
+      return updatedUser
+  
+
+    } catch (error) {
+      console.error("Erro no repositório ao atualizar perfil:", error);
+      throw error;
+    }
+  },  
+ async removeProfilePhoto(userId) {
+      try {
+      
+      const removePhoto= await prisma.users.update({
+        where:{id:userId},
+        data:{foto:null}
+      })
+      return removePhoto
+  
+    } catch (error) {
+      
+      console.error("Erro no repositório ao remover foto de perfil:", error);
+      throw error;
+    }
+  },
+  };
+
+
+
+
+
+/*
+  }
+
+
+
+
+
+  
+  const UserRepository = {
+   
+   
+
+  
+
+  // O método agora recebe o ID e um único objeto com os dados
+  async updateProfile(id, dataToUpdate) {
+    try {
+      const keys = Object.keys(dataToUpdate);
+
+      // Se o objeto de dados estiver vazio, não faz nada no banco
+      if (keys.length === 0) {
+        return this.getById(id);
+      }
+      
+      const setClause = keys.map(key => `\`${key}\` = ?`).join(', ');
+      const sql = `UPDATE users SET ${setClause} WHERE id = ?`;
+
+      const values = [...Object.values(dataToUpdate), id];
+
+      const [result] = await conexao.query(sql, values);
+
+      if (result.affectedRows === 0) {
+        return null; 
+      }
+
+      // Retorna o usuário com os dados frescos do banco
+      return this.getById(id);
+
+    } catch (error) {
+      console.error("Erro no repositório ao atualizar perfil:", error);
+      throw error;
     }
   },
 
+  async removeProfilePhoto(userId) {
+  
+    const sql = "UPDATE users SET foto = NULL WHERE id = ?";
 
+    try {
+      
+      const [result] = await conexao.query(sql, [userId]);
 
-// O método agora recebe o ID e um único objeto com os dados
-async updateProfile(id, dataToUpdate) {
-  try {
-    const keys = Object.keys(dataToUpdate);
+    
+      if (result.affectedRows === 0) {
+        return null;
+      }
 
-    // Se o objeto de dados estiver vazio, não faz nada no banco
-    if (keys.length === 0) {
-      return this.getById(id);
+      
+      return this.getById(userId);
+
+    } catch (error) {
+      
+      console.error("Erro no repositório ao remover foto de perfil:", error);
+      throw error;
     }
-    
-    const setClause = keys.map(key => `\`${key}\` = ?`).join(', ');
-    const sql = `UPDATE users SET ${setClause} WHERE id = ?`;
-
-    const values = [...Object.values(dataToUpdate), id];
-
-    const [result] = await conexao.query(sql, values);
-
-    if (result.affectedRows === 0) {
-      return null; 
-    }
-
-    // Retorna o usuário com os dados frescos do banco
-    return this.getById(id);
-
-  } catch (error) {
-    console.error("Erro no repositório ao atualizar perfil:", error);
-    throw error;
-  }
-},
-
- async removeProfilePhoto(userId) {
- 
-  const sql = "UPDATE users SET foto = NULL WHERE id = ?";
-
-  try {
-    
-    const [result] = await conexao.query(sql, [userId]);
-
-   
-    if (result.affectedRows === 0) {
-      return null;
-    }
-
-    
-    return this.getById(userId);
-
-  } catch (error) {
-    
-    console.error("Erro no repositório ao remover foto de perfil:", error);
-    throw error;
-  }
-},
-};
-
-export default UserRepository;
+  },
+  };
+*/
+  export default UserRepository;

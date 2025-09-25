@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prism"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Modelo para os comentários/respostas
+model coments {
+  idComents   Int      @id @default(autoincrement())
+  content     String   @db.VarChar(300)
+  createdAt   DateTime @default(now()) @db.Date // Adicionado @default(now())
+  Users_id    Int
+  Post_idPost Int
+  post        post     @relation(fields: [Post_idPost], references: [idPost], onDelete: Cascade, map: "fk_coments_post")
+  users       users    @relation(fields: [Users_id], references: [id], onDelete: Cascade, map: "fk_coments_user")
+
+  @@index([Post_idPost], map: "fk_coments_post")
+  @@index([Users_id], map: "fk_coments_user")
+}
+
+// Modelo para os posts
+model post {
+  idPost    Int       @id @default(autoincrement())
+  region    String    @db.VarChar(100)
+  content   String    @db.VarChar(300)
+  createdAt DateTime  @default(now()) @db.DateTime(0)
+  Users_id  Int
+  coments   coments[] // Relação apenas com 'coments'
+  users     users     @relation(fields: [Users_id], references: [id], onDelete: Cascade, map: "fk_post_user")
+
+  @@index([Users_id], map: "fk_post_user")
+}
+
+// Modelo para os usuários
+model users {
+  id        Int          @id @default(autoincrement())
+  nome      String       @db.VarChar(50)
+  email     String       @unique(map: "email_UNIQUE") @db.VarChar(100)
+  senha     String       @db.VarChar(100)
+  foto      String?      @db.VarChar(255)
+  acesso    users_acesso @default(user)
+  ativo     Int          @default(1) @db.TinyInt
+  coments   coments[]    // Relação apenas com 'coments'
+  post      post[]
+}
+
+enum users_acesso {
+  user
+  admin
+}

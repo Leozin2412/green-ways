@@ -1,8 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import UserRepository from "../repositories/UserRepository.js";
-import { loadUser, saveUser } from "../database/usuario.js";
-import fs from "fs";
 import { isCompleteName, isEmail, isPassword } from "../shared/util.js";
 
 const SECRET = process.env.SECRET;
@@ -21,12 +19,18 @@ const AuthController = {
     return true;
   },
 
-      login:async(req,res)=>{
+  login:async(req,res)=>{
       try{
         const{email,senha}=req.body;
         ;
-        const usuario=await UserRepository.login(email);
-
+        if (!email) {
+      return res.status(400).json({ message: "Email is required." });
+    }
+    if (!senha) {
+      return res.status(400).json({ message: "Password is required." });
+    }
+      ;
+const usuario=await UserRepository.login(email)
         if(!usuario){
           return res.status(401).json({
             status:401,
@@ -34,6 +38,7 @@ const AuthController = {
             message:'Usuário não encontrado'
           })
         }
+          
 console.log(usuario.senha)
 console.log(senha)
         const validaSenha=await bcrypt.compare(senha,usuario.senha);
@@ -72,10 +77,11 @@ console.log(validaSenha)
         message: 'Erro interno no servidor',
       });
     }
-  },
+  },//ok
   
   createUser: async (req, res, next) => {
 const { nome, email, senha, confirma } = req.body;
+
     const msgErrors = [];
 
     console.log(nome, email, senha, confirma);
@@ -112,20 +118,25 @@ const { nome, email, senha, confirma } = req.body;
       }
     }
     //criando novo usuario de acesso comum "user"
-    if (msgErrors.length > 0) {
+    
+
+
+    const senhaHash= await bcrypt.hash(senha,SALT_ROUNDS)
+const user={nome:nome,email:email,senha:senhaHash,acesso:"user"};
+const resp=await UserRepository.create(user);
+
+
+
+console.log(resp);
+if (msgErrors.length > 0) {
       //retornando mensagem de erro (necessário usar o return para parar a execução)
       return res.status(400).json({
         status: 400,
         ok: false,
         message: msgErrors,
       });
-    } ;
-
-const senhaHash= await bcrypt.hash(senha,SALT_ROUNDS)
-const user={nome:nome,email:email,senha:senhaHash,acesso:"user"};
-const resp=await UserRepository.create(user);
-console.log(resp);
-  },
+    }else{return res.status(200).json({status:200,ok:true,message:"Dados válidos"})} ;
+  },//ok
 
   editUser: async (req, res, next) => {
     try {
@@ -150,11 +161,11 @@ console.log(resp);
         senha: senhaHash,
         foto,
       }); 
-      next();
+      res.json({ ok: true, message: "Usuário atualizado com sucesso" });
     } catch (error) {
       res.status(500).json({ ok: false, message: error.message });
     }
-  },
+  },//ok
 
 deleteUser: async (req, res) => {
   try {
@@ -188,12 +199,14 @@ deleteUser: async (req, res) => {
     console.error("Erro no controller ao desativar usuário:", error);
     res.status(500).json({ ok: false, message: "Ocorreu um erro no servidor." });
   }
-},
+},//ok
 
   getUserById: async (req, res) => {
     try {
       const { id } = req.query;
-      const usuario = await UserRepository.getById(id);
+      const numericId = parseInt(id, 10);
+      const usuario = await UserRepository.getById(numericId);
+      console.log(usuario);
       if (!usuario) {
         return res
           .status(404)
@@ -211,19 +224,19 @@ deleteUser: async (req, res) => {
     } catch (error) {
       res.status(500).json({ ok: false, message: "Erro interno" });
     }
-  },
+  },//ok
 
   updateProfile: async (req, res) => {
   try {
     // A primeira parte, de validação, permanece a mesma...
     const { id, nome, email, currentPassword, newPassword, confirmPassword } = req.body;
     const fotoFile = req.file;
-
-    if (!id) {
+const numericId = parseInt(id, 10);
+    if (!numericId) {
       return res.status(400).json({ ok: false, message: "ID não fornecido" });
     }
 
-    const currentUser = await UserRepository.getById(id);
+    const currentUser = await UserRepository.getById(numericId);
     if (!currentUser) {
       return res.status(404).json({ ok: false, message: "Usuário não encontrado" });
     }
@@ -244,9 +257,9 @@ deleteUser: async (req, res) => {
     
     // 2. Adicionamos cada campo ao objeto APENAS se ele for válido.
     // Isso "blinda" o back-end contra valores nulos ou a string "undefined" do front-end.
-    if (nome && nome !== 'undefined') dataToUpdate.nome = nome;
-    if (email && email !== 'undefined') dataToUpdate.email = email;
     
+if (nome) dataToUpdate.nome = req.body.nome;
+if (fotoFile) dataToUpdate.foto = req.file.path; // Save the path from multer
     if (newPassword) {
       const senhaHash = await bcrypt.hash(newPassword, 10); // SALT_ROUNDS = 10 (exemplo)
       dataToUpdate.senha = senhaHash;
@@ -257,7 +270,7 @@ deleteUser: async (req, res) => {
     }
 
     // 3. Chamamos o repositório com o ID e o objeto de dados limpo.
-    const updatedUser = await UserRepository.updateProfile(id, dataToUpdate);
+    const updatedUser = await UserRepository.updateProfile(numericId, dataToUpdate);
     
     if (!updatedUser) {
       return res.status(500).json({ ok: false, message: "Falha ao atualizar usuário" });

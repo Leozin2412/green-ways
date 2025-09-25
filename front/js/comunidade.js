@@ -1,4 +1,9 @@
 const lastAccess = localStorage.getItem("lastAccess");
+
+let currentPage = 1;
+const postsPerPage = 5; // Defina quantos posts você quer por página
+
+
 function estados() {
   carregarLocalidades("estados");
 }
@@ -165,14 +170,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   const postForm = document.getElementById("post-form");
   const postList = document.getElementById("post-list");
 
-  async function loadPosts() {
+  async function loadPosts(page=1) {
     try {
+
+      currentPage=page
+       
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3000/posts", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+     const response = await fetch(`http://localhost:3000/posts?page=${page}&limit=${postsPerPage}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
       if (response.status === 401) {
         window.location.href = "/login.html";
@@ -184,31 +192,34 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (data.ok) {
         data.posts.forEach((post) => {
+          console.log("Processando post:", post);
           const postElement = createPostElement(
-            post.userName,
+            post.users.nome,
             post.region,
             post.content,
-            post.id,
-            post.userId
+            post.idPost,
+            post.Users_id
           );
+          
           postList.appendChild(postElement);
-          if (post.responses && post.responses.length > 0) {
-            displayResponses(post.id, post.responses);
+          if (post.coments && post.coments.length > 0) {
+            displayResponses(post.idPost, post.coments);
           }
         });
+        renderPaginationControls(data.totalPage, currentPage);
       }
     } catch (error) {
       console.error("Erro ao carregar posts:", error);
     }
   }
 
-  function createPostElement(userName, region, content, postId, userId) {
+  function createPostElement(userName, region, content, postId, Users_id) {
     const post = document.createElement("article");
     post.className = "post";
     post.innerHTML = `
     <div class="caixa-resposta">
         <div class="user-profile">
-            <img src="/public/uploads/profile_${userId}.jpg" 
+            <img src="/public/uploads/profile_${Users_id}.jpg" 
                  onerror="this.src='img/default-profile.png'" 
                  alt="Foto de ${userName}" 
                  class="profile-pic">
@@ -239,7 +250,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     const deleteBtn = post.querySelector(".delete-btn");
 
-    if (currentUser.id !== userId && !userIsAdmin) {
+    if (currentUser.id !== Users_id && !userIsAdmin) {
       deleteBtn.style.display = "none";
     }
 
@@ -299,7 +310,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           },
           body: JSON.stringify({
             postId,
-            userName: currentUser.nome,
+            Users_id:currentUser.id,
             content: responseContent,
           }),
         });
@@ -313,11 +324,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (data.ok) {
           responseForm.reset();
           responseFormContainer.style.display = "none";
-          displayResponses(postId, data.post.responses);
+     
         }
       } catch (error) {
         console.error("Erro ao enviar resposta:", error);
       }
+      loadPosts()
     });
 
     return post;
@@ -333,9 +345,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const responseElement = document.createElement("div");
       responseElement.className = "response";
       responseElement.innerHTML = `
-        <p><strong>${response.userName}:</strong> ${response.content}</p>
-        ${currentUser.id === response.userId || userIsAdmin ? `<button class="delete-response-btn" data-post-id="${postId}" data-response-id="${response.id}">Excluir Resposta</button>` : ""}
-      `;
+      <p><strong>${response.users.nome}:</strong> ${response.content}</p>
+      ${currentUser.id === response.Users_id || userIsAdmin ? `<button class="delete-response-btn" data-post-id="${postId}" data-response-id="${response.idComents}">Excluir Resposta</button>` : ""}
+    `;
       responsesContainer.appendChild(responseElement);
     });
 
@@ -348,8 +360,40 @@ document.addEventListener("DOMContentLoaded", async () => {
       toggleButton.style.display = "none";
     }
   }
+// ... (após o final da função displayResponses)
 
-  loadPosts();
+function renderPaginationControls(totalPages, page) {
+  const paginationContainer = document.getElementById("pagination-controls");
+  paginationContainer.innerHTML = ""; // Limpa os controlos antigos
+
+  if (totalPages <= 1) return; // Não mostra controlos se houver apenas uma página
+
+  // --- Botão "Anterior" ---
+  const prevButton = document.createElement("button");
+  prevButton.textContent = "Anterior";
+  prevButton.disabled = page === 1;
+  prevButton.addEventListener("click", () => loadPosts(page - 1));
+  paginationContainer.appendChild(prevButton);
+
+  // --- Botões de Página ---
+  for (let i = 1; i <= totalPages; i++) {
+    const pageButton = document.createElement("button");
+    pageButton.textContent = i;
+    if (i === page) {
+      pageButton.classList.add("active");
+    }
+    pageButton.addEventListener("click", () => loadPosts(i));
+    paginationContainer.appendChild(pageButton);
+  }
+
+  // --- Botão "Próximo" ---
+  const nextButton = document.createElement("button");
+  nextButton.textContent = "Próximo";
+  nextButton.disabled = page === totalPages;
+  nextButton.addEventListener("click", () => loadPosts(page + 1));
+  paginationContainer.appendChild(nextButton);
+}
+  loadPosts(1);
 
   if (postForm) {
     postForm.addEventListener("submit", async (event) => {
@@ -433,7 +477,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ postId, responseId }),
+          body: JSON.stringify({ responseId }),
         });
 
         if (response.status === 401) {
@@ -442,7 +486,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const data = await response.json();
-        if (data.ok) loadPosts();
+        if (data.ok) loadPosts(1);
       } catch (error) {
         console.error("Erro ao deletar resposta:", error);
       }
