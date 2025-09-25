@@ -77,18 +77,13 @@ async addResponse(numericPostId,numericUserId, content) {
   return coments
 },
 
- deleteResponse(postId, responseId) {
-  const posts = loadPosts();
-  const post = posts.find((p) => p.id == postId);
-  if (post && post.responses) {
-    const index = post.responses.findIndex((r) => r.id == responseId);
-    if (index !== -1) {
-      post.responses.splice(index, 1);
-      savePosts(posts);
-      return true;
-    }
+ async deleteResponse( responseId) {
+const deleteComents= await prisma.coments.delete({
+  where:{
+    idComents:responseId
   }
-  return false;
+})
+  return deleteComents;
 }
 }
 export default PostRepository

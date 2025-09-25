@@ -436,7 +436,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ postId, responseId }),
+          body: JSON.stringify({ responseId }),
         });
 
         if (response.status === 401) {

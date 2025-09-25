@@ -64,8 +64,9 @@ const PostController = {
 
   deleteResponse: async (req, res) => {
     try {
-      const { postId, responseId } = req.body;
-      await PostRepository.deleteResponse(postId, responseId);
+      const { responseId } = req.body;
+      const numericResponseId=parseInt(responseId,10)
+      await PostRepository.deleteResponse( numericResponseId);
       res.json({ ok: true, message: "Resposta deletada" });
     } catch (error) {
       res.status(500).json({ ok: false, message: error.message });
