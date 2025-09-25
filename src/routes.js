@@ -92,7 +92,7 @@ routes.put(
 routes.put("/users/editUser", verifyToken, checkOwnerOrAdmin, AuthController.editUser);
 routes.get("/posts", PostController.getAllPosts);
 routes.post("/posts/create", verifyToken,PostController.createPost);
-routes.delete("/posts/delete/:postId", verifyToken, checkPostOwnerOrAdmin, PostController.deletePost);
+routes.delete("/posts/delete/:postId", verifyToken, /*checkPostOwnerOrAdmin,*/ PostController.deletePost);
 routes.post("/posts/response", verifyToken, PostController.addResponse);
-routes.delete("/posts/response/delete", verifyToken, checkResponseOwnerOrAdmin, PostController.deleteResponse);
+routes.delete("/posts/response/delete", verifyToken, /*checkResponseOwnerOrAdmin,*/ PostController.deleteResponse);
 export default routes;
