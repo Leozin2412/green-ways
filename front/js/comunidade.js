@@ -299,7 +299,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           },
           body: JSON.stringify({
             postId,
-            userName: currentUser.nome,
+            Users_id:currentUser.id,
             content: responseContent,
           }),
         });
@@ -318,7 +318,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       } catch (error) {
         console.error("Erro ao enviar resposta:", error);
       }
-      loadPosts()
     });
 
     return post;
