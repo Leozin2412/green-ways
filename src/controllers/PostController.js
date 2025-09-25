@@ -1,3 +1,4 @@
+import { parse } from "dotenv";
 import PostRepository from "../repositories/postRepository.js";
 
 
@@ -41,16 +42,15 @@ const PostController = {
 
   addResponse: async (req, res) => {
     try {
-      const { postId, userName, content } = req.body;
-      if (!postId || !userName || !content) {
+      const { postId, Users_id, content } = req.body;
+      const numericPostId= parseInt(postId,10)
+      const numericUserId=parseInt(Users_id,10)
+      if (!postId || !Users_id || !content) {
         return res
           .status(400)
           .json({ ok: false, message: "Campos obrigatórios" });
       }
-      const response = await PostRepository.addResponse(postId, {
-        userName,
-        content,
-      });
+      const response = await PostRepository.addResponse(numericPostId,numericUserId,content);
       res.status(201).json({ ok: true, response });
     } catch (error) {
       res.status(500).json({ ok: false, message: error.message });

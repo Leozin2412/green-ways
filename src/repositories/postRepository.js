@@ -66,21 +66,14 @@ async  deletePost(numericPostId) {
 
 
 
-async addResponse(postId, response) {
-  const posts = loadPosts();
-  const post = posts.find((p) => p.id == postId);
-  if (post) {
-    if (!post.responses) post.responses = [];
-    response.id =
-      post.responses.length > 0
-        ? Math.max(...post.responses.map((r) => r.id)) + 1
-        : 1;
-    response.createdAt = new Date().toISOString();
-    post.responses.push(response);
-    savePosts(posts);
-    return response;
-  }
-  return null;
+async addResponse(numericPostId,numericUserId, content) {
+  const coments=prisma.coments.create({
+    data:{
+      Post_idPost:numericPostId,
+      Users_id:numericUserId,
+      content:content
+    }
+  })
 },
 
  deleteResponse(postId, responseId) {

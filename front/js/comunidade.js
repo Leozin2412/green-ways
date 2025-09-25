@@ -318,6 +318,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       } catch (error) {
         console.error("Erro ao enviar resposta:", error);
       }
+      loadPosts()
     });
 
     return post;
