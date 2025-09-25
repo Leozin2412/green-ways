@@ -769,3 +769,42 @@ button[type="submit"] {
   font-style: italic;
   margin-top: 10px;
 }
+
+/* ... (no final do ficheiro) ... */
+
+/* --- ESTILOS PARA A PAGINAÇÃO --- */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  gap: 8px;
+}
+
+.pagination-container button {
+  padding: 8px 12px;
+  margin: 0 4px;
+  border: 1px solid #2a5e33;
+  background-color: #fff;
+  color: #2a5e33;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination-container button:hover {
+  background-color: #cad3c8;
+}
+
+.pagination-container button.active {
+  background-color: #2a5e33;
+  color: #fff;
+  border-color: #2a5e33;
+}
+
+.pagination-container button:disabled {
+  background-color: #e0e0e0;
+  color: #aaa;
+  border-color: #ccc;
+  cursor: not-allowed;
+}

@@ -8,43 +8,58 @@ import { PrismaClient } from '../../generated/prism/index.js';
 const prisma= new PrismaClient()
 
 const PostRepository={
-async loadPosts() {
+async loadPosts(skip, take) {
   try {
-    const posts = await prisma.post.findMany({
-  orderBy: { createdAt: 'desc' },
-  include: {
-    // Include the comments for each post
-    coments: {
-      select: {
-        // For each comment, select these fields...
-        idComents: true,
-        Post_idPost: true,
-        Users_id: true,
-        content: true,
-        // ...and also include the user who made the comment
+    const queryOptions = {
+      orderBy: { createdAt: 'desc' },
+      include: {
+        coments: {
+          select: {
+            idComents: true,
+            Post_idPost: true,
+            Users_id: true,
+            content: true,
+            users: {
+              select: {
+                nome: true,
+                foto: true
+              }
+            }
+          },
+        },
         users: {
           select: {
-            nome: true,
-            foto: true
+            foto: true,
+            nome: true
           }
         }
-      }
-    },
-    // Include the user who made the post
-    users: {
-      select: {
-        foto: true,
-        nome: true
-      }
+      },
+    };
+
+    // Só adiciona a paginação à query se 'take' for um número válido > 0
+    if (take > 0) {
+      queryOptions.skip = skip;
+      queryOptions.take = take;
     }
-  }
-});
-    return posts
+
+    const [posts, total] = await prisma.$transaction([
+      prisma.post.findMany(queryOptions),
+      // CORREÇÃO 2: Chamando a função count()
+      prisma.post.count()
+    ]);
+
+    const totalPage = take > 0 ? Math.ceil(total / take) : 1;
+
+    return { total, totalPage, posts };
   } catch (error) {
     console.error("Erro ao carregar posts:", error);
-    return [];
+    return { total: 0, totalPage: 0, posts: [] };
   }
 },
+
+
+
+
 async addPost(userID,region,content){
   const createPost=await prisma.post.create({
     data:{

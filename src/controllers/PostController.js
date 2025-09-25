@@ -3,14 +3,21 @@ import PostRepository from "../repositories/postRepository.js";
 
 
 const PostController = {
-  getAllPosts: async (req,res) => {
-    try {
-      const posts = await PostRepository.loadPosts();
-      res.json({ ok: true, posts });
-    } catch (error) {
-      res.status(500).json({ ok: false, message: error.message });
-    }
-  },
+getAllPosts: async (req, res) => {
+  try {
+  
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const skip = (page - 1) * limit;
+
+    const data = await PostRepository.loadPosts(skip, limit);
+
+    res.json({ ok: true, ...data });
+  } catch (error) {
+    res.status(500).json({ ok: false, message: error.message });
+  }
+},
 
   createPost: async (req, res) => {
     try {
