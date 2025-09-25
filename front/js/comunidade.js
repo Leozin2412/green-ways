@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             post.users.nome,
             post.region,
             post.content,
-            post.id,
+            post.idPost,
             post.Users_id
           );
           postList.appendChild(postElement);

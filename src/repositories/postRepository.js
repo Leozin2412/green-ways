@@ -57,9 +57,9 @@ async addPost(userID,region,content){
 },
 
 
-async  deletePost(idPost) {
+async  deletePost(numericPostId) {
  const deletePost= await prisma.post.delete({
-    where:{idPost:idPost}
+    where:{idPost:numericPostId}
   })
   return deletePost
 },
