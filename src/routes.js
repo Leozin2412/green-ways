@@ -84,7 +84,7 @@ routes.put(
       next();
     });
   },
-  //verifyToken,
+  verifyToken,
   //checkOwnerOrAdmin,
   AuthController.updateProfile,
 );
