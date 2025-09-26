@@ -75,7 +75,7 @@ export default function createRoutes(AuthController, PostController, UserReposit
   // --- Rotas de Posts ---
   routes.get("/posts", PostController.getAllPosts);
   routes.post("/posts/create", authMiddleware.verifyToken, PostController.createPost);
-  routes.delete("/posts/delete/:postId", authMiddleware.verifyToken, authMiddleware.checkPostOwnerOrAdmin, PostController.deletePost);
+  routes.delete("/posts/delete/:postId", authMiddleware.verifyToken, /*authMiddleware.checkPostOwnerOrAdmin,*/ PostController.deletePost);
   routes.post("/posts/response", authMiddleware.verifyToken, PostController.addResponse);
   routes.delete("/posts/response/delete", authMiddleware.verifyToken, PostController.deleteResponse); // Supondo que checkResponseOwnerOrAdmin será recriado se necessário
 

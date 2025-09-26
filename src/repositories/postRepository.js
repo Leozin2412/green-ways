@@ -81,10 +81,10 @@ export default function createPostRepository(prisma) {
       return coments;
     },
 
-    async deleteResponse(responseId) {
+    async deleteResponse(numericPostId) {
       const deleteComents = await prisma.coments.delete({
         where: {
-          idComents: responseId
+          idComents: numericPostId
         }
       });
       return deleteComents;
