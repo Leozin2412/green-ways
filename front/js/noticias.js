@@ -1,4 +1,4 @@
-const API_KEY = "5348656fe96c7f576bb986457386d2ac";
+const API_KEY = "7f29e8094ed217e02d9338089f75ab72";
 const API_URL = `https://gnews.io/api/v4/search?q=turismo+sustentável&lang=pt&country=br&max=9&apikey=${API_KEY}`;
 
 async function carregarNoticias() {

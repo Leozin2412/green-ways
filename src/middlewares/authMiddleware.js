@@ -1,189 +1,96 @@
+// src/middlewares/authMiddleware.js
+
 import jwt from "jsonwebtoken";
-import UserRepository from "../repositories/UserRepository.js";
-import PostRepository from "../repositories/postRepository.js";
+// As importações dos repositórios foram REMOVIDAS.
 
 const SECRET = process.env.SECRET;
 
-export const verifyToken = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({
-      ok: false,
-      message: "Token de autenticação não fornecido",
-      code: "AUTH_REQUIRED",
-      redirectToLogin: true
-    });
-  }
+// A fábrica recebe os repositórios que o middleware precisa
+export default function createAuthMiddleware(UserRepository, PostRepository) {
+  return {
+    verifyToken: (req, res, next) => {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({
+          ok: false,
+          message: "Token de autenticação não fornecido",
+        });
+      }
 
-  const token = authHeader.split(" ")[1];
+      const token = authHeader.split(" ")[1];
+      try {
+        const decoded = jwt.verify(token, SECRET);
+        req.user = decoded;
+        next();
+      } catch (error) {
+        const isExpired = error.name === "TokenExpiredError";
+        return res.status(401).json({
+          ok: false,
+          message: isExpired ? "Sessão expirada" : "Falha na autenticação",
+        });
+      }
+    },
 
-  try {
-    const decoded = jwt.verify(token, SECRET);
-    req.user = decoded;
-    next();
-  } catch (error) {
-    const isExpired = error.name === "TokenExpiredError";
+    checkAdmin: (req, res, next) => {
+      if (req.user?.acesso !== "admin") {
+        return res.status(403).json({
+          ok: false,
+          message: "Apenas administradores podem realizar essa ação",
+        });
+      }
+      next();
+    },
 
-    return res.status(401).json({
-      ok: false,
-      message: isExpired ? "Sessão expirada" : "Falha na autenticação",
-      code: isExpired ? "SESSION_EXPIRED" : "AUTH_FAILED",
-      redirectToLogin: true
-    });
-  }
-};
+    checkPostOwnerOrAdmin: async (req, res, next) => {
+      try {
+        const { postId } = req.params;
+        if (!postId) {
+          return res.status(400).json({ message: "Parâmetro postId é obrigatório" });
+        }
 
-export const checkAdmin = (req, res, next) => {
-  if (req.user?.acesso !== "admin") {
-    return res.status(403).json({
-      ok: false,
-      message: "Apenas administradores podem realizar essa ação",
-      code: "UNAUTHORIZED_ACCESS"
-    });
-  }
-  next();
-};
+        // Usa o PostRepository que foi injetado
+        const post = await PostRepository.getById(postId);
+        if (!post) {
+          return res.status(404).json({ message: "Post não encontrado" });
+        }
 
-export const checkPostOwnerOrAdmin = async (req, res, next) => {
-  try {
-    const { postId } = req.params;
+        const isAdmin = req.user.acesso === "admin";
+        // O schema do Prisma usa 'authorId'
+        const isOwner = post.authorId == req.user.id;
 
-    if (!postId) {
-      return res.status(400).json({
-        ok: false,
-        message: "Parâmetro postId é obrigatório",
-        code: "MISSING_POST_ID"
-      });
-    }
+        if (!isAdmin && !isOwner) {
+          return res.status(403).json({ message: "Você não tem permissão para modificar este post" });
+        }
 
-    const posts = await PostRepository.loadPosts();
-    const post = posts.find((p) => p.idPost == postId);
-
-    if (!post) {
-      return res.status(404).json({
-        ok: false,
-        message: "Post não encontrado",
-        code: "POST_NOT_FOUND"
-      });
-    }
-
-    const isAdmin = req.user.acesso === "admin";
-    const isOwner = post.userId == req.user.id;
-
-    if (!isAdmin && !isOwner) {
-      return res.status(403).json({
-        ok: false,
-        message: "Você não tem permissão para modificar este post",
-        code: "UNAUTHORIZED_ACCESS"
-      });
-    }
-
-    req.post = post;
-    next();
-  } catch (error) {
-    return res.status(500).json({
-      ok: false,
-      message: "Erro interno ao verificar propriedade do post",
-      code: "PERMISSION_CHECK_ERROR"
-    });
-  }
-};
-
-export const checkResponseOwnerOrAdmin = async (req, res, next) => {
-  try {
-    const { postId, responseId } = req.body;
-
-    if (!postId || !responseId) {
-      return res.status(400).json({
-        ok: false,
-        message: "postId e responseId são obrigatórios",
-        code: "MISSING_IDS"
-      });
-    }
-     const numericPostId = parseInt(postId, 10);
-    const numericResponseId = parseInt(responseId, 10);
-    const posts = await PostRepository.loadPosts();
-    const post = posts.find((p) => p.idPost === numericPostId);
-
-    if (!post) {
-      return res.status(404).json({
-        ok: false,
-        message: "Post não encontrado",
-        code: "POST_NOT_FOUND"
-      });
-    }
-     const responseList = post.coments || [];
-    const response = responseList.find((r) => r.idComents === numericResponseId);
-    if (!response) {
-      return res.status(404).json({
-        ok: false,
-        message: "Resposta não encontrada",
-        code: "RESPONSE_NOT_FOUND"
-      });
-    }
-
-    const isAdmin = req.user.acesso === "admin";
-    const isOwner = response.Users_id === req.user.id;
-
-    if (!isAdmin && !isOwner) {
-      return res.status(403).json({
-        ok: false,
-        message: "Você não tem permissão para modificar essa resposta",
-        code: "UNAUTHORIZED_ACCESS"
-      });
-    }
-
-    req.post = post;
-    req.response = response;
-    next();
-  } catch (error) {
-    return res.status(500).json({
-      ok: false,
-      message: "Erro interno ao verificar propriedade da resposta",
-      code: "PERMISSION_CHECK_ERROR"
-    });
-  }
-};
-
-export const checkOwnerOrAdmin = async (req, res, next) => {
-  try {
-    const userId = req.user?.id;
-    const targetId = req.params.id || req.query.id || req.body.id;
-    if (!targetId) {
-      return res.status(400).json({
-        ok: false,
-        message: "ID de destino não fornecido",
-        code: "MISSING_USER_ID"
-      });
-    }
-
-    const user = await UserRepository.getById(targetId);
-    if (!user) {
-      return res.status(404).json({
-        ok: false,
-        message: "Usuário não encontrado",
-        code: "USER_NOT_FOUND"
-      });
-    }
-
-    const isAdmin = req.user.acesso === "admin";
-    const isOwner = userId === user.id;
-
-    if (!isAdmin && !isOwner) {
-      return res.status(403).json({
-        ok: false,
-        message: "Você não tem permissão para acessar esse recurso",
-        code: "UNAUTHORIZED_ACCESS"
-      });
-    }
-
-    req.targetUser = user;
-    next();
-  } catch (error) {
-    return res.status(500).json({
-      ok: false,
-      message: "Erro interno ao verificar propriedade do usuário",
-      code: "PERMISSION_CHECK_ERROR"
-    });
-  }
-};
+        req.post = post;
+        next();
+      } catch (error) {
+        return res.status(500).json({ message: "Erro interno ao verificar propriedade do post" });
+      }
+    },
+    
+    checkOwnerOrAdmin: async (req, res, next) => {
+        try {
+          const userIdFromToken = req.user?.id;
+          const targetId = req.params.id || req.query.id || req.body.id;
+    
+          if (!targetId) {
+            return res.status(400).json({ message: "ID de destino não fornecido" });
+          }
+    
+          const isAdmin = req.user.acesso === "admin";
+          const isOwner = userIdFromToken == targetId;
+    
+          if (!isAdmin && !isOwner) {
+            return res.status(403).json({ message: "Você não tem permissão para acessar esse recurso" });
+          }
+    
+          next();
+        } catch (error) {
+          return res.status(500).json({ message: "Erro interno ao verificar propriedade do usuário" });
+        }
+      },
+    
+ 
+  };
+}
