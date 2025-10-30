@@ -25,9 +25,10 @@ export default function createUserRepository(prisma) {
     },
 
     async getById(id) {
+      const numericId = parseInt(id, 10);
       const user = await prisma.users.findUnique({
         // O ID no schema do Prisma é um Int, então garantimos que seja um número.
-        where: { id: parseInt(id, 10) }
+        where: { id: numericId }
       });
       return user;
     },
