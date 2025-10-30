@@ -100,9 +100,9 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
 
     updateProfile: async (req, res) => {
       try {
-        const { id, nome, email, currentPassword, newPassword, confirmPassword } = req.body;
+        const { id, nome, currentPassword, newPassword, confirmPassword } = req.body;
         const fotoFile = req.file;
-        const numericId = parseInt(id, 10);
+        const numericId = id.parseInt(id, 10);
 
         if (!numericId || !currentPassword) {
           return res.status(400).json({ ok: false, message: "ID e senha atual são obrigatórios" });
