@@ -120,7 +120,6 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
 
         const dataToUpdate = {};
         if (nome) dataToUpdate.nome = nome;
-        if (email) dataToUpdate.email = email;
         if (fotoFile) dataToUpdate.foto = `/uploads/${fotoFile.filename}`;
         if (newPassword) {
           dataToUpdate.senha = await bcrypt.hash(newPassword, SALT_ROUNDS);
@@ -146,15 +145,16 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
     removeProfilePhoto: async (req, res) => {
         try {
             const { id } = req.query;
+            const numericId = id.parseInt(id, 10);
             if (!id) return res.status(400).json({ ok: false, message: "ID não fornecido" });
     
-            const updatedUser = await UserRepository.removeProfilePhoto(id);
+            const updatedUser = await UserRepository.removeProfilePhoto(numericId);
             const { senha, ...userSemSenha } = updatedUser;
             res.json({ ok: true, message: "Foto removida", user: userSemSenha });
           } catch (error) {
             res.status(500).json({ ok: false, message: "Erro ao remover foto" });
-          }
-    },
+              }
+            },
 
     editUser: async (req, res, next) => {
         // Esta função tem uma lógica muito similar a updateProfile.

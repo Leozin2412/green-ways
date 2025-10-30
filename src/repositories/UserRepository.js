@@ -40,7 +40,7 @@ export default function createUserRepository(prisma) {
     },
 
     async update(currentEmail, data) {
-      const user = prisma.users.update({
+      const user =prisma.users.update({
         where: { email: currentEmail },
         data: {
           nome: data.nome,
@@ -73,10 +73,10 @@ export default function createUserRepository(prisma) {
       }
     },
 
-    async updateProfile(id, dataToUpdate) {
+    async updateProfile(numericId, dataToUpdate) {
       try {
         const updatedUser = await prisma.users.update({
-          where: { id: parseInt(id, 10) },
+          where: { id: numericId },
           data: dataToUpdate
         });
         return updatedUser;
@@ -86,10 +86,10 @@ export default function createUserRepository(prisma) {
       }
     },
 
-    async removeProfilePhoto(userId) {
+    async removeProfilePhoto(numericId) {
       try {
         const removePhoto = await prisma.users.update({
-          where: { id: parseInt(userId, 10) },
+          where: { id: numericId },
           data: { foto: null }
         });
         return removePhoto;
