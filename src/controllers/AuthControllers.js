@@ -67,7 +67,7 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
         if (!id && !email) {
           return res.status(400).json({ ok: false, message: "É necessário enviar 'id' ou 'email' para desativar o usuário." });
         }
-        const identifier = id ? parseInt(id, 10) : email;
+        const identifier = id ? id.parseInt(id, 10): email;
         const result = await UserRepository.desativarAtivar(identifier);
 
         if (result.count === 0) {
@@ -93,6 +93,7 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
         const { senha, ...userSemSenha } = usuario;
         res.json({ ok: true, user: userSemSenha });
       } catch (error) {
+        console.error("Erro ao buscar usuário por ID:", error);
         res.status(500).json({ ok: false, message: "Erro interno" });
       }
     },
@@ -151,6 +152,7 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
             const { senha, ...userSemSenha } = updatedUser;
             res.json({ ok: true, message: "Foto removida", user: userSemSenha });
           } catch (error) {
+            console.error("Erro ao remover foto de perfil:", error);
             res.status(500).json({ ok: false, message: "Erro ao remover foto" });
               }
             },
