@@ -1,6 +1,5 @@
-import { isCompleteName, isEmail, isPassword } from "../shared/util.js";
-import fs from "fs"; // Necessário para deletar a foto em caso de erro no upload
-
+import { isCompleteName, isPassword } from "../shared/util.js";
+import fs from "node:fs";
 const SALT_ROUNDS = 10;
 
 // 1. O arquivo agora exporta uma FUNÇÃO "fábrica" que recebe suas dependências
@@ -100,9 +99,9 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
 
     updateProfile: async (req, res) => {
       try {
-        const { id, nome, email, currentPassword, newPassword, confirmPassword } = req.body;
+        const { id, nome, currentPassword, newPassword, confirmPassword } = req.body;
         const fotoFile = req.file;
-        const numericId = parseInt(id, 10);
+        const numericId = id.parseInt(id, 10);
 
         if (!numericId || !currentPassword) {
           return res.status(400).json({ ok: false, message: "ID e senha atual são obrigatórios" });
