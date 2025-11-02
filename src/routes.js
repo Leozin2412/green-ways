@@ -1,8 +1,8 @@
 import { Router } from "express";
 import multer from "multer";
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
+import path from "node:path";
+import fs from "node:fs";
+import { fileURLToPath } from "node:url";
 
 // As importações diretas de controllers e middlewares com dependências foram REMOVIDAS.
 // Apenas middlewares sem dependências podem ser importados diretamente se necessário.
@@ -15,7 +15,7 @@ export default function createRoutes(AuthController, PostController, UserReposit
 
   // --- Configuração do Multer (sem alterações) ---
   const sanitizeFilename = (filename) => {
-    return filename.replace(/[^a-zA-Z0-9-_.]/g, '_').replace(/_{2,}/g, '_');
+    return filename.replaceAll(/[^a-zA-Z0-9-_.]/g, '_').replaceAll(/_{2,}/g, '_');
   };
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {

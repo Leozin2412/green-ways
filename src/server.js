@@ -2,8 +2,8 @@
 import config from "./config.js";
 import express from "express";
 import cors from "cors";
-import { fileURLToPath } from "url";
-import path from "path";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
 import bodyParser from 'body-parser';
 import mysql from 'mysql2/promise'; // Usado para a inicialização do banco
 import conexao from "./database/conexao.js"; // Usado para a inicialização das tabelas
@@ -127,11 +127,12 @@ async function startServer() {
       console.log(`🚀 Servidor rodando em http://${config.host}:${config.port}`);
     });
 
-  } catch (erro) {
-    console.error('ERRO FATAL AO INICIALIZAR A APLICAÇÃO:', erro);
+  } catch (error) {
+    console.log('Error during server startup:', error);
+    console.error('ERRO FATAL AO INICIALIZAR A APLICAÇÃO:', error);
     if (bootstrapConnection) await bootstrapConnection.end();
     process.exit(1);
   }
 }
 
-startServer();
+await startServer();
