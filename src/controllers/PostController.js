@@ -7,8 +7,8 @@ export default function createPostController(PostRepository) {
   return {
     getAllPosts: async (req, res) => {
       try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+        const page = Number.parseInt(req.query.page) || 1;
+        const limit = Number.parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
 
         // Usa a instância do PostRepository que foi injetada.
@@ -23,7 +23,7 @@ export default function createPostController(PostRepository) {
     createPost: async (req, res) => {
       try {
         const { userId, region, content } = req.body;
-        const numericUserId = parseInt(userId, 10);
+        const numericUserId = Number.parseInt(userId, 10);
         if (!numericUserId || !region || !content) {
           return res
             .status(400)
@@ -40,7 +40,7 @@ export default function createPostController(PostRepository) {
     deletePost: async (req, res) => {
       try {
         const { postId } = req.params;
-        const numericPostId = parseInt(postId, 10);
+        const numericPostId = Number.parseInt(postId, 10);
         await PostRepository.deletePost(numericPostId);
         res.json({ ok: true, message: "Post deletado" });
       } catch (error) {
@@ -51,8 +51,8 @@ export default function createPostController(PostRepository) {
     addResponse: async (req, res) => {
       try {
         const { postId, Users_id, content } = req.body;
-        const numericPostId = parseInt(postId, 10);
-        const numericUserId = parseInt(Users_id, 10);
+        const numericPostId = Number.parseInt(postId, 10);
+        const numericUserId = Number.parseInt(Users_id, 10);
         if (!postId || !Users_id || !content) {
           return res
             .status(400)
@@ -72,7 +72,7 @@ export default function createPostController(PostRepository) {
     deleteResponse: async (req, res) => {
       try {
         const { responseId } = req.body;
-        const numericResponseId = parseInt(responseId, 10);
+        const numericResponseId = Number.parseInt(responseId, 10);
         await PostRepository.deleteResponse(numericResponseId);
         res.json({ ok: true, message: "Resposta deletada" });
       } catch (error) {

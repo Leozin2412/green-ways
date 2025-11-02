@@ -1,5 +1,5 @@
 import { test } from 'poku';
-import { deepStrictEqual as equal, ok as truthy } from 'assert';
+import { deepStrictEqual as equal } from 'node:assert';
 import createAuthController from '../controllers/AuthControllers.js';
 
 function setup() {

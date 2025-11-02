@@ -1,6 +1,5 @@
-import { isCompleteName, isEmail, isPassword } from "../shared/util.js";
-import fs from "fs"; // Necessário para deletar a foto em caso de erro no upload
-
+import { isCompleteName, isPassword } from "../shared/util.js";
+import fs from "node:fs";
 const SALT_ROUNDS = 10;
 
 // 1. O arquivo agora exporta uma FUNÇÃO "fábrica" que recebe suas dependências
@@ -68,7 +67,7 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
         if (!id && !email) {
           return res.status(400).json({ ok: false, message: "É necessário enviar 'id' ou 'email' para desativar o usuário." });
         }
-        const identifier = id ? parseInt(id, 10) : email;
+        const identifier = id ? Number.parseInt(id, 10): email;
         const result = await UserRepository.desativarAtivar(identifier);
 
         if (result.count === 0) {
@@ -94,6 +93,7 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
         const { senha, ...userSemSenha } = usuario;
         res.json({ ok: true, user: userSemSenha });
       } catch (error) {
+        console.error("Erro ao buscar usuário por ID:", error);
         res.status(500).json({ ok: false, message: "Erro interno" });
       }
     },
@@ -102,7 +102,7 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
       try {
         const { id, nome, currentPassword, newPassword, confirmPassword } = req.body;
         const fotoFile = req.file;
-        const numericId = id.parseInt(id, 10);
+        const numericId = Number.parseInt(id, 10);
 
         if (!numericId || !currentPassword) {
           return res.status(400).json({ ok: false, message: "ID e senha atual são obrigatórios" });
@@ -145,13 +145,14 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
     removeProfilePhoto: async (req, res) => {
         try {
             const { id } = req.query;
-            const numericId = id.parseInt(id, 10);
+            const numericId = Number.parseInt(id, 10);
             if (!id) return res.status(400).json({ ok: false, message: "ID não fornecido" });
     
             const updatedUser = await UserRepository.removeProfilePhoto(numericId);
             const { senha, ...userSemSenha } = updatedUser;
             res.json({ ok: true, message: "Foto removida", user: userSemSenha });
           } catch (error) {
+            console.error("Erro ao remover foto de perfil:", error);
             res.status(500).json({ ok: false, message: "Erro ao remover foto" });
               }
             },
