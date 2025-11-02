@@ -1,5 +1,5 @@
 import { test } from 'poku';
-import { deepStrictEqual as equal, ok as truthy } from 'assert';
+import { deepStrictEqual as equal, ok as truthy } from 'node:assert';
 // O teste importa a fábrica, o que está correto com a nossa arquitetura
 import createPostRepository from '../repositories/postRepository.js';
 

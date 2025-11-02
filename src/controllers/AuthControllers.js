@@ -67,7 +67,7 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
         if (!id && !email) {
           return res.status(400).json({ ok: false, message: "É necessário enviar 'id' ou 'email' para desativar o usuário." });
         }
-        const identifier = id ? id.parseInt(id, 10): email;
+        const identifier = id ? Number.parseInt(id, 10): email;
         const result = await UserRepository.desativarAtivar(identifier);
 
         if (result.count === 0) {
@@ -102,7 +102,7 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
       try {
         const { id, nome, currentPassword, newPassword, confirmPassword } = req.body;
         const fotoFile = req.file;
-        const numericId = id.parseInt(id, 10);
+        const numericId = Number.parseInt(id, 10);
 
         if (!numericId || !currentPassword) {
           return res.status(400).json({ ok: false, message: "ID e senha atual são obrigatórios" });
@@ -145,7 +145,7 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
     removeProfilePhoto: async (req, res) => {
         try {
             const { id } = req.query;
-            const numericId = id.parseInt(id, 10);
+            const numericId = Number.parseInt(id, 10);
             if (!id) return res.status(400).json({ ok: false, message: "ID não fornecido" });
     
             const updatedUser = await UserRepository.removeProfilePhoto(numericId);

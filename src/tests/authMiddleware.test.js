@@ -8,7 +8,7 @@ export default function createAuthMiddleware(UserRepository, PostRepository) {
   const middleware = {
     verifyToken: (req, res, next) => {
       const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      if (!authHeader || authHeader?.startsWith("Bearer ")) {
         return res.status(401).json({
           ok: false,
           message: "Token de autenticação não fornecido",
@@ -83,6 +83,7 @@ export default function createAuthMiddleware(UserRepository, PostRepository) {
         req.post = post;
         next();
       } catch (error) {
+        console.error("Erro ao verificar propriedade do post:", error);
         return res.status(500).json({
           ok: false,
           message: "Erro interno ao verificar propriedade do post",
@@ -138,6 +139,7 @@ export default function createAuthMiddleware(UserRepository, PostRepository) {
         req.response = response;
         next();
       } catch (error) {
+        console.error("Erro ao verificar propriedade da resposta:", error);
         return res.status(500).json({
           ok: false,
           message: "Erro interno ao verificar propriedade da resposta",
@@ -181,6 +183,7 @@ export default function createAuthMiddleware(UserRepository, PostRepository) {
         req.targetUser = user;
         next();
       } catch (error) {
+        console.error("Erro ao verificar propriedade do usuário:", error);
         return res.status(500).json({
           ok: false,
           message: "Erro interno ao verificar propriedade do usuário",
