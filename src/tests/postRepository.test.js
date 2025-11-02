@@ -16,10 +16,10 @@ function setup() {
   // O mock do Prisma continua o mesmo, pois ele simula a camada abaixo do repositório
   const mockPrisma = {
     post: {
-      findMany: async (args) => { spies.findMany = args; return Promise.resolve([{ idPost: 1, content: 'Post de Teste' }]); },
-      create: async (args) => { spies.create = args; return Promise.resolve({ idPost: 2, ...args.data }); },
-      delete: async (args) => { spies.delete = args; return Promise.resolve({ idPost: args.where.idPost }); },
-      count: async () => { spies.count = true; return Promise.resolve(1); }
+      findMany: async (args) => { spies.findMany = args; return[{ idPost: 1, content: 'Post de Teste' }]; },
+      create: async (args) => { spies.create = args; return { idPost: 2, ...args.data }; },
+      delete: async (args) => { spies.delete = args; return { idPost: args.where.idPost }; },
+      count: async () => { spies.count = true; return 1; }
     },
     $transaction: async (args) => {
       spies.transaction = args;

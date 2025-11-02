@@ -102,7 +102,7 @@ test('createPost deve retornar 201 e o novo post', async () => {
 
   await postController.createPost(mockReq, mockRes);
 
-  const [userId, region, content] = spies.PostRepository.addPost;
+  const [userId, region] = spies.PostRepository.addPost;
   equal(userId, 1); // Verifica se o ID foi convertido para número
   equal(region, 'SP');
   equal(spies.res.status, 201);
