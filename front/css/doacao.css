@@ -1,0 +1,553 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+/*-------------------------------------------Tags Gerais---------------------------------------*/
+.user-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#username-display {
+  font-weight: bold;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#username-display {
+    font-weight: bold;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  #username-display:hover {
+    color: #4caf50;
+  }
+  
+.login-icon {
+  color: white;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.login-icon:hover {
+  color: #4caf50;
+  transform: scale(1.1);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  outline: none;
+  font-family: "Inter", sans-serif;
+}
+body {
+  background-color: #b1c2b4;
+  margin: 0;
+  padding: 0;
+}
+h3 {
+  font-size: 50px;
+}
+p {
+  color: #000;
+}
+
+.logged {
+  pointer-events: none;
+  cursor: default;
+  font-size: 15px;
+  margin-left: auto;
+  color: rgb(255, 255, 255);
+  font-weight: 400;
+  padding-right: 10px;
+}
+
+/*-------------------------------------------Início Header---------------------------------------*/
+
+.menu {
+  max-width: 1400px;
+  max-height: 1200px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+.fundo {
+  background-color: rgba(0, 0, 0, 0.363);
+  z-index: 3;
+  min-height: 120px;
+  width: 100%;
+}
+header {
+  background-image: url(".././img/banner.webp");
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  text-align: center;
+}
+nav ul {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  text-shadow: 5px;
+  list-style: none;
+}
+nav ul a {
+  color: rgb(255, 255, 255);
+  margin: 40px;
+  font-size: 15px;
+  text-transform: uppercase;
+  display: block;
+  font-weight: 400;
+}
+nav ul a::after {
+  content: "";
+  background-color: #ffffff;
+  height: 3px;
+  width: 0%;
+  display: block;
+  margin: 0 auto;
+  transition: 0.3s;
+}
+nav ul a:hover::after {
+  width: 100%;
+}
+.nav-links {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  justify-content: center;
+}
+.login-icon {
+  font-size: 15px;
+  margin-left: auto;
+  color: rgb(255, 255, 255);
+  font-weight: 400;
+  padding-right: 10px;
+}
+
+.banner {
+  display: flex;
+  justify-content: center;
+}
+.banner .textobanner {
+  margin: 190px;
+  padding: 0 29px;
+}
+.banner .textobanner .l1 {
+  font-size: 59px;
+  color: white;
+  position: absolute;
+  left: 150px;
+  top: 230px;
+}
+.banner .textobanner .l2 {
+  font-size: 59px;
+  color: white;
+  position: absolute;
+  left: 290px;
+  top: 290px;
+}
+.banner .textobanner p {
+  font-size: 17px;
+  color: white;
+  position: absolute;
+  right: 0;
+  top: 130px;
+  padding: 5px;
+  width: 370px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+#name {
+  color: white;
+  padding-inline: 10px;
+}
+
+#logoutBtn {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  color: white;
+  background-color: transparent;
+  border-radius: 50px;
+  border-color: white;
+
+  padding: 3px 13px;
+  cursor: pointer;
+}
+#logoutBtn:hover {
+  border-color: #193b127d;
+  color: white;
+  transition: ease-in-out 0.4s;
+}
+
+
+
+/*-------------------------------------------Início Leaf---------------------------------------*/
+
+.leaf {
+  background-color: #cad3c8;
+  border: 1px solid #9ebda4d2;
+  border-radius: 5px;
+  padding: 20px;
+  flex: 1 1 calc(50% - 20px);
+  margin: 12px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+  margin-bottom: 0px;
+}
+.leaf p {
+  font-size: 1.2em;
+  margin-top: 0;
+  color: #3b3b39;
+}
+
+/*-------------------------------------------Início Doacoes---------------------------------------*/
+
+.ong-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+  gap: 20px;
+  justify-items: center; /* centraliza o conteúdo de cada célula */
+  justify-content: center; /* centraliza o grid inteiro */
+  padding: 20px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  margin-top: 20px;
+
+}
+
+
+.ong-card {
+  background: #f6f2e8;
+  padding: 20px;
+  border-radius: 20px;
+  width: 370px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* mantém o botão no mesmo lugar */
+  height: 250px; /* altura fixa para todos os cards */
+  box-sizing: border-box; /* garante que padding não aumente o tamanho total */
+  
+}
+
+.ong-card h2{
+  font-size: 23px;
+}
+.ong-card p{
+  font-size: 17px;
+  text-align: justify;
+}
+.ong-card:hover {
+  transform: scale(1.05);
+  transition: transform 0.5s ease;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+button {
+  border: none;
+  padding: 10px 10px;
+  margin-top: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  background: #334a00;
+  color: white;
+  width: 100px; /* largura que você quiser */
+  display: block; /* transforma o botão em bloco */
+  margin: 0 auto; /* centraliza horizontalmente */
+}
+
+button:hover {
+  background: #1f2d02;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hidden { display: none; }
+
+.modal-content {
+  background: #f6f2e8;
+  padding: 25px;
+  border-radius: 14px;
+  width: 480px;
+  animation: fadeIn .2s ease;
+}
+
+.close {
+  float: right;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border-radius: 8px;
+  border: 1px solid #0d2e07a2;
+}
+
+.btn-enviar {
+  margin-top: 15px;
+  width: 100%;
+}
+/*-------------------------------------------Início Rodapé---------------------------------------*/
+
+footer {
+  background-color: #334a00;
+  text-align: center;
+  padding-top: 50px;
+  margin-top: 40px;
+}
+footer ul {
+  color: white;
+  padding: 10px;
+}
+footer ul a {
+  padding: 5px;
+}
+.copy {
+  padding: 20px;
+  color: white;
+}
+.fot a :hover {
+  transform: scale(1.15);
+  transition: transform 0.5s ease;
+}
+
+/*-------------------------------------------Início Responsividade---------------------------------------*/
+
+/* Media Query para telas com no máximo 767px */
+@media (max-width: 767px) {
+  /* ----- Responsividade Cabeçalho  ----- */
+  .menu {
+    padding: 0 2%;
+  }
+  .fundo {
+    min-height: 80px;
+  }
+
+  header {
+    background-size: cover;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column; /* Coloca o conteúdo verticalmente */
+    align-items: center; /* Centraliza todos os itens dentro do nav */
+  }
+
+  .login-icon {
+    font-size: 20px; /* Aumenta o tamanho do ícone */
+    margin-bottom: 10px; /* Espaço entre o ícone e os links */
+    display: block;
+    text-align: center; /* Centraliza o ícone */
+    margin-top: 20px; /* Espaço acima do ícone */
+    width: 100%;
+  }
+  nav ul {
+    flex-direction: column; /* Coloca os links em coluna */
+    margin-left: 0;
+    margin-right: 0;
+    text-align: center;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav ul li {
+    margin: 10px 0; /* Espaço entre os itens da lista */
+  }
+
+  nav ul a {
+    margin: 0;
+    font-size: 15px;
+    display: block;
+    padding: 10px 0;
+  }
+
+  .banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-top: 20px; /* Espaço entre a navegação e o banner */
+  }
+
+  .banner .textobanner {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .banner .textobanner .l1,
+  .banner .textobanner .l2 {
+    font-size: 36px;
+    position: static;
+  }
+
+  .banner .textobanner p {
+    font-size: 14px;
+    position: static;
+    padding: 5px;
+    width: auto;
+    word-wrap: break-word;
+    text-align: center;
+    margin: 10px 0;
+  }
+    .ong-list {
+    grid-template-columns: 1fr;
+  }
+  .ong-card {
+    width: 90%; /* ocupa mais espaço em telas pequenas */
+  }
+  .modal-content {
+    width: 70%;          /* ocupa quase toda a tela */
+    padding: 20px;       /* ajusta o padding */
+    border-radius: 10px; /* bordas menores */
+  }
+
+  .modal-content input {
+    padding: 6px;        /* ajusta inputs */
+  }
+
+  .btn-enviar {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+
+
+/* Media Query para telas com largura entre 768px e 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* ----- Responsividade Cabeçalho  ----- */
+  .menu {
+    padding: 0 3%;
+  }
+
+  .fundo {
+    min-height: 100px;
+  }
+
+  header {
+    background-size: cover;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .login-icon {
+    font-size: 35px;
+    margin-bottom: 25px;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 25px;
+  }
+
+  nav ul {
+    flex-direction: row;
+    justify-content: center;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav ul li {
+    margin: 0 20px;
+  }
+
+  nav ul a {
+    margin: 0;
+    font-size: 18px;
+    display: block;
+    padding: 10px 0;
+  }
+
+  .banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-top: 30px;
+  }
+
+  .banner .textobanner {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .banner .textobanner .l1,
+  .banner .textobanner .l2 {
+    font-size: 48px;
+    position: static;
+  }
+
+  .banner .textobanner p {
+    font-size: 16px;
+    position: static;
+    padding: 5px;
+    width: auto;
+    word-wrap: break-word;
+    text-align: center;
+    margin: 10px 0;
+  }
+  
+  .ong-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ong-card {
+    width: 90%; /* deixa mais flexível no tablet */
+  }
+   
+}
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .ong-list {
+    grid-template-columns: repeat(3, 1fr); /* três colunas */
+    gap: 20px;
+  }
+
+  .ong-card {
+    width: 100%;
+    height: 250px; /* altura fixa como antes */
+  }
+}
