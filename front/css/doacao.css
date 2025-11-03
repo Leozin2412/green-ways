@@ -221,10 +221,10 @@ nav ul a:hover::after {
 
 .ong-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  justify-items: center; /* centraliza o conteúdo de cada célula */
-  justify-content: center; /* centraliza o grid inteiro */
+  justify-items: center; 
+  justify-content: center; 
   padding: 20px;
   width: 100%;
   max-width: 1400px;
@@ -243,9 +243,10 @@ nav ul a:hover::after {
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* mantém o botão no mesmo lugar */
-  height: 250px; /* altura fixa para todos os cards */
-  box-sizing: border-box; /* garante que padding não aumente o tamanho total */
+  justify-content: space-between; 
+  height: 250px; 
+  box-sizing: border-box; 
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
   
 }
 
@@ -270,9 +271,9 @@ button {
   font-size: 15px;
   background: #334a00;
   color: white;
-  width: 100px; /* largura que você quiser */
-  display: block; /* transforma o botão em bloco */
-  margin: 0 auto; /* centraliza horizontalmente */
+  width: 100px; 
+  display: block; 
+  margin: 0 auto; 
 }
 
 button:hover {
@@ -350,7 +351,7 @@ footer ul a {
 
 /*-------------------------------------------Início Responsividade---------------------------------------*/
 
-/* Media Query para telas com no máximo 767px */
+
 @media (max-width: 767px) {
   /* ----- Responsividade Cabeçalho  ----- */
   .menu {
@@ -366,20 +367,20 @@ footer ul a {
 
   nav {
     display: flex;
-    flex-direction: column; /* Coloca o conteúdo verticalmente */
-    align-items: center; /* Centraliza todos os itens dentro do nav */
+    flex-direction: column; 
+    align-items: center; 
   }
 
   .login-icon {
-    font-size: 20px; /* Aumenta o tamanho do ícone */
-    margin-bottom: 10px; /* Espaço entre o ícone e os links */
+    font-size: 20px; 
+    margin-bottom: 10px; 
     display: block;
-    text-align: center; /* Centraliza o ícone */
-    margin-top: 20px; /* Espaço acima do ícone */
+    text-align: center; 
+    margin-top: 20px; 
     width: 100%;
   }
   nav ul {
-    flex-direction: column; /* Coloca os links em coluna */
+    flex-direction: column; 
     margin-left: 0;
     margin-right: 0;
     text-align: center;
@@ -388,7 +389,7 @@ footer ul a {
   }
 
   nav ul li {
-    margin: 10px 0; /* Espaço entre os itens da lista */
+    margin: 10px 0; 
   }
 
   nav ul a {
@@ -404,7 +405,7 @@ footer ul a {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    margin-top: 20px; /* Espaço entre a navegação e o banner */
+    margin-top: 20px; 
   }
 
   .banner .textobanner {
@@ -432,16 +433,16 @@ footer ul a {
     grid-template-columns: 1fr;
   }
   .ong-card {
-    width: 90%; /* ocupa mais espaço em telas pequenas */
+    width: 90%; 
   }
   .modal-content {
-    width: 70%;          /* ocupa quase toda a tela */
-    padding: 20px;       /* ajusta o padding */
-    border-radius: 10px; /* bordas menores */
+    width: 70%;          
+    padding: 20px;       
+    border-radius: 10px; 
   }
 
   .modal-content input {
-    padding: 6px;        /* ajusta inputs */
+    padding: 6px;       
   }
 
   .btn-enviar {
@@ -452,7 +453,6 @@ footer ul a {
 
 
 
-/* Media Query para telas com largura entre 768px e 1023px */
 @media (min-width: 768px) and (max-width: 1023px) {
   /* ----- Responsividade Cabeçalho  ----- */
   .menu {
@@ -536,18 +536,18 @@ footer ul a {
     grid-template-columns: repeat(2, 1fr);
   }
   .ong-card {
-    width: 90%; /* deixa mais flexível no tablet */
+    width: 90%; 
   }
    
 }
 @media (min-width: 1024px) and (max-width: 1399px) {
   .ong-list {
-    grid-template-columns: repeat(3, 1fr); /* três colunas */
+    grid-template-columns: repeat(3, 1fr); 
     gap: 20px;
   }
 
   .ong-card {
     width: 100%;
-    height: 250px; /* altura fixa como antes */
+    height: 250px; 
   }
 }
