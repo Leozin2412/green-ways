@@ -4,51 +4,58 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlserver"
   url      = env("DATABASE_URL")
 }
 
-// Modelo para os comentários/respostas
-model coments {
-  idComents   Int      @id @default(autoincrement())
-  content     String   @db.VarChar(300)
-  createdAt   DateTime @default(now()) @db.Date // Adicionado @default(now())
-  Users_id    Int
-  Post_idPost Int
-  post        post     @relation(fields: [Post_idPost], references: [idPost], onDelete: Cascade, map: "fk_coments_post")
-  users       users    @relation(fields: [Users_id], references: [id], onDelete: Cascade, map: "fk_coments_user")
+// Tabela 'User' (MANTIDA SEM ALTERAÇÕES NESTA SEÇÃO)
+model User {
+  id     Int    @id @default(autoincrement())
+  nome   String @db.VarChar(50)
+  email  String @unique @db.VarChar(100)
+  senha  String @db.VarChar(100)
+  foto   String? @db.VarChar(255)
+  acesso String @default("user") @db.VarChar(5) 
+  ativo  Boolean @default(true) @db.Bit 
 
-  @@index([Post_idPost], map: "fk_coments_post")
-  @@index([Users_id], map: "fk_coments_user")
+  posts    Post[]
+  coments  Coment[]
+  
+  @@map("users") 
 }
 
-// Modelo para os posts
-model post {
-  idPost    Int       @id @default(autoincrement())
-  region    String    @db.VarChar(100)
-  content   String    @db.VarChar(300)
-  createdAt DateTime  @default(now()) @db.DateTime(0)
-  Users_id  Int
-  coments   coments[] // Relação apenas com 'coments'
-  users     users     @relation(fields: [Users_id], references: [id], onDelete: Cascade, map: "fk_post_user")
+// Tabela 'Post'
+model Post {
+  idPost    Int      @id @default(autoincrement())
+  region    String   @db.VarChar(100)
+  content   String   @db.VarChar(300)
+  createdAt DateTime @default(now()) @map("createdAt")
 
-  @@index([Users_id], map: "fk_post_user")
+  // Relacionamento com User: Mantenha Cascade para garantir que posts sejam deletados
+  Users_id  Int      @map("Users_id")
+  user      User     @relation(fields: [Users_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  coments   Coment[]
+
+  @@map("post")
 }
 
-// Modelo para os usuários
-model users {
-  id        Int          @id @default(autoincrement())
-  nome      String       @db.VarChar(50)
-  email     String       @unique(map: "email_UNIQUE") @db.VarChar(100)
-  senha     String       @db.VarChar(100)
-  foto      String?      @db.VarChar(255)
-  acesso    users_acesso @default(user)
-  ativo     Int          @default(1) @db.TinyInt
-  coments   coments[]    // Relação apenas com 'coments'
-  post      post[]
-}
+// Tabela 'coments' (Comentários)
+model Coment {
+  idComents Int      @id @default(autoincrement())
+  content   String   @db.VarChar(300)
+  createdAt DateTime @default(now()) @map("createdAt")
 
-enum users_acesso {
-  user
-  admin
+  // 1. Relacionamento com User: Mantenha Cascade
+  Users_id  Int      @map("Users_id")
+  user      User     @relation(fields: [Users_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  // 2. Relacionamento com Post: QUEBRE O LOOP AQUI!
+  // Se o Post for deletado (por ação direta ou via User->Post), os comentários
+  // devem ser tratados pelo banco de dados ou pelo código de forma explícita.
+  // Definindo como NoAction, o Prisma não vê mais o loop de exclusão.
+  Post_idPost Int      @map("Post_idPost")
+  post        Post     @relation(fields: [Post_idPost], references: [idPost], onDelete: NoAction, onUpdate: NoAction) 
+  
+  @@map("coments")
 }

@@ -8,8 +8,8 @@
     "express": "^4.21.2",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
+    "mssql": "^12.1.0",
     "multer": "^1.4.5-lts.2",
-    "mysql2": "^3.14.1",
     "poku": "^3.0.2",
     "uuid": "^13.0.0"
   },
