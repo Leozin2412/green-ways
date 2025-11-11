@@ -16,22 +16,17 @@
   transition: all 0.3s ease;
 }
 
-#username-display {
-    font-weight: bold;
-    color: white;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  #username-display:hover {
-    color: #4caf50;
-  }
-  
+#username-display:hover {
+  color: #4caf50;
+}
+
 .login-icon {
   color: white;
   font-size: 1.1rem;
   transition: all 0.3s ease;
+  margin-left: auto;
+  font-weight: 400;
+  padding-right: 10px;
 }
 
 .login-icon:hover {
@@ -130,13 +125,7 @@ nav ul a:hover::after {
   flex: 1;
   justify-content: center;
 }
-.login-icon {
-  font-size: 15px;
-  margin-left: auto;
-  color: rgb(255, 255, 255);
-  font-weight: 400;
-  padding-right: 10px;
-}
+
 
 .banner {
   display: flex;
