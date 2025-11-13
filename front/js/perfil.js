@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const userId = currentUser.id;
     const timestamp = new Date().getTime();
-    elements.fotoPreview.src = `/public/uploads/profile_${userId}.jpg?${timestamp}`;
+    elements.fotoPreview.src = `${API_BASE_URL}/public/uploads/profile_${userId}.jpg?${timestamp}`;
     elements.fotoPreview.onerror = () => {
       elements.fotoPreview.src = DEFAULT_AVATAR;
     };
@@ -106,7 +106,7 @@ formData.append("currentPassword", elements.currentPasswordInput.value);
         {
           method: "PUT",
           headers: {
-            Authorization: `Bearer ${token}`,
+            authorization: `Bearer ${token}`,
           },
           body: formData,
         }

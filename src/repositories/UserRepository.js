@@ -1,11 +1,9 @@
-// Removidas todas as importações desnecessárias, incluindo o PrismaClient.
-
 // 1. O arquivo agora exporta uma função "fábrica" que recebe o prisma.
 export default function createUserRepository(prisma) {
   // 2. Retornamos um objeto com todos os métodos do repositório.
   return {
     async create(user) {
-      const newUser = await prisma.users.create({
+      const newUser = await prisma.User.create({
         data: {
           nome: user.nome,
           email: user.email,
@@ -18,7 +16,7 @@ export default function createUserRepository(prisma) {
     },
 
     async getByEmail(email) {
-      const user = await prisma.users.findUnique({
+      const user=await prisma.User.findUnique({
         where: { email: email }
       });
       return user;
@@ -26,7 +24,7 @@ export default function createUserRepository(prisma) {
 
     async getById(id) {
       const numericId = Number.parseInt(id, 10);
-      const user = await prisma.users.findUnique({
+      const user = await prisma.User.findUnique({
         // O ID no schema do Prisma é um Int, então garantimos que seja um número.
         where: { id: numericId }
       });
@@ -34,14 +32,14 @@ export default function createUserRepository(prisma) {
     },
 
     async login(email) {
-      const user = await prisma.users.findUnique({
+      const user = await prisma.User.findUnique({
         where: { email: email }
       });
       return user;
     },
 
     async update(currentEmail, data) {
-      const user =prisma.users.update({
+      const user =prisma.User.update({
         where: { email: currentEmail },
         data: {
           nome: data.nome,
@@ -61,7 +59,7 @@ export default function createUserRepository(prisma) {
         } else {
           whereClause.email = identifier;
         }
-        const updatedUser = await prisma.users.updateMany({
+        const updatedUser = await prisma.User.update({
           where: whereClause,
           data: {
             ativo: 0
@@ -76,7 +74,7 @@ export default function createUserRepository(prisma) {
 
     async updateProfile(numericId, dataToUpdate) {
       try {
-        const updatedUser = await prisma.users.update({
+        const updatedUser = await prisma.User.update({
           where: { id: numericId },
           data: dataToUpdate
         });
@@ -89,7 +87,7 @@ export default function createUserRepository(prisma) {
 
     async removeProfilePhoto(numericId) {
       try {
-        const removePhoto = await prisma.users.update({
+        const removePhoto = await prisma.User.update({
           where: { id: numericId },
           data: { foto: null }
         });

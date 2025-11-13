@@ -39,8 +39,8 @@ export default function createPostRepository(prisma) {
         }
 
         const [posts, total] = await prisma.$transaction([
-          prisma.post.findMany(queryOptions),
-          prisma.post.count()
+          prisma.Post.findMany(queryOptions),
+          prisma.Post.count()
         ]);
 
         const totalPage = take > 0 ? Math.ceil(total / take) : 1;
