@@ -16,15 +16,15 @@ export default function createPostRepository(prisma) {
                 Post_idPost: true,
                 Users_id: true,
                 content: true,
-                users: {
-                  select: {
-                    nome: true,
-                    foto: true
+                  user: {
+                    select: {
+                      nome: true,
+                      foto: true
+                    }
                   }
-                }
               },
             },
-            users: {
+            user: {
               select: {
                 foto: true,
                 nome: true
@@ -53,7 +53,7 @@ export default function createPostRepository(prisma) {
     },
 
     async addPost(userID, region, content) {
-      const createPost = await prisma.post.create({
+      const createPost = await prisma.Post.create({
         data: {
           region: region,
           content: content,
@@ -64,14 +64,14 @@ export default function createPostRepository(prisma) {
     },
 
     async deletePost(numericPostId) {
-      const deletePost = await prisma.post.delete({
+      const deletePost = await prisma.Post.delete({
         where: { idPost: numericPostId }
       });
       return deletePost;
     },
 
     async addResponse(numericPostId, numericUserId, content) {
-      const coments = await prisma.coments.create({
+      const coments = await prisma.Coment.create({
         data: {
           Post_idPost: numericPostId,
           Users_id: numericUserId,
@@ -82,7 +82,7 @@ export default function createPostRepository(prisma) {
     },
 
     async deleteResponse(numericPostId) {
-      const deleteComents = await prisma.coments.delete({
+      const deleteComents = await prisma.Coment.delete({
         where: {
           idComents: numericPostId
         }

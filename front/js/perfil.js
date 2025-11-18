@@ -106,7 +106,7 @@ formData.append("currentPassword", elements.currentPasswordInput.value);
         {
           method: "PUT",
           headers: {
-            authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
           body: formData,
         }

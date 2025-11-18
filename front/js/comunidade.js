@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         data.posts.forEach((post) => {
           console.log("Processando post:", post);
           const postElement = createPostElement(
-            post.users.nome,
+            post.user.nome,
             post.region,
             post.content,
             post.idPost,
@@ -345,7 +345,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const responseElement = document.createElement("div");
       responseElement.className = "response";
       responseElement.innerHTML = `
-      <p><strong>${response.users.nome}:</strong> ${response.content}</p>
+      <p><strong>${response.user.nome}:</strong> ${response.content}</p>
       ${currentUser.id === response.Users_id || userIsAdmin ? `<button class="delete-response-btn" data-post-id="${postId}" data-response-id="${response.idComents}">Excluir Resposta</button>` : ""}
     `;
       responsesContainer.appendChild(responseElement);
