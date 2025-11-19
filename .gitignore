@@ -1,9 +1,9 @@
-
+.env 
 #npm install express
-              bcrypt  
-              jsonwebtoken
+#bcrypt  
+#jsonwebtoken
 
- .env 
+
 #PORT=3000
 #HOST=127.0.0.1
 #AUTOR="Leonardo Monteiro"
@@ -16,6 +16,7 @@
 #DB_SERVER=MEUCOMPUTADOR\SQLEXPRESS
 #DB_BASE=greenwaysofc
 #DB_PORT=1433
+
 # This was inserted by `prisma init`:
 # Environment variables declared in this file are automatically made available to Prisma.
 # See the documentation for more detail: https://pris.ly/d/prisma-schema#accessing-environment-variables-from-the-schema
