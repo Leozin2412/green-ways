@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const userId = currentUser.id;
     const timestamp = new Date().getTime();
-    elements.fotoPreview.src = `${API_BASE_URL}/public/uploads/profile_${userId}.jpg?${timestamp}`;
+    elements.fotoPreview.src = `/public/${currentUser.foto}?${timestamp}`;
     elements.fotoPreview.onerror = () => {
       elements.fotoPreview.src = DEFAULT_AVATAR;
     };

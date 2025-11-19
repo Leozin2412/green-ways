@@ -35,6 +35,7 @@ export default function createUserRepository(prisma) {
       const user = await prisma.User.findUnique({
         where: { email: email }
       });
+      console.log("Usuário encontrado:", user);
       return user;
     },
 
@@ -62,7 +63,7 @@ export default function createUserRepository(prisma) {
         const updatedUser = await prisma.User.update({
           where: whereClause,
           data: {
-            ativo: 0
+            ativo: false
           }
         });
         return updatedUser;
