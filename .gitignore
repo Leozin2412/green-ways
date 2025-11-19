@@ -9,10 +9,10 @@
 #AUTOR="Leonardo Monteiro"
 #SECRET= "chave de criptografia"
 #TOKEN_EXPIRE=86400
-#DATABASE_URL="sqlserver://localhost:1433;database=GreenWaysOFC;user=sa;password=DjLeozin2004;trustServerCertificate=true"
+#DATABASE_URL="sqlserver://localhost:1433;database=GreenWaysOFC;user=sa;password=;trustServerCertificate=true"
 #CONNECTION_STRING=Server=IACILLO;Initial Catalog=loja_virtual;Integrated Security=no;User ID=sa;Password=etpc;Connect Timeout=15;Encrypt=no;TrustServerCertificate=no;port=1433
 #DB_USER=sa
-#DB_PASSWORD=DjLeozin2004
+#DPAS=DjLeozin2004
 #DB_SERVER=MEUCOMPUTADOR\SQLEXPRESS
 #DB_BASE=greenwaysofc
 #DB_PORT=1433
