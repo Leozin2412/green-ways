@@ -58,6 +58,7 @@ export default function createPostController(PostRepository) {
             .status(400)
             .json({ ok: false, message: "Campos obrigatórios" });
         }
+      console.log(numericPostId, numericUserId, content )
         await PostRepository.addResponse(
           numericPostId,
           numericUserId,

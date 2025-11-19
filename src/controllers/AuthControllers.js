@@ -15,9 +15,11 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
         }
 
         const usuario = await UserRepository.login(email);
+       
         if (!usuario) {
           return res.status(401).json({ ok: false, message: 'Usuário não encontrado' });
         }
+       
 
         const validaSenha = await bcrypt.compare(senha, usuario.senha);
         if (!validaSenha) {
@@ -25,7 +27,7 @@ export default function createAuthController(UserRepository, bcrypt, jwt, SECRET
         }
 
         // Monta o payload do token com os dados corretos do schema do Prisma
-        const user = { id: usuario.id, nome: usuario.nome, acesso: usuario.acesso, ativo: usuario.ativo };
+        const user = { id: usuario.id, nome: usuario.nome, acesso: usuario.acesso, ativo: usuario.ativo,foto: usuario.foto, email: usuario.email };
         const token = jwt.sign(user, SECRET, { expiresIn: TOKEN_EXPIRE });
         
         return res.status(200).json({ ok: true, message: 'Acesso autorizado', token, user });

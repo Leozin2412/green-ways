@@ -10,7 +10,7 @@ export default function createAuthMiddleware(UserRepository, PostRepository) {
   return {
     verifyToken: (req, res, next) => {
       const authHeader = req.headers.authorization;
-      if (!authHeader.value || !authHeader.startsWith("Bearer ")) {
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return res.status(401).json({
           ok: false,
           message: "Token de autenticação não fornecido",

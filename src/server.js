@@ -5,29 +5,42 @@ import cors from "cors";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import bodyParser from 'body-parser';
-import mysql from 'mysql2/promise'; // Usado para a inicialização do banco
-import conexao from "./database/conexao.js"; // Usado para a inicialização das tabelas
-import { PrismaClient } from '@prisma/client'; // Usado pela aplicação
+// Importação do PrismaClient (para Repositórios CRUD)
+import { PrismaClient } from '@prisma/client'; 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+// Importação do módulo de conexão SQL Puro (para TransactionRepository)
+import conexao from './database/conexao.js'; 
+
 // --- IMPORTAÇÃO DAS NOSSAS "FÁBRICAS" ---
 import createRoutes from "./routes.js"; 
+// Os Repositórios de CRUD recebem apenas o Prisma
 import createPostRepository from "./repositories/postRepository.js";
 import createUserRepository from "./repositories/UserRepository.js";
+// O repositório de Transações receberá a conexão SQL Pura
+//;import createTransactionRepository from "./repositories/TransactionRepository.js"; // Novo import
+
 import createPostController from "./controllers/PostController.js";
 import createAuthController from "./controllers/AuthControllers.js";
 import createAuthMiddleware from "./middlewares/authMiddleware.js";
 
 // --- MONTAGEM DA APLICAÇÃO (INJEÇÃO DE DEPENDÊNCIA) ---
-const prisma = new PrismaClient();
+const prisma = new PrismaClient(); // Instância do ORM (CRUD)
 
+// Repositórios que USAM PRISMA:
 const postRepository = createPostRepository(prisma);
 const userRepository = createUserRepository(prisma);
 
+// Repositório que USA SQL PURO:
+//const transactionRepository = createTransactionRepository(conexao); // Injeta a conexão SQL Pura
+
+// Middleware e Controllers - A injeção de dependência garante que eles
+// usem o repositório correto (Prisma ou SQL Puro)
 const authMiddleware = createAuthMiddleware(userRepository, postRepository);
 
 const postController = createPostController(postRepository);
+// NOTA: Se AuthController precisar de TransactionRepository, injete-o aqui.
 const authController = createAuthController(
     userRepository, 
     bcrypt, 
@@ -36,8 +49,9 @@ const authController = createAuthController(
     eval(process.env.TOKEN_EXPIRE)
 );
 
-// A variável 'routes' agora é o resultado da nossa fábrica
-const routes = createRoutes(authController, postController, userRepository, authMiddleware);
+// A variável 'routes' agora é o resultado da nossa fábrica.
+// Se as rotas de Transação existirem, adicione transactionRepository aqui:
+const routes = createRoutes(authController, postController, userRepository, authMiddleware/* , transactionRepository */);
 
 // --- CONFIGURAÇÃO DO EXPRESS ---
 const __filename = fileURLToPath(import.meta.url);
@@ -52,87 +66,38 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-// --- FUNÇÃO DE INICIALIZAÇÃO (COM CRIAÇÃO MANUAL DE TABELAS) ---
+// --- FUNÇÃO DE INICIALIZAÇÃO ---
 async function startServer() {
-  let bootstrapConnection;
-  try {
-    // ETAPA 1: Conexão temporária para criar o banco de dados
-    console.log("Conectando ao servidor MySQL para verificar o banco de dados...");
-    bootstrapConnection = await mysql.createConnection({
-      host: config.host,
-      user: 'root',
-      password: ''
-    });
+    try {
+        // --- ETAPA CRÍTICA REMOVIDA ---
+        // A criação manual de tabelas foi REMOVIDA. O Prisma fará isso.
+        
+        console.log("Servidor inicializando. Migração de Schema sob responsabilidade do Prisma.");
+        
+        // 1. Testar a conexão com o Prisma (SQL Server)
+        await prisma.$connect();
+        console.log("Prisma (SQL Server) conectado com sucesso.");
 
-    await bootstrapConnection.query(`CREATE DATABASE IF NOT EXISTS \`GreenWaysOFC\` DEFAULT CHARACTER SET utf8;`);
-    console.log("Banco de dados 'GreenWaysOFC' verificado/criado.");
-    await bootstrapConnection.end();
+        // 2. Testar a conexão SQL Pura (mssql/tedious)
+        // Isso garante que o pool de conexão do 'conexao.js' esteja pronto
+        await conexao.query("SELECT 1 as result"); 
+        console.log("Conexão SQL Pura (T-SQL) funcional para Transações.");
 
-    // ETAPA 2: Usar o pool principal para criar as tabelas
-    console.log("Conectando ao banco 'GreenWaysOFC' para criar as tabelas...");
-    
-    // Mantida a criação manual das tabelas usando o 'conexao.js'
-    await conexao.query(`
-      CREATE TABLE IF NOT EXISTS \`users\` (
-        \`id\` INT(11) NOT NULL AUTO_INCREMENT,
-        \`nome\` VARCHAR(50) NOT NULL,
-        \`email\` VARCHAR(100) NOT NULL,
-        \`senha\` VARCHAR(100) NOT NULL,
-        \`foto\` VARCHAR(255) NULL DEFAULT NULL,
-        \`acesso\` ENUM('user', 'admin') NOT NULL DEFAULT 'user',
-        \`ativo\` TINYINT(4) NOT NULL DEFAULT 1,
-        PRIMARY KEY (\`id\`),
-        UNIQUE INDEX \`email_UNIQUE\` (\`email\` ASC)
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-    `);
+        app.listen(config.port, config.host, () => {
+          console.log(`🚀 Servidor rodando em http://${config.host}:${config.port}`);
+        });
 
-    await conexao.query(`
-      CREATE TABLE IF NOT EXISTS \`post\` (
-        \`idPost\` INT(11) NOT NULL AUTO_INCREMENT,
-        \`region\` VARCHAR(100) NOT NULL,   
-        \`content\` VARCHAR(300) NOT NULL,
-        \`createdAt\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        \`Users_id\` INT(11) NOT NULL,
-        PRIMARY KEY (\`idPost\`),
-        CONSTRAINT \`fk_post_user\`
-          FOREIGN KEY (\`Users_id\`)
-          REFERENCES \`users\` (\`id\`)
-          ON DELETE CASCADE ON UPDATE CASCADE
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-    `);
-
-    await conexao.query(`
-      CREATE TABLE IF NOT EXISTS \`coments\` (
-        \`idComents\` INT(11) NOT NULL AUTO_INCREMENT,
-        \`content\` VARCHAR(300) NOT NULL,
-        \`createdAt\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        \`Users_id\` INT(11) NOT NULL,
-        \`Post_idPost\` INT(11) NOT NULL,
-        PRIMARY KEY (\`idComents\`),
-        CONSTRAINT \`fk_coments_user\`
-          FOREIGN KEY (\`Users_id\`)
-          REFERENCES \`users\` (\`id\`)
-          ON DELETE CASCADE ON UPDATE CASCADE,
-        CONSTRAINT \`fk_coments_post\`
-          FOREIGN KEY (\`Post_idPost\`)
-          REFERENCES \`post\` (\`idPost\`)
-          ON DELETE CASCADE ON UPDATE CASCADE
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-    `);
-
-    console.log("Tabelas verificadas/criadas com sucesso.");
-
-    
-    app.listen(config.port, config.host, () => {
-      console.log(`🚀 Servidor rodando em http://${config.host}:${config.port}`);
-    });
-
-  } catch (error) {
-    console.log('Error during server startup:', error);
-    console.error('ERRO FATAL AO INICIALIZAR A APLICAÇÃO:', error);
-    if (bootstrapConnection) await bootstrapConnection.end();
-    process.exit(1);
-  }
+    } catch (error) {
+        console.error('ERRO FATAL AO INICIALIZAR A APLICAÇÃO (Verifique o SQL Server, Prisma e a conexão):', error);
+        
+        // Garante que o PrismaClient seja desconectado em caso de erro
+        await prisma.$disconnect();
+        
+        // Em um projeto real, você precisaria de um método para fechar o pool de conexões do mssql em caso de erro.
+        // Se a sua função 'conectar' no conexao.js der erro, ela não cria o pool.
+        
+        process.exit(1);
+    }
 }
 
 await startServer();

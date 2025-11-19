@@ -24,16 +24,29 @@
         }
 
         const data = await response.json();
-
+      
         if (data.ok) {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("currentUser", JSON.stringify(data.user));
-          window.location.href = "index.html";
+        // 2. Extrai o status 'ativo' do objeto do usuário
+        const usuarioAtivo = data.user.ativo; 
+
+      
+        if (usuarioAtivo === true || usuarioAtivo === 1) { 
+           
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("currentUser", JSON.stringify(data.user));
+            window.location.href = "index.html";
         } else {
-          erro.innerHTML = "*Usuário ou senha inválido!";
+            
+            erro.innerHTML = "*Sua conta está desativada. Entre em contato com o suporte.";
         }
-      } catch (error) {
-        console.error("Erro:", error);
+    } else {
+        // Credenciais inválidas (caso a API retorne !data.ok)
         erro.innerHTML = "*Usuário ou senha inválido!";
-      }
+    }
+    } catch (error) {
+        console.error("Erro:", error);
+        // Trata erros de rede, servidor, ou a exceção lançada por !response.ok
+        erro.innerHTML = "*Erro ao tentar fazer login. Verifique sua conexão ou credenciais.";
+    }
     });
+
