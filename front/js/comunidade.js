@@ -11,13 +11,17 @@ function estados() {
 function parseJwt(token) {
   try {
     const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const base64 = base64Url.replaceAll('-', '+').replaceAll('_', '/');
     const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      return '%' + ('00' + c.codePointAt(0).toString(16)).slice(-2);
     }).join(''));
     return JSON.parse(jsonPayload);
   } catch (e) {
+    if(e){
+      console.log(e)
     return null;
+    }
+   
   }
 }
 
@@ -25,7 +29,7 @@ function isAdmin() {
   const token = localStorage.getItem('token');
   if (!token) return false;
   const decodedToken = parseJwt(token);
-  return decodedToken && decodedToken.acesso === 'admin';
+  return decodedToken?.acesso === 'admin';
 }
 
 async function fetchUserProfile(id) {
@@ -72,14 +76,14 @@ async function carregarLocalidades(tipo, estado = "") {
       select.innerHTML = '<option value="" selected disabled> Selecione uma cidade </option>';
     }
 
-    dados.sort((a, b) => a.nome.localeCompare(b.nome))
-         .forEach((obj) => {
-      if (tipo === "estados") {
+    dados.sort((a, b) => a.nome.localeCompare(b.nome));
+      for (const obj of dados) {
+    if (tipo === "estados") {
         select.innerHTML += `<option value="${obj.sigla}">${obj.nome}</option>`;
-      } else {
+    } else {
         select.innerHTML += `<option value="${obj.nome}">${obj.nome}</option>`;
-      }
-    });
+    }
+};
   } catch (error) {
     console.error("Erro ao carregar dados:", error);
   }
@@ -123,7 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const userIsAdmin = isAdmin();
 
   if (!currentUser || !token) {
-    window.location.href = "login.html";
+    globalThis.location.href = "login.html";
     return;
   }
 
@@ -131,7 +135,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const currentUser = JSON.parse(localStorage.getItem("currentUser"));
       if (!currentUser || !token) {
-        window.location.href = "/login.html";
+        globalThis.location.href = "/login.html";
         return;
       }
 
@@ -145,7 +149,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (userData) {
         nameElement.textContent = userData.nome;
         if (userData.foto) {
-          const timestamp = new Date().getTime();
+          const timestamp = Date.now();
           profilePic.src = `/public/uploads/profile_${userData.id}.jpg?${timestamp}`;
           profilePic.alt = `Foto de ${userData.nome}`;
           profilePic.onerror = () => {
@@ -161,7 +165,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     } catch (error) {
       console.error("Erro ao carregar perfil:", error);
-      window.location.href = "/login.html";
+      globalThis.location.href = "/login.html";
     }
   }
 
@@ -183,7 +187,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
       if (response.status === 401) {
-        window.location.href = "/login.html";
+        globalThis.location.href = "/login.html";
         return;
       }
 
@@ -191,21 +195,24 @@ document.addEventListener("DOMContentLoaded", async () => {
       postList.innerHTML = "";
 
       if (data.ok) {
-        data.posts.forEach((post) => {
-          console.log("Processando post:", post);
-          const postElement = createPostElement(
-            post.user.nome,
-            post.region,
-            post.content,
-            post.idPost,
-            post.Users_id
-          );
-          
-          postList.appendChild(postElement);
-          if (post.coments && post.coments.length > 0) {
-            displayResponses(post.idPost, post.coments);
-          }
-        });
+        for (const post of data.posts) {
+    console.log("Processando post:", post);
+
+    const postElement = createPostElement(
+        post.user.nome,
+        post.region,
+        post.content,
+        post.idPost,
+        post.Users_id
+    );
+
+    postList.appendChild(postElement);
+
+    // Verifica se existem comentários
+    if (post.coments && post.coments.length > 0) {
+        displayResponses(post.idPost, post.coments);
+    }
+};
         renderPaginationControls(data.totalPage, currentPage);
       }
     } catch (error) {
@@ -267,7 +274,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         if (response.status === 401) {
-          window.location.href = "/login.html";
+          globalThis.location.href = "/login.html";
           return;
         }
 
@@ -316,7 +323,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         if (response.status === 401) {
-          window.location.href = "/login.html";
+          globalThis.location.href = "/login.html";
           return;
         }
 
@@ -341,15 +348,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     responsesContainer.innerHTML = "";
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-    responses.forEach((response) => {
-      const responseElement = document.createElement("div");
-      responseElement.className = "response";
-      responseElement.innerHTML = `
+    for (const response of responses) {
+    const responseElement = document.createElement("div");
+    responseElement.className = "response";
+    
+    responseElement.innerHTML = `
       <p><strong>${response.user.nome}:</strong> ${response.content}</p>
       ${currentUser.id === response.Users_id || userIsAdmin ? `<button class="delete-response-btn" data-post-id="${postId}" data-response-id="${response.idComents}">Excluir Resposta</button>` : ""}
     `;
-      responsesContainer.appendChild(responseElement);
-    });
+    
+    responsesContainer.appendChild(responseElement);
+};
 
     if (responses.length > 0) {
       responsesContainer.style.display = "block";
@@ -414,7 +423,7 @@ function renderPaginationControls(totalPages, page) {
       const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
       if (!currentUser) {
-        window.location.href = "/login.html";
+        globalThis.location.href = "/login.html";
         return;
       }
 
@@ -440,7 +449,7 @@ function renderPaginationControls(totalPages, page) {
         });
 
         if (response.status === 401) {
-          window.location.href = "/login.html";
+          globalThis.location.href = "/login.html";
           return;
         }
 
@@ -481,7 +490,7 @@ function renderPaginationControls(totalPages, page) {
         });
 
         if (response.status === 401) {
-          window.location.href = "/login.html";
+          globalThis.location.href = "/login.html";
           return;
         }
 

@@ -16,13 +16,7 @@
   transition: all 0.3s ease;
 }
 
-#username-display {
-    font-weight: bold;
-    color: white;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
+
   
   #username-display:hover {
     color: #4caf50;
@@ -32,6 +26,7 @@
   color: white;
   font-size: 1.1rem;
   transition: all 0.3s ease;
+  
 }
 
 .login-icon:hover {
@@ -265,6 +260,7 @@ nav ul a:hover::after {
 button {
   border: none;
   padding: 10px 10px;
+  margin: 0 auto; 
   margin-top: 20px;
   border-radius: 10px;
   cursor: pointer;
@@ -273,7 +269,7 @@ button {
   color: white;
   width: 100px; 
   display: block; 
-  margin: 0 auto; 
+  
 }
 
 button:hover {
