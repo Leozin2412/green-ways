@@ -22,7 +22,7 @@ h3 {
     font-size: 50px;
 }
 p {
-    color: #0000009c;
+    color: #252525;
 }
 .user-profile-header {
     display: flex;
@@ -36,14 +36,6 @@ p {
     cursor: pointer;
     transition: all 0.3s ease;
   }
-  
-  #username-display {
-      font-weight: bold;
-      color: white;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
     
     #username-display:hover {
       color: #4caf50;
@@ -52,6 +44,9 @@ p {
         color: white;
         font-size: 1.1rem;
         transition: all 0.3s ease;
+        margin-left: auto; 
+        font-weight: 400;
+        padding-right: 10px;
       }
       
       .login-icon:hover {
@@ -137,13 +132,7 @@ nav ul a:hover::after {
     flex: 1; 
     justify-content: center; 
 }
-.login-icon {
-    font-size: 15px; 
-    margin-left: auto; 
-    color: rgb(255, 255, 255);
-    font-weight: 400;
-    padding-right: 10px;
-}
+
 
 .banner {
     display: flex;
@@ -237,43 +226,6 @@ nav ul a:hover::after {
 }
 .leaf h3 {
     font-size: 1.5em;
-    margin-top: 0;
-    color: #3b3b39;
-}
-.quote {
-    color: #555555;
-    background-color: #b6c4ae;
-    border-left: 5px solid #314604;
-    margin: 30px 0;
-    padding: 10px;
-    padding-top: 25px;
-    border-radius: 5px;
-}
-.leaves {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 30px;
-}
-.leaf {
-    display: flex;
-    align-items: center;
-    background: #cad3c8;
-    padding: 15px 20px;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #334A00;
-}
-
-.leaves {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    flex-wrap: wrap;
-}
-
-.leaf h3 {
-    font-size: 1.4em;
     margin: 0;
     color: #3b3b39;
     padding-left: 20px;

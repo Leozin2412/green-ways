@@ -15,8 +15,7 @@ body {
 
 .wrapper {
   width: 100%;
-  max-width: 400px;
-  width: 420px;
+  max-width: 420px;
   background: transparent;
   border: 2px solid rgba(255, 255, 255, .2);
   backdrop-filter: blur(9px);
@@ -61,14 +60,14 @@ h1 {
   border-radius: 30px;
   outline: none;
   background: rgba(255, 255, 255, 0.1);  /* Fundo semitransparente */
-  color: #fff;
+  color: #fff; /* texto digitado branco conforme solicitado */
   font-size: 16px;
   transition: background 0.3s ease;
   border-color:  transparent;
 }
 
 .input-box input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  color: #fff; /* branco, conforme solicitado */
 }
 
 .input-box i {
