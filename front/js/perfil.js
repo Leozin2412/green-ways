@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
 
   if (!token || !currentUser) {
-    window.location.href = "login.html";
+    globalThis.location.href = "login.html";
     return;
   }
 
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const userId = currentUser.id;
-    const timestamp = new Date().getTime();
+    const timestamp = Date.now();
     elements.fotoPreview.src = `/public/${currentUser.foto}?${timestamp}`;
     elements.fotoPreview.onerror = () => {
       elements.fotoPreview.src = DEFAULT_AVATAR;
@@ -119,7 +119,7 @@ formData.append("currentPassword", elements.currentPasswordInput.value);
           localStorage.setItem("token", data.token);
         }
         alert("Perfil atualizado!");
-        window.location.reload();
+        globalThis.location.reload();
       } else {
         alert(data.message || "Erro ao atualizar perfil");
       }
@@ -129,12 +129,12 @@ formData.append("currentPassword", elements.currentPasswordInput.value);
     // }
   }
 
-  window.abrirSeletor = () => {
+  globalThis.abrirSeletor = () => {
     elements.fotoInput.click();
     elements.menuFoto.style.display = "none";
   };
 
-  window.removerFoto = async () => {
+  globalThis.removerFoto = async () => {
     try {
       const response = await fetch(
         `${API_BASE_URL}/users/removePhoto?id=${currentUser.id}`,
@@ -147,7 +147,7 @@ formData.append("currentPassword", elements.currentPasswordInput.value);
       );
 
       if (response.status === 401) {
-        window.location.href = "login.html";
+        globalThis.location.href = "login.html";
         return;
       }
 
@@ -165,11 +165,11 @@ formData.append("currentPassword", elements.currentPasswordInput.value);
     }
   };
 
-  window.confirmarExclusao = () => {
+  globalThis.confirmarExclusao = () => {
     elements.modalConfirm.style.display = "flex";
   };
 
-  window.fecharModal = () => {
+  globalThis.fecharModal = () => {
     elements.modalConfirm.style.display = "none";
   };
 
@@ -179,12 +179,12 @@ formData.append("currentPassword", elements.currentPasswordInput.value);
       e.preventDefault();
       this.style.transform = "scale(0.95)";
       setTimeout(() => {
-        window.location.href = this.getAttribute("href");
+        globalThis.location.href = this.getAttribute("href");
         this.style.transform = "";
       }, 200);
     });
 
-  window.excluirConta = async () => {
+  globalThis.excluirConta = async () => {
     const deleteBtn = document.querySelector(".confirm");
     const spinner = document.getElementById("delete-spinner");
 
@@ -205,7 +205,7 @@ formData.append("currentPassword", elements.currentPasswordInput.value);
       });
 
       if (response.status === 401) {
-        window.location.href = "login.html";
+        globalThis.location.href = "login.html";
         return;
       }
 
@@ -214,7 +214,7 @@ formData.append("currentPassword", elements.currentPasswordInput.value);
         localStorage.removeItem("currentUser");
         localStorage.removeItem("token");
         alert("Conta excluída com sucesso!");
-        window.location.href = "index.html";
+        globalThis.location.href = "index.html";
       } else {
         alert(data.message || "Erro ao excluir conta");
         fecharModal();

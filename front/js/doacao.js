@@ -15,6 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
     } catch (err) {
+      if(err){
+        console.log(err)
+      }
       logout();
       return;
     }
@@ -23,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (currentUser?.nome && token) {
     nameElement.textContent = currentUser.nome;
     nameElement.addEventListener("click", () => {
-      window.location.href = "perfil.html";
+      globalThis.location.href = "perfil.html";
     });
     logoutBtn.style.display = "inline-block";
     loginIcon.classList.add("logged");
@@ -37,9 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   logoutBtn.addEventListener("click", logout);
 
-  if (window.fetch) {
-    const originalFetch = window.fetch;
-    window.fetch = async (...args) => {
+  if (globalThis.fetch) {
+    const originalFetch = globalThis.fetch;
+    globalThis.fetch = async (...args) => {
       const response = await originalFetch(...args);
       if (!response.ok) {
         try {
@@ -62,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("s")
     sessionStorage.clear();
     console.log("a")
-    window.location.href = "index.html";
+    globalThis.location.href = "index.html";
   }
 });
 
@@ -72,12 +75,14 @@ const form = document.getElementById("formDoacao");
 const ongInput = document.getElementById("ongSelecionada");
 
 // Abrir modal com ONG selecionada
-document.querySelectorAll(".btn-doar").forEach(btn => {
+const botoesDoar = document.querySelectorAll(".btn-doar");
+
+for (const btn of botoesDoar) {
   btn.addEventListener("click", () => {
-    ongInput.value = btn.dataset.ong;
+    ongInput.value = btn.dataset.ong; // Uso correto do dataset!
     modal.classList.remove("hidden");
   });
-});
+}
 
 // Fechar modal
 closeModal.addEventListener("click", () => modal.classList.add("hidden"));

@@ -6,7 +6,11 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     const password = document.getElementById('password').value.trim();
     const confirmPassword = document.getElementById('confirmPassword').value.trim();
 
-    document.querySelectorAll(".erro").forEach(el => el.innerHTML = "");
+    const elementosErro = document.querySelectorAll(".erro");
+
+    for (const el of elementosErro) {
+        el.innerHTML = "";
+    }
     
     if(!username) {
         document.querySelector(".name").innerHTML = "*Preencha com seu Nome!";
@@ -56,7 +60,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
             return;
         }
 
-        window.location.href = '/front/login.html';
+        globalThis.location.href = '/front/login.html';
     } catch (error) {
         console.error("Erro ao registrar:", error);
         alert("Erro ao conectar com o servidor");

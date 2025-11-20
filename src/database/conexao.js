@@ -33,7 +33,9 @@ async function conectar() {
             console.log("Pool de Conexões SQL Server reconectado.");
             return pool;
         } catch (error) {
+            if (error.code === 'ETIMEDOUT') {
           console.log("falha na reconexão")
+            }
             // Se falhar na reconexão, tenta criar um novo pool abaixo
             pool = null; 
         }

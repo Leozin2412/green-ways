@@ -34,7 +34,7 @@
            
             localStorage.setItem("token", data.token);
             localStorage.setItem("currentUser", JSON.stringify(data.user));
-            window.location.href = "index.html";
+            globalThis.location.href = "index.html";
         } else {
             
             erro.innerHTML = "*Sua conta está desativada. Entre em contato com o suporte.";
