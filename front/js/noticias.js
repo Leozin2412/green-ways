@@ -34,5 +34,5 @@ async function carregarNoticias() {
     container.innerHTML = "<p>Erro ao carregar notícias.</p>";
   }
 }
+await carregarNoticias();
 
-carregarNoticias();
